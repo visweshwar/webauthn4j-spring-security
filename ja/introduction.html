@@ -5,7 +5,7 @@
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.2">
-<title>Quick start</title>
+<title>導入</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400">
 <style>
 /* Asciidoctor default stylesheet | MIT License | http://asciidoctor.org */
@@ -418,12 +418,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#quick-start">1. Quick start</a>
+<li><a href="#導入">1. 導入</a>
 <ul class="sectlevel2">
-<li><a href="#supported-browsers">1.1. Supported browsers</a></li>
-<li><a href="#sample-application-execution">1.2. Sample application execution</a></li>
-<li><a href="#user-and-authenticator-registration">1.3. User and authenticator registration</a></li>
-<li><a href="#user-authentication">1.4. User authentication</a></li>
+<li><a href="#web-authenticationとは">1.1. Web Authenticationとは</a></li>
+<li><a href="#spring-security-webauthnとは">1.2. Spring Security WebAuthnとは</a></li>
+<li><a href="#要件">1.3. 要件</a></li>
+<li><a href="#ソースコード">1.4. ソースコード</a></li>
+<li><a href="#ライセンス">1.5. ライセンス</a></li>
 </ul>
 </li>
 </ul>
@@ -431,66 +432,88 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="quick-start"><a class="anchor" href="#quick-start"></a>1. Quick start</h2>
+<h2 id="導入"><a class="anchor" href="#導入"></a>1. 導入</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="supported-browsers"><a class="anchor" href="#supported-browsers"></a>1.1. Supported browsers</h3>
+<h3 id="web-authenticationとは"><a class="anchor" href="#web-authenticationとは"></a>1.1. Web Authenticationとは</h3>
 <div class="paragraph">
-<p>As of March 2018, Firefox Nightly is the only supported browser.
-You need to enable the flags <code>security.webauthn.webauthn</code> and <code>security.webauthn.webauthn_enable_usbtoken</code>
-in the configuration editor (<code>about:config</code> page) to use FIDO-U2F compliant authenticator.</p>
+<p>Web Authenticationは、W3Cで仕様策定が進められている、Webアプリケーションの新しいセキュアな認証方式仕様です。
+ローカル認証や公開鍵認証、Origin別の鍵管理を組み合わせることで、フィッシングなど認証プロセスに対する攻撃に対して堅固な認証を実現しています。
+主要ブラウザでの実装が進みつつあり、セキュリティ、利便性を重視するユーザーに対して優れた選択肢を提供します。
+当初はFIDO AllianceでFIDO2.0として仕様策定が進められていましたが、現在はW3Cに移管され、仕様策定が行われています。</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="sample-application-execution"><a class="anchor" href="#sample-application-execution"></a>1.2. Sample application execution</h3>
+<h3 id="spring-security-webauthnとは"><a class="anchor" href="#spring-security-webauthnとは"></a>1.2. Spring Security WebAuthnとは</h3>
 <div class="paragraph">
-<p>Sample application can be executed by following command.</p>
+<p>Spring Securityで保護されたWebアプリケーションに対して、Web Authentication仕様に基づく認証機能を提供するための
+Spring Security拡張です。</p>
+</div>
+<div class="sect3">
+<h4 id="サポートする証言ステートメントフォーマット"><a class="anchor" href="#サポートする証言ステートメントフォーマット"></a>1.2.1. サポートする証言ステートメントフォーマット</h4>
+<div class="paragraph">
+<p>Spring Security WebAuthnが現在サポートする証言ステートメントフォーマットは以下の通りです。</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>FIDO U2F Attestation Statement Format</p>
+</li>
+<li>
+<p>None Attestation Statement Format</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>それ以外の証言ステートメントフォーマットのサポートも順次行う予定です。</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="要件"><a class="anchor" href="#要件"></a>1.3. 要件</h3>
+<div class="sect3">
+<h4 id="言語-フレームワーク"><a class="anchor" href="#言語-フレームワーク"></a>1.3.1. 言語・フレームワーク</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Java8以降</p>
+</li>
+<li>
+<p>Spring Framework 5.0以降</p>
+</li>
+<li>
+<p>Spring Security 5.0以降</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="動作環境"><a class="anchor" href="#動作環境"></a>1.3.2. 動作環境</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>SecureContext（サイトがHTTPS接続か、localhost）</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="ソースコード"><a class="anchor" href="#ソースコード"></a>1.4. ソースコード</h3>
+<div class="paragraph">
+<p>ソースコードは <a href="https://github.com/sharplab/spring-security-webauthn">Github</a> で管理されています。</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code>./gradlew spring-security-webauthn-sample:bootRun</code></pre>
+<pre>git clone git@github.com:sharplab/spring-security-webauthn.git</pre>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="user-and-authenticator-registration"><a class="anchor" href="#user-and-authenticator-registration"></a>1.3. User and authenticator registration</h3>
-<div class="imageblock">
-<div class="content">
-<img src="images/signup.png" alt="signup view">
-</div>
-</div>
+<h3 id="ライセンス"><a class="anchor" href="#ライセンス"></a>1.5. ライセンス</h3>
 <div class="paragraph">
-<p>Signup page can be accessed with <code><a href="http://localhost:8080/signup" class="bare">http://localhost:8080/signup</a></code>.
-User and authenticator can be registered in the signup page.
-Currently, FIDO-U2F compliant authenticators are supported.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="user-authentication"><a class="anchor" href="#user-authentication"></a>1.4. User authentication</h3>
-<div class="imageblock">
-<div class="content">
-<img src="images/login.png" alt="login view">
-</div>
-</div>
-<div class="paragraph">
-<p>Login page can be accessed with <code><a href="http://localhost:/8080/login" class="bare">http://localhost:/8080/login</a></code>.
-If you have authenticator without user verification functionality, fill your username and password, push "login" button,
-then authenticator login page asking authenticator will be shown after verifying the password as a first authentication factor.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="images/authenticatorLogin.png" alt="authenticator login view">
-</div>
-</div>
-<div class="paragraph">
-<p>When a dialog for authentication is opened, acknowledge the authentication with your authenticator.</p>
-</div>
-<div class="paragraph">
-<p>If you use authenticator with user verification feature, push "login with authenticator" button in login page.
-Then the dialog asking authenticator opens, approve the authentication with your authenticator.</p>
-</div>
-<div class="paragraph">
-<p>If password authentication is permitted for your account, you may login by filling username and password and pushing "login" button.</p>
+<p>Spring Security WebAuthnは <a href="http://www.apache.org/licenses/LICENSE-2.0.html">Apache 2.0 license</a> ライセンスの
+オープンソースソフトウェアです。</p>
 </div>
 </div>
 </div>
@@ -499,7 +522,7 @@ Then the dialog asking authenticator opens, approve the authentication with your
 <div id="footer">
 <div id="footer-text">
 Version 0.1.0-SNAPSHOT<br>
-Last updated 2018-03-17 17:26:53 +00:00
+Last updated 2018-03-17 17:40:19 +00:00
 </div>
 </div>
 </body>

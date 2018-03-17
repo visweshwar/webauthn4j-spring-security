@@ -5,7 +5,7 @@
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.2">
-<title>導入</title>
+<title>Spring Security WebAuthn Reference</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400">
 <style>
 /* Asciidoctor default stylesheet | MIT License | http://asciidoctor.org */
@@ -415,6 +415,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="book toc2 toc-left">
 <div id="header">
+<h1>Spring Security WebAuthn Reference</h1>
+<div class="details">
+<span id="revnumber">version 0.1.0-SNAPSHOT</span>
+</div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
@@ -425,6 +429,50 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#要件">1.3. 要件</a></li>
 <li><a href="#ソースコード">1.4. ソースコード</a></li>
 <li><a href="#ライセンス">1.5. ライセンス</a></li>
+</ul>
+</li>
+<li><a href="#クイックスタート">2. クイックスタート</a>
+<ul class="sectlevel2">
+<li><a href="#サポートするブラウザ">2.1. サポートするブラウザ</a></li>
+<li><a href="#サンプルアプリケーションの実行">2.2. サンプルアプリケーションの実行</a></li>
+<li><a href="#ユーザーおよび認証デバイスの登録">2.3. ユーザーおよび認証デバイスの登録</a></li>
+<li><a href="#ユーザー認証">2.4. ユーザー認証</a></li>
+</ul>
+</li>
+<li><a href="#設定">3. 設定</a>
+<ul class="sectlevel2">
+<li><a href="#アプリケーションへの組み込み">3.1. アプリケーションへの組み込み</a></li>
+<li><a href="#認証デバイス登録時の検証">3.2. 認証デバイス登録時の検証</a></li>
+<li><a href="#認証時の検証">3.3. 認証時の検証</a></li>
+<li><a href="#ユーザーディレクトリとの統合">3.4. ユーザーディレクトリとの統合</a></li>
+<li><a href="#公開鍵の有効範囲-rpid-設定">3.5. 公開鍵の有効範囲（RpId）設定</a></li>
+</ul>
+</li>
+<li><a href="#クライアントサイドとのインタフェース仕様">4. クライアントサイドとのインタフェース仕様</a>
+<ul class="sectlevel2">
+<li><a href="#認証リクエストに期待するリクエストパラメーター">4.1. 認証リクエストに期待するリクエストパラメーター</a></li>
+<li><a href="#メタデータエンドポイント仕様">4.2. メタデータエンドポイント仕様</a></li>
+<li><a href="#認証デバイスの登録">4.3. 認証デバイスの登録</a></li>
+<li><a href="#認証">4.4. 認証</a></li>
+</ul>
+</li>
+<li><a href="#高度なトピック">5. 高度なトピック</a>
+<ul class="sectlevel2">
+<li><a href="#多要素認証で第一要素認証のみ完了したユーザーの識別">5.1. 多要素認証で第一要素認証のみ完了したユーザーの識別</a></li>
+<li><a href="#メタデータ">5.2. メタデータ</a></li>
+<li><a href="#チャレンジ">5.3. チャレンジ</a></li>
+<li><a href="#証言ステートメント信頼性の検証">5.4. 証言ステートメント信頼性の検証</a></li>
+</ul>
+</li>
+<li><a href="#spring-boot">6. Spring Boot</a></li>
+<li><a href="#web-authentication入門">7. Web Authentication入門</a>
+<ul class="sectlevel2">
+<li><a href="#パスワード認証の限界">7.1. パスワード認証の限界</a></li>
+<li><a href="#web-authentication仕様とは">7.2. Web Authentication仕様とは</a></li>
+<li><a href="#webauthnがサポートする認証フロー">7.3. WebAuthnがサポートする認証フロー</a></li>
+<li><a href="#単独認証要素としての認証フロー">7.4. 単独認証要素としての認証フロー</a></li>
+<li><a href="#第二認証要素としての認証フロー">7.5. 第二認証要素としての認証フロー</a></li>
+<li><a href="#webauthnの特徴">7.6. WebAuthnの特徴</a></li>
 </ul>
 </li>
 </ul>
@@ -518,11 +566,338 @@ Spring Security拡張です。</p>
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="クイックスタート"><a class="anchor" href="#クイックスタート"></a>2. クイックスタート</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="サポートするブラウザ"><a class="anchor" href="#サポートするブラウザ"></a>2.1. サポートするブラウザ</h3>
+<div class="paragraph">
+<p>2018年3月現在、Firefox Nightlyがサポートされる唯一のブラウザです。
+Firefox Nightlyでは、設定エディタ（ <code>about:config</code> ページ）で <code>security.webauthn.webauthn</code> と <code>security.webauthn.webauthn_enable_usbtoken</code> フラグを
+有効化することでFIDO-U2Fの認証デバイスを使用することが出来ます。</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="サンプルアプリケーションの実行"><a class="anchor" href="#サンプルアプリケーションの実行"></a>2.2. サンプルアプリケーションの実行</h3>
+<div class="paragraph">
+<p>サンプルアプリケーションは以下のコマンドで実行することが出来ます。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code>./gradlew spring-security-webauthn-sample:bootRun</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="ユーザーおよび認証デバイスの登録"><a class="anchor" href="#ユーザーおよび認証デバイスの登録"></a>2.3. ユーザーおよび認証デバイスの登録</h3>
+<div class="imageblock">
+<div class="content">
+<img src="images/signup.png" alt="サインアップ画面">
+</div>
+</div>
+<div class="paragraph">
+<p>サインアップ画面は、 <code><a href="http://localhost:8080/signup" class="bare">http://localhost:8080/signup</a></code> でアクセスすることが出来ます。
+サインアップ画面では、ユーザーと認証デバイスの登録を行うことが出来ます。
+認証デバイスとしては、現在、FIDO-U2F準拠のデバイスがサポートされています。</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="ユーザー認証"><a class="anchor" href="#ユーザー認証"></a>2.4. ユーザー認証</h3>
+<div class="imageblock">
+<div class="content">
+<img src="images/login.png" alt="ログイン画面">
+</div>
+</div>
+<div class="paragraph">
+<p>ログイン画面は、 <code><a href="http://localhost:/8080/login" class="bare">http://localhost:/8080/login</a></code> でアクセスすることが出来ます。
+ユーザー検証機能を持たない認証デバイスをご利用の場合は、ユーザー名とパスワードを入力し、「ログイン」ボタンを押下すると、
+パスワードを第一認証要素として認証した後、第二認証要素として認証デバイスを用いた認証を求める、認証デバイスログイン画面が開きます。</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/authenticatorLogin.png" alt="認証デバイスログイン画面">
+</div>
+</div>
+<div class="paragraph">
+<p>認証を求めるダイアログが開いたら、認証デバイスを操作し、認証を完了してください。</p>
+</div>
+<div class="paragraph">
+<p>ユーザー検証機能を備えた認証デバイスをご利用の場合は、ログイン画面で「認証デバイスでログイン」ボタンを押下すると、
+認証デバイスを用いた認証を求めるダイアログが開きます。認証デバイスを操作し、認証を完了してください。</p>
+</div>
+<div class="paragraph">
+<p>なお、パスワード認証を許可したユーザーの場合は、ログイン画面でユーザー名とパスワードを入力し、
+「ログイン」ボタンを押下するだけでログインすることが出来ます。</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="設定"><a class="anchor" href="#設定"></a>3. 設定</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="アプリケーションへの組み込み"><a class="anchor" href="#アプリケーションへの組み込み"></a>3.1. アプリケーションへの組み込み</h3>
+<div class="sect3">
+<h4 id="maven依存関係"><a class="anchor" href="#maven依存関係"></a>3.1.1. Maven依存関係</h4>
+<div class="paragraph">
+<p>ライブラリとその依存関係を導入するために、以下をpom.xmlファイルに追加してください。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
+	&lt;groupId&gt;net.sharplab.springframework.security.extensions&lt;/groupId&gt;
+	&lt;artifactId&gt;spring-security-webauthn-core&lt;/artifactId&gt;
+	&lt;version&gt;${version}&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="bean定義"><a class="anchor" href="#bean定義"></a>3.1.2. Bean定義</h4>
+
+</div>
+<div class="sect3">
+<h4 id="java-config"><a class="anchor" href="#java-config"></a>3.1.3. Java Config</h4>
+
+</div>
+</div>
+<div class="sect2">
+<h3 id="認証デバイス登録時の検証"><a class="anchor" href="#認証デバイス登録時の検証"></a>3.2. 認証デバイス登録時の検証</h3>
+<div class="paragraph">
+<p>認証デバイス登録操作のハンドリングは、基本的にはアプリケーション側の責務であり、Spring Security WebAuthnは機能を直接提供することはしません。
+但し、登録しようとしているデバイス情報が認証時に使用できるものであるか、検証する為に、WebAuthnRegistrationContextValidatorクラスを提供します。</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="認証時の検証"><a class="anchor" href="#認証時の検証"></a>3.3. 認証時の検証</h3>
+<div class="sect3">
+<h4 id="認証方法の選択"><a class="anchor" href="#認証方法の選択"></a>3.3.1. 認証方法の選択</h4>
+<div class="paragraph">
+<p>Spring Security WebAuthnでは、認証方法としてパスワード認証、パスワードと認証デバイスの組み合わせによる認証、
+ユーザー検証をサポートした認証デバイスを単独での認証をサポートしています。
+全ての認証方法をサポートし、ユーザーへの間口を広げることも出来ますし、認証デバイスを用いた認証だけに制限することで、
+セキュリティを高めることも出来ます。</p>
+</div>
+<div class="paragraph">
+<p>TODO:認証方法の選択設定方法</p>
+</div>
+<div class="paragraph">
+<p>各ユーザーは、システムで許されている範囲で、認証方法を更に制限することが可能です。
+例え、パスワード認証がシステム全体で許容されていたとしても、自分のアカウントのログインに関してはパスワード認証を
+許容しないように設定することが可能です。</p>
+</div>
+<div class="paragraph">
+<p>TODO:設定方法の紹介</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="ユーザーディレクトリとの統合"><a class="anchor" href="#ユーザーディレクトリとの統合"></a>3.4. ユーザーディレクトリとの統合</h3>
+<div class="sect3">
+<h4 id="webauthnauthenticatorserviceとwebauthnauthenticator"><a class="anchor" href="#webauthnauthenticatorserviceとwebauthnauthenticator"></a>3.4.1. WebAuthnAuthenticatorServiceとWebAuthnAuthenticator</h4>
+
+</div>
+</div>
+<div class="sect2">
+<h3 id="公開鍵の有効範囲-rpid-設定"><a class="anchor" href="#公開鍵の有効範囲-rpid-設定"></a>3.5. 公開鍵の有効範囲（RpId）設定</h3>
+<div class="paragraph">
+<p>Web Authentication仕様では、公開鍵の取得時、その公開鍵の有効範囲を制限するためのパラメータとして、RpIdを指定します。
+RpIdには、～ドメインを指定することが出来ます。例えば、～メソッドが実際に呼び出されたページのドメインが
+"subdomain.example.com"だった場合に、RpIdを"subdomain.example.com"と指定すれば、
+その公開鍵は"subdomain.example.com"とそのサブドメインの範囲だけで利用できますが、
+RpIdを"example.com"とすることで、公開鍵が利用可能な範囲を"example.com"およびそのサブドメインに広げることが出来ます。</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="クライアントサイドとのインタフェース仕様"><a class="anchor" href="#クライアントサイドとのインタフェース仕様"></a>4. クライアントサイドとのインタフェース仕様</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="認証リクエストに期待するリクエストパラメーター"><a class="anchor" href="#認証リクエストに期待するリクエストパラメーター"></a>4.1. 認証リクエストに期待するリクエストパラメーター</h3>
+
+</div>
+<div class="sect2">
+<h3 id="メタデータエンドポイント仕様"><a class="anchor" href="#メタデータエンドポイント仕様"></a>4.2. メタデータエンドポイント仕様</h3>
+
+</div>
+<div class="sect2">
+<h3 id="認証デバイスの登録"><a class="anchor" href="#認証デバイスの登録"></a>4.3. 認証デバイスの登録</h3>
+
+</div>
+<div class="sect2">
+<h3 id="認証"><a class="anchor" href="#認証"></a>4.4. 認証</h3>
+
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="高度なトピック"><a class="anchor" href="#高度なトピック"></a>5. 高度なトピック</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="多要素認証で第一要素認証のみ完了したユーザーの識別"><a class="anchor" href="#多要素認証で第一要素認証のみ完了したユーザーの識別"></a>5.1. 多要素認証で第一要素認証のみ完了したユーザーの識別</h3>
+<div class="paragraph">
+<p>Spring Security本体側のトピック？</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="メタデータ"><a class="anchor" href="#メタデータ"></a>5.2. メタデータ</h3>
+
+</div>
+<div class="sect2">
+<h3 id="チャレンジ"><a class="anchor" href="#チャレンジ"></a>5.3. チャレンジ</h3>
+<div class="sect3">
+<h4 id="challengeattrprocessor"><a class="anchor" href="#challengeattrprocessor"></a>5.3.1. ChallengeAttrProcessor</h4>
+<div class="paragraph">
+<p>Web Authentication仕様では、署名対象データにChallengeを含める必要があります。spring-security-webauthnでは、
+Challengeをサーバーから渡すために、Challengeデータを含むMetaタグを出力するThymeleafのCustom Dialectを提供します。</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="challengerepository"><a class="anchor" href="#challengerepository"></a>5.3.2. ChallengeRepository</h4>
+<div class="paragraph">
+<p>Challengeデータの生成を管理を行うインタフェースとして、ChallengeRepositoryインタフェースが定義されています。</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="証言ステートメント信頼性の検証"><a class="anchor" href="#証言ステートメント信頼性の検証"></a>5.4. 証言ステートメント信頼性の検証</h3>
+<div class="paragraph">
+<p>Relying Partyとして証言ステートメントを検証する際、署名と信頼のそれぞれの検証が必要です。
+Spring-Security-WebAuthnはそれぞれ、`AttestationStatementSignatureValidator`インタフェースの実装および
+`AttestationStatementTrustWorthinessValidator`インタフェースの実装を用いて検証を行います。</p>
+</div>
+<div class="sect4">
+<h5 id="信頼の検証"><a class="anchor" href="#信頼の検証"></a>信頼の検証</h5>
+<div class="paragraph">
+<p>証言ステートメントを証明書パスに基づいて検証する際、spring-security-webauthnは
+`WebAuthnTrustAnchorService`インタフェースの実装を用いてトラスト・アンカーを取得します。
+信頼の検証は、証言ステートメントが自己署名か、ECDAAか、それ以外かによって方法が異なり、
+spring-security-webauthnではそれぞれの検証手段のインタフェースとして`SelfAttestationTrustworthinessValidator`インタフェース、
+`ECDAATrustworthinessValidator`インタフェース、`CertPathTrustworthinessValidator`インタフェースを用意しています。
+`WebAuthnTrustAnchorService`インタフェースの実装クラスは必要とする検証の内容に応じて、
+`StrictAttestationStatementTrustworthinessValidator`と`LooseAttestationStatementTrustworthinessValidator`を用意していますが、
+実際の検証は`SelfAttestationTrustworthinessValidator`インタフェース、
+ `ECDAATrustworthinessValidator`インタフェース、`CertPathTrustworthinessValidator`インタフェースを実装したクラスに
+委譲しています。</p>
+</div>
+<div class="paragraph">
+<p>`FIDOMetadataServiceCertPathTrustworthinessValidator`は`CertPathTrustworthinessValidator`インタフェースを実装したクラスで、
+FIDO Metadata Serviceで公開されている証明書をトラストアンカーに証言証明書の信頼を検証します。
+更に、FIDO Metadata Serviceから得られた各証言証明書のStatus Reportを元に検証を行います。</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="code-fidometadataservicecertpathtrustworthinessvalidator-code"><a class="anchor" href="#code-fidometadataservicecertpathtrustworthinessvalidator-code"></a><code>FIDOMetadataServiceCertPathTrustworthinessValidator</code></h5>
+
+</div>
+<div class="sect4">
+<h5 id="code-keystoretrustanchorservice-code"><a class="anchor" href="#code-keystoretrustanchorservice-code"></a><code>KeyStoreTrustAnchorService</code></h5>
+<div class="paragraph">
+<p>Java Key Storeファイルに保存した公開鍵証明書をトラストアンカーとして利用するための`WebAuthnTrustAnchorService`の
+実装です。</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="証言ステートメント署名の検証"><a class="anchor" href="#証言ステートメント署名の検証"></a>5.4.4. 証言ステートメント署名の検証</h4>
+<div class="paragraph">
+<p>spring-security-webauthnは`AttestationStatementSignatureValidator`インタフェースの実装として、
+`FIDOU2FAttestationStatementSignatureValidator`と`WebAuthnAttestationStatementSignatureValidator`を提供します。
+spring-security-webauthnは`AttestationStatementSignatureValidator`インタフェースを実装したクラスのBeanを自動で検出し、
+署名の検証時、フォーマットと適合する`AttestationStatementSignatureValidator`を使用して検証を行います。</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="spring-boot"><a class="anchor" href="#spring-boot"></a>6. Spring Boot</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Spring Security WebAuthnに対するSpring Boot Autoconfigureは将来のバージョンで提供される予定です。</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="web-authentication入門"><a class="anchor" href="#web-authentication入門"></a>7. Web Authentication入門</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="パスワード認証の限界"><a class="anchor" href="#パスワード認証の限界"></a>7.1. パスワード認証の限界</h3>
+
+</div>
+<div class="sect2">
+<h3 id="web-authentication仕様とは"><a class="anchor" href="#web-authentication仕様とは"></a>7.2. Web Authentication仕様とは</h3>
+<div class="paragraph">
+<p>Web Authenticationは、W3Cで仕様策定が進められている、Webアプリケーションの新しいセキュアな認証方式仕様。
+ローカル認証や公開鍵認証、Origin別の鍵管理を組み合わせることで、
+フィッシングなど認証プロセスに対する攻撃に対して堅固な認証が実現出来ます。
+主要ブラウザでの実装が進みつつあり、セキュリティ、利便性を重視するユーザーに選択肢を提供します。
+当初はFIDO AllianceでFIDO2.0として仕様策定が進められていましたが、現在はW3Cに移管されました。</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="webauthnがサポートする認証フロー"><a class="anchor" href="#webauthnがサポートする認証フロー"></a>7.3. WebAuthnがサポートする認証フロー</h3>
+<div class="paragraph">
+<p>ユーザー検証をサポートした認証デバイスを単独で利用し、認証するフロー
+パスワード認証と、ユーザー検証をサポートしない認証トークンを組み合わせて認証するフロー
+が存在します。</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="単独認証要素としての認証フロー"><a class="anchor" href="#単独認証要素としての認証フロー"></a>7.4. 単独認証要素としての認証フロー</h3>
+<div class="paragraph">
+<p>単独認証要素としてWebAuthnの認証デバイスを使用する場合、以下のようなフローとなります。</p>
+</div>
+<div class="sect3">
+<h4 id="ユーザー登録"><a class="anchor" href="#ユーザー登録"></a>7.4.1. ユーザー登録</h4>
+
+</div>
+<div class="sect3">
+<h4 id="ユーザー認証-2"><a class="anchor" href="#ユーザー認証-2"></a>7.4.2. ユーザー認証</h4>
+
+</div>
+</div>
+<div class="sect2">
+<h3 id="第二認証要素としての認証フロー"><a class="anchor" href="#第二認証要素としての認証フロー"></a>7.5. 第二認証要素としての認証フロー</h3>
+<div class="paragraph">
+<p>第二認証要素としてWebAuthnの認証デバイスを使用する場合、以下のようなフローとなります。</p>
+</div>
+<div class="sect3">
+<h4 id="ユーザー登録-2"><a class="anchor" href="#ユーザー登録-2"></a>7.5.1. ユーザー登録</h4>
+
+</div>
+<div class="sect3">
+<h4 id="ユーザー認証-3"><a class="anchor" href="#ユーザー認証-3"></a>7.5.2. ユーザー認証</h4>
+
+</div>
+</div>
+<div class="sect2">
+<h3 id="webauthnの特徴"><a class="anchor" href="#webauthnの特徴"></a>7.6. WebAuthnの特徴</h3>
+<div class="sect3">
+<h4 id="生体情報の保護"><a class="anchor" href="#生体情報の保護"></a>7.6.1. 生体情報の保護</h4>
+<div class="paragraph">
+<p>生体認証を用いた認証デバイスであっても、生体情報は認証器のローカルに保存され、サーバーには、公開鍵のみが保存されます。
+万が一サーバーが攻撃されて情報が流出した場合も、生体情報が攻撃者の手に渡ることはありません。耐タンパ性を持った認証デバイスを用いることで、
+生体情報は有効に保護することが出来ます。</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="認証プロパティの署名"><a class="anchor" href="#認証プロパティの署名"></a>7.6.2. 認証プロパティの署名</h4>
+<div class="paragraph">
+<p>TODO:認証プロパティではなく、正しい用語の使用
+ユーザー認証時、認証デバイスは認証プロパティに対して署名を行い、サーバーは署名を検証することで、認証プロパティの真正性を確認できます。
+認証プロパティには、ドメイン名が含まれるため、攻撃者によって運営されるフィッシングサイトでユーザーが認証アサーションを生成してしまったとしても、
+攻撃者はその認証アサーションを正規のサイトへのログインに用いることは出来ません。</p>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version 0.1.0-SNAPSHOT<br>
-Last updated 2018-03-17 17:26:53 +00:00
+Last updated 2018-03-17 17:40:19 +00:00
 </div>
 </div>
 </body>

@@ -5,7 +5,7 @@
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.2">
-<title>Spring Boot</title>
+<title>Web Authentication入門</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400">
 <style>
 /* Asciidoctor default stylesheet | MIT License | http://asciidoctor.org */
@@ -418,16 +418,92 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#spring-boot">1. Spring Boot</a></li>
+<li><a href="#web-authentication入門">1. Web Authentication入門</a>
+<ul class="sectlevel2">
+<li><a href="#パスワード認証の限界">1.1. パスワード認証の限界</a></li>
+<li><a href="#web-authentication仕様とは">1.2. Web Authentication仕様とは</a></li>
+<li><a href="#webauthnがサポートする認証フロー">1.3. WebAuthnがサポートする認証フロー</a></li>
+<li><a href="#単独認証要素としての認証フロー">1.4. 単独認証要素としての認証フロー</a></li>
+<li><a href="#第二認証要素としての認証フロー">1.5. 第二認証要素としての認証フロー</a></li>
+<li><a href="#webauthnの特徴">1.6. WebAuthnの特徴</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="spring-boot"><a class="anchor" href="#spring-boot"></a>1. Spring Boot</h2>
+<h2 id="web-authentication入門"><a class="anchor" href="#web-authentication入門"></a>1. Web Authentication入門</h2>
 <div class="sectionbody">
+<div class="sect2">
+<h3 id="パスワード認証の限界"><a class="anchor" href="#パスワード認証の限界"></a>1.1. パスワード認証の限界</h3>
+
+</div>
+<div class="sect2">
+<h3 id="web-authentication仕様とは"><a class="anchor" href="#web-authentication仕様とは"></a>1.2. Web Authentication仕様とは</h3>
 <div class="paragraph">
-<p>Spring Security WebAuthnに対するSpring Boot Autoconfigureは将来のバージョンで提供される予定です。</p>
+<p>Web Authenticationは、W3Cで仕様策定が進められている、Webアプリケーションの新しいセキュアな認証方式仕様。
+ローカル認証や公開鍵認証、Origin別の鍵管理を組み合わせることで、
+フィッシングなど認証プロセスに対する攻撃に対して堅固な認証が実現出来ます。
+主要ブラウザでの実装が進みつつあり、セキュリティ、利便性を重視するユーザーに選択肢を提供します。
+当初はFIDO AllianceでFIDO2.0として仕様策定が進められていましたが、現在はW3Cに移管されました。</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="webauthnがサポートする認証フロー"><a class="anchor" href="#webauthnがサポートする認証フロー"></a>1.3. WebAuthnがサポートする認証フロー</h3>
+<div class="paragraph">
+<p>ユーザー検証をサポートした認証デバイスを単独で利用し、認証するフロー
+パスワード認証と、ユーザー検証をサポートしない認証トークンを組み合わせて認証するフロー
+が存在します。</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="単独認証要素としての認証フロー"><a class="anchor" href="#単独認証要素としての認証フロー"></a>1.4. 単独認証要素としての認証フロー</h3>
+<div class="paragraph">
+<p>単独認証要素としてWebAuthnの認証デバイスを使用する場合、以下のようなフローとなります。</p>
+</div>
+<div class="sect3">
+<h4 id="ユーザー登録"><a class="anchor" href="#ユーザー登録"></a>1.4.1. ユーザー登録</h4>
+
+</div>
+<div class="sect3">
+<h4 id="ユーザー認証"><a class="anchor" href="#ユーザー認証"></a>1.4.2. ユーザー認証</h4>
+
+</div>
+</div>
+<div class="sect2">
+<h3 id="第二認証要素としての認証フロー"><a class="anchor" href="#第二認証要素としての認証フロー"></a>1.5. 第二認証要素としての認証フロー</h3>
+<div class="paragraph">
+<p>第二認証要素としてWebAuthnの認証デバイスを使用する場合、以下のようなフローとなります。</p>
+</div>
+<div class="sect3">
+<h4 id="ユーザー登録-2"><a class="anchor" href="#ユーザー登録-2"></a>1.5.1. ユーザー登録</h4>
+
+</div>
+<div class="sect3">
+<h4 id="ユーザー認証-2"><a class="anchor" href="#ユーザー認証-2"></a>1.5.2. ユーザー認証</h4>
+
+</div>
+</div>
+<div class="sect2">
+<h3 id="webauthnの特徴"><a class="anchor" href="#webauthnの特徴"></a>1.6. WebAuthnの特徴</h3>
+<div class="sect3">
+<h4 id="生体情報の保護"><a class="anchor" href="#生体情報の保護"></a>1.6.1. 生体情報の保護</h4>
+<div class="paragraph">
+<p>生体認証を用いた認証デバイスであっても、生体情報は認証器のローカルに保存され、サーバーには、公開鍵のみが保存されます。
+万が一サーバーが攻撃されて情報が流出した場合も、生体情報が攻撃者の手に渡ることはありません。耐タンパ性を持った認証デバイスを用いることで、
+生体情報は有効に保護することが出来ます。</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="認証プロパティの署名"><a class="anchor" href="#認証プロパティの署名"></a>1.6.2. 認証プロパティの署名</h4>
+<div class="paragraph">
+<p>TODO:認証プロパティではなく、正しい用語の使用
+ユーザー認証時、認証デバイスは認証プロパティに対して署名を行い、サーバーは署名を検証することで、認証プロパティの真正性を確認できます。
+認証プロパティには、ドメイン名が含まれるため、攻撃者によって運営されるフィッシングサイトでユーザーが認証アサーションを生成してしまったとしても、
+攻撃者はその認証アサーションを正規のサイトへのログインに用いることは出来ません。</p>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -435,7 +511,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="footer">
 <div id="footer-text">
 Version 0.1.0-SNAPSHOT<br>
-Last updated 2018-03-17 17:26:53 +00:00
+Last updated 2018-03-17 17:40:19 +00:00
 </div>
 </div>
 </body>

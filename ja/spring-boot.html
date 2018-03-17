@@ -5,7 +5,7 @@
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.2">
-<title>クイックスタート</title>
+<title>Spring Boot</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400">
 <style>
 /* Asciidoctor default stylesheet | MIT License | http://asciidoctor.org */
@@ -418,81 +418,16 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#クイックスタート">1. クイックスタート</a>
-<ul class="sectlevel2">
-<li><a href="#サポートするブラウザ">1.1. サポートするブラウザ</a></li>
-<li><a href="#サンプルアプリケーションの実行">1.2. サンプルアプリケーションの実行</a></li>
-<li><a href="#ユーザーおよび認証デバイスの登録">1.3. ユーザーおよび認証デバイスの登録</a></li>
-<li><a href="#ユーザー認証">1.4. ユーザー認証</a></li>
-</ul>
-</li>
+<li><a href="#spring-boot">1. Spring Boot</a></li>
 </ul>
 </div>
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="クイックスタート"><a class="anchor" href="#クイックスタート"></a>1. クイックスタート</h2>
+<h2 id="spring-boot"><a class="anchor" href="#spring-boot"></a>1. Spring Boot</h2>
 <div class="sectionbody">
-<div class="sect2">
-<h3 id="サポートするブラウザ"><a class="anchor" href="#サポートするブラウザ"></a>1.1. サポートするブラウザ</h3>
 <div class="paragraph">
-<p>2018年3月現在、Firefox Nightlyがサポートされる唯一のブラウザです。
-Firefox Nightlyでは、設定エディタ（ <code>about:config</code> ページ）で <code>security.webauthn.webauthn</code> と <code>security.webauthn.webauthn_enable_usbtoken</code> フラグを
-有効化することでFIDO-U2Fの認証デバイスを使用することが出来ます。</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="サンプルアプリケーションの実行"><a class="anchor" href="#サンプルアプリケーションの実行"></a>1.2. サンプルアプリケーションの実行</h3>
-<div class="paragraph">
-<p>サンプルアプリケーションは以下のコマンドで実行することが出来ます。</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code>./gradlew spring-security-webauthn-sample:bootRun</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="ユーザーおよび認証デバイスの登録"><a class="anchor" href="#ユーザーおよび認証デバイスの登録"></a>1.3. ユーザーおよび認証デバイスの登録</h3>
-<div class="imageblock">
-<div class="content">
-<img src="images/signup.png" alt="サインアップ画面">
-</div>
-</div>
-<div class="paragraph">
-<p>サインアップ画面は、 <code><a href="http://localhost:8080/signup" class="bare">http://localhost:8080/signup</a></code> でアクセスすることが出来ます。
-サインアップ画面では、ユーザーと認証デバイスの登録を行うことが出来ます。
-認証デバイスとしては、現在、FIDO-U2F準拠のデバイスがサポートされています。</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="ユーザー認証"><a class="anchor" href="#ユーザー認証"></a>1.4. ユーザー認証</h3>
-<div class="imageblock">
-<div class="content">
-<img src="images/login.png" alt="ログイン画面">
-</div>
-</div>
-<div class="paragraph">
-<p>ログイン画面は、 <code><a href="http://localhost:/8080/login" class="bare">http://localhost:/8080/login</a></code> でアクセスすることが出来ます。
-ユーザー検証機能を持たない認証デバイスをご利用の場合は、ユーザー名とパスワードを入力し、「ログイン」ボタンを押下すると、
-パスワードを第一認証要素として認証した後、第二認証要素として認証デバイスを用いた認証を求める、認証デバイスログイン画面が開きます。</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="images/authenticatorLogin.png" alt="認証デバイスログイン画面">
-</div>
-</div>
-<div class="paragraph">
-<p>認証を求めるダイアログが開いたら、認証デバイスを操作し、認証を完了してください。</p>
-</div>
-<div class="paragraph">
-<p>ユーザー検証機能を備えた認証デバイスをご利用の場合は、ログイン画面で「認証デバイスでログイン」ボタンを押下すると、
-認証デバイスを用いた認証を求めるダイアログが開きます。認証デバイスを操作し、認証を完了してください。</p>
-</div>
-<div class="paragraph">
-<p>なお、パスワード認証を許可したユーザーの場合は、ログイン画面でユーザー名とパスワードを入力し、
-「ログイン」ボタンを押下するだけでログインすることが出来ます。</p>
-</div>
+<p>Spring Security WebAuthnに対するSpring Boot Autoconfigureは将来のバージョンで提供される予定です。</p>
 </div>
 </div>
 </div>
@@ -500,7 +435,7 @@ Firefox Nightlyでは、設定エディタ（ <code>about:config</code> ペー�
 <div id="footer">
 <div id="footer-text">
 Version 0.1.0-SNAPSHOT<br>
-Last updated 2018-03-17 17:26:53 +00:00
+Last updated 2018-03-17 17:40:19 +00:00
 </div>
 </div>
 </body>
