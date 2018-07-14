@@ -490,7 +490,7 @@ Spring Security拡張です。</p>
 <div class="ulist">
 <ul>
 <li>
-<p>SecureContext（サイトがHTTPS接続か、localhost）</p>
+<p>SecureContext</p>
 </li>
 <li>
 <p>ブラウザ&#8201;&#8212;&#8201;Google Chrome 67以降&#8201;&#8212;&#8201;Mozilla Firefox 60以降&#8201;&#8212;&#8201;Microsoft Edge Insider Preview Build 17682以降</p>
@@ -502,7 +502,7 @@ Spring Security拡張です。</p>
 <div class="paragraph">
 <p>Web Authentication仕様では、動作環境がSecureContextであることを要求しています。
 これは、ユーザーがサイトに接続する際、HTTPS接続でなければならないことを意味します。HTTP接続環境下では、ブラウザはWebAuthnに関連した要求を拒否するため、利用できません。
-但し、 <code>localhost</code> では例外的にHTTP接続が認められています。</p>
+但し、 <code>localhost</code> では例外的にHTTP接続が認められています。SecureContextについて詳しくは <a href="https://developer.mozilla.org/ja/docs/Web/Security/Secure_Contexts">MDN</a> を参照ください。</p>
 </div>
 </div>
 <div class="sect4">
@@ -566,7 +566,7 @@ Windows Helloを認証デバイスとして使用できるため、パスワー�
 <div id="footer">
 <div id="footer-text">
 Version 0.5.0-SNAPSHOT<br>
-Last updated 2018-07-14 23:18:18 UTC
+Last updated 2018-07-14 23:22:44 UTC
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
