@@ -467,16 +467,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#ユーザー認証-2">ユーザー認証</a></li>
 </ul>
 </li>
-<li><a href="#付録-web-authentication入門">付録：Web Authentication入門</a>
-<ul class="sectlevel2">
-<li><a href="#パスワード認証の限界">パスワード認証の限界</a></li>
-<li><a href="#web-authentication仕様とは">Web Authentication仕様とは</a></li>
-<li><a href="#webauthnがサポートする認証フロー">WebAuthnがサポートする認証フロー</a></li>
-<li><a href="#単独認証要素としての認証フロー">単独認証要素としての認証フロー</a></li>
-<li><a href="#第二認証要素としての認証フロー">第二認証要素としての認証フロー</a></li>
-<li><a href="#webauthnの特徴">WebAuthnの特徴</a></li>
-</ul>
-</li>
 </ul>
 </div>
 </div>
@@ -672,8 +662,8 @@ Windows Helloを認証デバイスとして使用できるため、パスワー�
 <h5 id="webauthnprocessingfilterの組込"><a class="anchor" href="#webauthnprocessingfilterの組込"></a>WebAuthnProcessingFilterの組込</h5>
 <div class="paragraph">
 <p>WebAuthnの認証要求を受け付ける <code>WebAuthnProcessingFilter</code> はJavaConfigで設定することが可能です。
-<code>WebSecurityConfigurerAdapter</code> を継承したクラスで <code>protected void configure(HttpSecurity http)</code> メソッドをオーバーライドし、
-<code>WebAuthnLoginConfigurer</code> を適用して下さい。 <code>WebAuthnLoginConfigurer</code> はインスタンスを返却する <code>webAuthnLogin</code> という
+<code>WebSecurityConfigurerAdapter</code> を継承したクラスで <code>configure(HttpSecurity http)</code> メソッドをオーバーライドし、
+<code>WebAuthnLoginConfigurer</code> を適用して下さい。 <code>WebAuthnLoginConfigurer</code> はインスタンスを返却する <code>webAuthnLogin()</code> という
 staticメソッドを持っていますので、そちらを活用すると良いでしょう。</p>
 </div>
 <div class="listingblock">
@@ -804,12 +794,8 @@ Spring Security WebAuthnではコンディションエンドポイントを用�
 </div>
 <div class="sect3">
 <h4 id="ユーザーディレクトリとの統合"><a class="anchor" href="#ユーザーディレクトリとの統合"></a>ユーザーディレクトリとの統合</h4>
-
-</div>
-<div class="sect3">
-<h4 id="認証デバイス情報の永続化"><a class="anchor" href="#認証デバイス情報の永続化"></a>認証デバイス情報の永続化</h4>
 <div class="sect4">
-<h5 id="webauthnauthenticatorservice"><a class="anchor" href="#webauthnauthenticatorservice"></a>WebAuthnAuthenticatorService</h5>
+<h5 id="webauthnuserdetailsservice"><a class="anchor" href="#webauthnuserdetailsservice"></a>WebAuthnUserDetailsService</h5>
 
 </div>
 <div class="sect4">
@@ -827,26 +813,23 @@ Spring Security WebAuthnではコンディションエンドポイントを用�
 <div class="sect2">
 <h3 id="高度なトピック"><a class="anchor" href="#高度なトピック"></a>高度なトピック</h3>
 <div class="sect3">
-<h4 id="多要素認証で第一要素認証のみ完了したユーザーの識別"><a class="anchor" href="#多要素認証で第一要素認証のみ完了したユーザーの識別"></a>多要素認証で第一要素認証のみ完了したユーザーの識別</h4>
-
-</div>
-<div class="sect3">
-<h4 id="メタデータ"><a class="anchor" href="#メタデータ"></a>メタデータ</h4>
-
-</div>
-<div class="sect3">
-<h4 id="チャレンジ"><a class="anchor" href="#チャレンジ"></a>チャレンジ</h4>
-<div class="sect4">
-<h5 id="challengeattrprocessor"><a class="anchor" href="#challengeattrprocessor"></a>ChallengeAttrProcessor</h5>
+<h4 id="多要素認証で第一要素のみ認証完了したユーザーの識別"><a class="anchor" href="#多要素認証で第一要素のみ認証完了したユーザーの識別"></a>多要素認証で第一要素のみ認証完了したユーザーの識別</h4>
 <div class="paragraph">
-<p>Web Authentication仕様では、署名対象データにChallengeを含める必要があります。spring-security-webauthn-thymeleafでは、
-Challengeをサーバーから渡すために、Challengeデータを含むMetaタグを出力するThymeleafのCustom Dialectを提供します。</p>
+<p>多要素認証で第一要素のみ認証完了しているかどうかで、ログインページの表示を変更したい場合、以下のように
+現在の <code>Authentication</code> インスタンスが <code>MultiFactorAuthenticationToken</code> か否かで判断することが出来ます。</p>
 </div>
-</div>
-<div class="sect4">
-<h5 id="challengerepository"><a class="anchor" href="#challengerepository"></a>ChallengeRepository</h5>
-<div class="paragraph">
-<p>Challengeデータの生成を管理を行うインタフェースとして、ChallengeRepositoryインタフェースが定義されています。</p>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">@RequestMapping(value = "/login", method = RequestMethod.GET)
+public String login() {
+    Authentication authentication =
+            SecurityContextHolder.getContext().getAuthentication();
+    if (authentication instanceof MultiFactorAuthenticationToken) {
+        return ViewNames.VIEW_LOGIN_AUTHENTICATOR_LOGIN;
+    } else {
+        return ViewNames.VIEW_LOGIN_LOGIN;
+    }
+}</code></pre>
 </div>
 </div>
 </div>
@@ -862,53 +845,17 @@ Relying Partyは取得した構成証明ステートメントを検証するこ�
 要求を行うべきではないでしょう。</p>
 </div>
 <div class="paragraph">
-<p>WebAuthn4Jでは、<code>WebAuthnRegistrationContextValidator`が認証デバイスの登録要求の検証を司りますが、
-取得した構成証明ステートメントの署名と信頼性の検証は、それぞれ`AttestationStatementValidator</code> と
+<p>WebAuthn4Jでは、<code>WebAuthnRegistrationContextValidator</code> が認証デバイスの登録要求の検証を司りますが、
+取得した構成証明ステートメントの署名と信頼性の検証は、それぞれ`AttestationStatementValidator` と
 <code>CertPathTrustworthinessValidator</code> インタフェースの実装に委譲します。</p>
 </div>
 <div class="paragraph">
 <p>厳密な構成証明ステートメントの検証を必要としないサイト向けに、<code>AttestationStatementValidator</code> と
 <code>CertPathTrustworthinessValidator</code> を構成した`WebAuthnRegistrationContextValidator` のインスタンスは、
-<code>WebAuthnRegistrationContextValidator.createNonStrictRegistrationContextValidator</code> スタティックメソッドで作成出来ます。</p>
+<code>WebAuthnRegistrationContextValidator.createNonStrictRegistrationContextValidator</code> ファクトリメソッドで作成出来ます。</p>
 </div>
 <div class="sect4">
-<h5 id="構成証明ステートメントの署名の検証"><a class="anchor" href="#構成証明ステートメントの署名の検証"></a>構成証明ステートメントの署名の検証</h5>
-<div class="paragraph">
-<p>Spring Security WebAuthnは`AttestationStatementSignatureValidator`インタフェースの実装として、
-`FIDOU2FAttestationStatementSignatureValidator`と`WebAuthnAttestationStatementSignatureValidator`を提供します。
-spring-security-webauthnは`AttestationStatementSignatureValidator`インタフェースを実装したクラスのBeanを自動で検出し、
-署名の検証時、フォーマットと適合する`AttestationStatementSignatureValidator`を使用して検証を行います。</p>
-</div>
-</div>
-<div class="sect4">
-<h5 id="構成証明ステートメントの信頼性の検証"><a class="anchor" href="#構成証明ステートメントの信頼性の検証"></a>構成証明ステートメントの信頼性の検証</h5>
-<div class="paragraph">
-<p>信頼の検証は、構成証明ステートメントが自己署名か、ECDAAか、それ以外かによって方法が異なり、
-Spring Security WebAuthnではそれぞれの検証手段のインタフェースとして <code>SelfAttestationTrustworthinessValidator</code> 、
-<code>ECDAATrustworthinessValidator</code> 、 <code>CertPathTrustworthinessValidator</code> を用意しています。</p>
-</div>
-<div class="paragraph">
-<p><code>CertPathTrustworthinessValidator</code> が証明書パスに基づいて構成証明ステートメントを検証する際、WebAuthn4Jは
-<code>TrustAnchorProvider</code> インタフェースの実装を用いてトラスト・アンカーを取得します。</p>
-</div>
-<div class="paragraph">
-<p>`TrustAnchorProvider`インタフェースの実装クラスは必要とする検証の内容に応じて、
-`StrictAttestationStatementTrustworthinessValidator`と`LooseAttestationStatementTrustworthinessValidator`を用意していますが、
-実際の検証は`SelfAttestationTrustworthinessValidator`インタフェース、
- `ECDAATrustworthinessValidator`インタフェース、`CertPathTrustworthinessValidator`インタフェースを実装したクラスに
-委譲しています。</p>
-</div>
-</div>
-<div class="sect4">
-<h5 id="code-fidometadataservicecertpathtrustworthinessvalidator-code"><a class="anchor" href="#code-fidometadataservicecertpathtrustworthinessvalidator-code"></a><code>FIDOMetadataServiceCertPathTrustworthinessValidator</code></h5>
-<div class="paragraph">
-<p>`FIDOMetadataServiceCertPathTrustworthinessValidator`は`CertPathTrustworthinessValidator`インタフェースを実装したクラスで、
-FIDO Metadata Serviceで公開されている証明書をトラストアンカーに構成証明証明書の信頼を検証します。
-更に、FIDO Metadata Serviceから得られた各構成証明証明書のStatus Reportを元に検証を行います。</p>
-</div>
-</div>
-<div class="sect4">
-<h5 id="code-keystoreresourcetrustanchorprovider-code"><a class="anchor" href="#code-keystoreresourcetrustanchorprovider-code"></a><code>KeyStoreResourceTrustAnchorProvider</code></h5>
+<h5 id="keystoreresourcetrustanchorprovider"><a class="anchor" href="#keystoreresourcetrustanchorprovider"></a>KeyStoreResourceTrustAnchorProvider</h5>
 <div class="paragraph">
 <p>Java Key Storeファイルに保存した公開鍵証明書をトラストアンカーとして利用するための`TrustAnchorProvider`の
 実装です。Springの <code>Resource</code> として読み込んだJava Key Storeファイルから <code>TrustAnchor</code> を提供します。</p>
@@ -1019,86 +966,11 @@ FIDO Metadata Serviceで公開されている証明書をトラストアンカ�
 </div>
 </div>
 </div>
-<div class="sect1">
-<h2 id="付録-web-authentication入門"><a class="anchor" href="#付録-web-authentication入門"></a>付録：Web Authentication入門</h2>
-<div class="sectionbody">
-<div class="sect2">
-<h3 id="パスワード認証の限界"><a class="anchor" href="#パスワード認証の限界"></a>パスワード認証の限界</h3>
-
-</div>
-<div class="sect2">
-<h3 id="web-authentication仕様とは"><a class="anchor" href="#web-authentication仕様とは"></a>Web Authentication仕様とは</h3>
-<div class="paragraph">
-<p>Web Authenticationは、W3Cで仕様策定が進められている、Webアプリケーションの新しいセキュアな認証方式仕様。
-ローカル認証や公開鍵認証、Origin別の鍵管理を組み合わせることで、
-フィッシングなど認証プロセスに対する攻撃に対して堅固な認証が実現出来ます。
-主要ブラウザでの実装が進みつつあり、セキュリティ、利便性を重視するユーザーに選択肢を提供します。
-当初はFIDO AllianceでFIDO2.0として仕様策定が進められていましたが、現在はW3Cに移管されました。</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="webauthnがサポートする認証フロー"><a class="anchor" href="#webauthnがサポートする認証フロー"></a>WebAuthnがサポートする認証フロー</h3>
-<div class="paragraph">
-<p>ユーザー検証をサポートした認証デバイスを単独で利用し、認証するフロー
-パスワード認証と、ユーザー検証をサポートしない認証トークンを組み合わせて認証するフロー
-が存在します。</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="単独認証要素としての認証フロー"><a class="anchor" href="#単独認証要素としての認証フロー"></a>単独認証要素としての認証フロー</h3>
-<div class="paragraph">
-<p>単独認証要素としてWebAuthnの認証デバイスを使用する場合、以下のようなフローとなります。</p>
-</div>
-<div class="sect3">
-<h4 id="ユーザー登録"><a class="anchor" href="#ユーザー登録"></a>ユーザー登録</h4>
-
-</div>
-<div class="sect3">
-<h4 id="ユーザー認証-3"><a class="anchor" href="#ユーザー認証-3"></a>ユーザー認証</h4>
-
-</div>
-</div>
-<div class="sect2">
-<h3 id="第二認証要素としての認証フロー"><a class="anchor" href="#第二認証要素としての認証フロー"></a>第二認証要素としての認証フロー</h3>
-<div class="paragraph">
-<p>第二認証要素としてWebAuthnの認証デバイスを使用する場合、以下のようなフローとなります。</p>
-</div>
-<div class="sect3">
-<h4 id="ユーザー登録-2"><a class="anchor" href="#ユーザー登録-2"></a>ユーザー登録</h4>
-
-</div>
-<div class="sect3">
-<h4 id="ユーザー認証-4"><a class="anchor" href="#ユーザー認証-4"></a>ユーザー認証</h4>
-
-</div>
-</div>
-<div class="sect2">
-<h3 id="webauthnの特徴"><a class="anchor" href="#webauthnの特徴"></a>WebAuthnの特徴</h3>
-<div class="sect3">
-<h4 id="生体情報の保護"><a class="anchor" href="#生体情報の保護"></a>生体情報の保護</h4>
-<div class="paragraph">
-<p>生体認証を用いた認証デバイスであっても、生体情報は認証器のローカルに保存され、サーバーには、公開鍵のみが保存されます。
-万が一サーバーが攻撃されて情報が流出した場合も、生体情報が攻撃者の手に渡ることはありません。耐タンパ性を持った認証デバイスを用いることで、
-生体情報は有効に保護することが出来ます。</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="認証プロパティの署名"><a class="anchor" href="#認証プロパティの署名"></a>認証プロパティの署名</h4>
-<div class="paragraph">
-<p>TODO:認証プロパティではなく、正しい用語の使用
-ユーザー認証時、認証デバイスは認証プロパティに対して署名を行い、サーバーは署名を検証することで、認証プロパティの真正性を確認できます。
-認証プロパティには、ドメイン名が含まれるため、攻撃者によって運営されるフィッシングサイトでユーザーが認証アサーションを生成してしまったとしても、
-攻撃者はその認証アサーションを正規のサイトへのログインに用いることは出来ません。</p>
-</div>
-</div>
-</div>
-</div>
-</div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version 0.5.0-SNAPSHOT<br>
-Last updated 2018-07-15 12:14:30 UTC
+Last updated 2018-07-15 15:49:36 UTC
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
