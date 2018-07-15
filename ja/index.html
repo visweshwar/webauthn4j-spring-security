@@ -480,6 +480,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </ul>
 </li>
 <li><a href="#spring-boot">Spring Boot</a></li>
+<li><a href="#サンプルアプリケーション">サンプルアプリケーション</a>
+<ul class="sectlevel2">
+<li><a href="#サンプルアプリケーションの実行-2">サンプルアプリケーションの実行</a></li>
+<li><a href="#ユーザーおよび認証デバイスの登録-2">ユーザーおよび認証デバイスの登録</a></li>
+<li><a href="#ユーザー認証-2">ユーザー認証</a></li>
+</ul>
+</li>
 <li><a href="#web-authentication入門">Web Authentication入門</a>
 <ul class="sectlevel2">
 <li><a href="#パスワード認証の限界">パスワード認証の限界</a></li>
@@ -535,7 +542,7 @@ Spring Security拡張です。</p>
 <div class="sect3">
 <h4 id="動作環境"><a class="anchor" href="#動作環境"></a>動作環境</h4>
 <div class="paragraph">
-<p>spring-security-webauthnの動作環境は、以下の要件を満たす必要があります。</p>
+<p>Spring Security WebAuthnの動作環境は、以下の要件を満たす必要があります。</p>
 </div>
 <div class="ulist">
 <ul>
@@ -577,25 +584,6 @@ Spring Security拡張です。</p>
 Microsoft Edgeでは、Insider Preview Build 17682以降でWebAuthnが利用可能です。EdgeではFIDO-U2Fの認証トークンだけでなく、
 Windows Helloを認証デバイスとして使用できるため、パスワードレス認証をサポートしています。</p>
 </div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="サポートする証言ステートメントフォーマット"><a class="anchor" href="#サポートする証言ステートメントフォーマット"></a>サポートする証言ステートメントフォーマット</h4>
-<div class="paragraph">
-<p>Spring Security WebAuthnが現在サポートする証言ステートメントフォーマットは以下の通りです。</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>None Attestation Statement Format</p>
-</li>
-<li>
-<p>FIDO U2F Attestation Statement Format</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>それ以外の証言ステートメントフォーマットのサポートも順次行う予定です。</p>
 </div>
 </div>
 </div>
@@ -651,10 +639,7 @@ Windows Helloを認証デバイスとして使用できるため、パスワー�
 </div>
 <div class="paragraph">
 <p>サインアップ画面は、 <code><a href="http://localhost:8080/signup" class="bare">http://localhost:8080/signup</a></code> でアクセスすることが出来ます。
-ユーザー情報を入力し、ユーザーと認証デバイスの登録を行ってください。
-「認証デバイス」欄の「追加」ボタンを押下すると認証デバイスの登録モードになりますので、認証デバイスを操作して登録を済ませてください。
-また、認証デバイスに認証情報を登録する場合は、「パスワードレス認証を有効化」にチェックを入れて下さい。
-パスワードのみによる単一要素認証を許可する場合は、「パスワード認証を許可」にチェックを入れてください。</p>
+ユーザー情報を入力し、ユーザーと認証デバイスの登録を行ってください。</p>
 </div>
 </div>
 <div class="sect2">
@@ -666,54 +651,16 @@ Windows Helloを認証デバイスとして使用できるため、パスワー�
 </div>
 <div class="paragraph">
 <p>ログイン画面は、 <code><a href="http://localhost:/8080/login" class="bare">http://localhost:/8080/login</a></code> でアクセスすることが出来ます。
-サンプルアプリケーションではユーザー認証について、三つのシナリオをサポートしています。</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>ユーザー検証機能付き認証デバイスによるパスワードレス認証</p>
-</li>
-<li>
-<p>パスワード＋認証デバイスによる多要素認証</p>
-</li>
-<li>
-<p>パスワードのみによる単一要素認証</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>以下、三つのシナリオについてそれぞれ説明していきます。</p>
-</div>
-<div class="sect3">
-<h4 id="ユーザー検証機能付き認証デバイスによるパスワードレス認証"><a class="anchor" href="#ユーザー検証機能付き認証デバイスによるパスワードレス認証"></a>ユーザー検証機能付き認証デバイスによるパスワードレス認証</h4>
-<div class="paragraph">
-<p>ユーザー検証機能が付いている認証デバイスを登録した場合、単一要素認証が可能です。
 ログイン画面の「パスワードレスログイン」ボタンを押下すると、認証デバイスを用いた認証を求めるダイアログが開きます。
-認証デバイスを操作し、認証を完了してください。認証に成功すると、画面が自動的に遷移します。</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="パスワード-認証デバイスによる多要素認証"><a class="anchor" href="#パスワード-認証デバイスによる多要素認証"></a>パスワード＋認証デバイスによる多要素認証</h4>
-<div class="paragraph">
-<p>ユーザー検証機能が付いていないFIDO-U2Fのトークンのような認証デバイスを登録した場合は、パスワード＋認証デバイスによる
+認証デバイスを操作し、認証を完了してください。認証に成功すると、画面が自動的にダッシュボードに遷移します。
+ユーザー検証機能が付いていないFIDO-U2Fのトークンのような認証デバイスを登録した場合は、パスワード＋認証デバイスによる
 多要素認証が可能です。ログイン画面でユーザー名（Emailアドレス）とパスワードを入力し、ログインボタンを押下してください。
-パスワードを第一認証要素として認証した後、第二認証要素として認証デバイスを用いた認証を求める、認証デバイスログイン画面が開きます。
-認証を求めるダイアログが開いたら、認証デバイスを操作し、認証を完了してください。認証に成功すると、画面が自動的に遷移します。</p>
+パスワードを第一認証要素として認証した後、第二認証要素として認証デバイスを用いた認証を求める、
+認証デバイスログイン画面が開きます。認証を求めるダイアログが開いたら、認証デバイスを操作し、認証を完了してください。
+認証に成功すると、画面が自動的に遷移します。</p>
 </div>
-<div class="imageblock">
-<div class="content">
-<img src="images/authenticatorLogin.png" alt="認証デバイスログイン画面">
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="パスワード認証"><a class="anchor" href="#パスワード認証"></a>パスワード認証</h4>
 <div class="paragraph">
-<p>ユーザー登録時に「パスワード認証を許可」にチェックを入れていた場合、
-通常のパスワード認証が利用可能です。
-ログイン画面でユーザー名とパスワードを入力し、「ログイン」ボタンを押下して認証を完了してください。
-認証に成功すると、画面は自動的に遷移します。</p>
-</div>
+<p>サンプルアプリケーションについては、 <a href="./sample-app">サンプルアプリケーション</a> で詳しく説明していますので参照下さい。</p>
 </div>
 </div>
 </div>
@@ -786,7 +733,7 @@ Windows Helloを認証デバイスとして使用できるため、パスワー�
 <p>Spring Security WebAuthnは、多要素認証の実現に <code>MultiFactorAuthenticationProvider</code> を使用します。
 <code>MultiFactorAuthenticationProvider</code> はSpring Securityで多要素認証を実現するための <code>AuthenticationProvider</code>
 インタフェースの実装で、認証処理自体は別の <code>AuthenticationProvider</code> に委譲します。
-別の <code>AuthenticationProvider</code> での認証処理が成功し、単一要素認証が許可されていない場合、
+委譲先の <code>AuthenticationProvider</code> での認証処理が成功し、単一要素認証が許可されていない場合、
 <code>MultiFactorAuthenticationProvider`は委譲先の `AuthenticationProvider</code> の返却した <code>Authentication</code> の代わりに
 <code>MultiFactorAuthenticationToken</code> を返却します。</p>
 </div>
@@ -810,17 +757,18 @@ Windows Helloを認証デバイスとして使用できるため、パスワー�
 <h3 id="webauthnauthenticationprovider"><a class="anchor" href="#webauthnauthenticationprovider"></a>WebAuthnAuthenticationProvider</h3>
 <div class="paragraph">
 <p><code>WebAuthnAuthenticationProvider</code> は <code>WebAuthnAssertionAuthenticationToken</code> を処理するための <code>AuthenticationProvider</code>
-インタフェースの実装です。WebAuthnのアサーションの検証には <code>WebAuthnAuthenticationContextValidator</code> を使用します。</p>
+インタフェースの実装です。WebAuthnのアサーションの検証には <code>WebAuthnAuthenticationContextValidator</code> を使用します。
+<code>WebAuthnAuthenticationContextValidator</code> については <a href="https://webauthn4j.github.io/webauthn4j/ja/">WebAuthn4Jのリファレンス</a> を参照して下さい。</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="公開鍵の有効範囲-rpid-設定"><a class="anchor" href="#公開鍵の有効範囲-rpid-設定"></a>公開鍵の有効範囲（RpId）設定</h3>
 <div class="paragraph">
-<p>Web Authentication仕様では、公開鍵の取得時、その公開鍵の有効範囲を制限するためのパラメータとして、RpIdを指定します。
-RpIdには、～ドメインを指定することが出来ます。例えば、～メソッドが実際に呼び出されたページのドメインが
-"subdomain.example.com"だった場合に、RpIdを"subdomain.example.com"と指定すれば、
-その公開鍵は"subdomain.example.com"とそのサブドメインの範囲だけで利用できますが、
-RpIdを"example.com"とすることで、公開鍵が利用可能な範囲を"example.com"およびそのサブドメインに広げることが出来ます。</p>
+<p>Web Authentication仕様では、Credentialの作成時、即ち認証デバイスの登録時、そのCredentialの有効範囲を制限するための
+パラメータとして、RpIdを指定します。RpIdには、～ドメインを指定することが出来ます。例えば、Credentialの作成を行った
+ページのドメインが"subdomain.example.com"だった場合に、RpIdを"subdomain.example.com"と指定すれば、そのCredentialは
+"subdomain.example.com"とそのサブドメインの範囲だけで利用できますが、RpIdを"example.com"とすることで、
+公開鍵が利用可能な範囲を"example.com"およびそのサブドメインに広げることが出来ます。</p>
 </div>
 </div>
 </div>
@@ -934,6 +882,99 @@ spring-security-webauthnは`AttestationStatementSignatureValidator`インタフ�
 </div>
 </div>
 <div class="sect1">
+<h2 id="サンプルアプリケーション"><a class="anchor" href="#サンプルアプリケーション"></a>サンプルアプリケーション</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>spring-security-webauthnは主要機能をデモするサンプルアプリケーションを含みます。</p>
+</div>
+<div class="sect2">
+<h3 id="サンプルアプリケーションの実行-2"><a class="anchor" href="#サンプルアプリケーションの実行-2"></a>サンプルアプリケーションの実行</h3>
+<div class="paragraph">
+<p>サンプルアプリケーションは以下のコマンドで実行することが出来ます。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code>./gradlew spring-security-webauthn-sample:bootRun</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="ユーザーおよび認証デバイスの登録-2"><a class="anchor" href="#ユーザーおよび認証デバイスの登録-2"></a>ユーザーおよび認証デバイスの登録</h3>
+<div class="imageblock">
+<div class="content">
+<img src="images/signup.png" alt="サインアップ画面">
+</div>
+</div>
+<div class="paragraph">
+<p>サインアップ画面は、 <code><a href="http://localhost:8080/signup" class="bare">http://localhost:8080/signup</a></code> でアクセスすることが出来ます。
+ユーザー情報を入力し、ユーザーと認証デバイスの登録を行ってください。
+「認証デバイス」欄の「追加」ボタンを押下すると認証デバイスの登録モードになりますので、認証デバイスを操作して登録を済ませてください。
+また、認証デバイスに認証情報を登録する場合は、「パスワードレス認証を有効化」にチェックを入れて下さい。
+パスワードのみによる単一要素認証を許可する場合は、「パスワード認証を許可」にチェックを入れてください。</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="ユーザー認証-2"><a class="anchor" href="#ユーザー認証-2"></a>ユーザー認証</h3>
+<div class="imageblock">
+<div class="content">
+<img src="images/login.png" alt="ログイン画面">
+</div>
+</div>
+<div class="paragraph">
+<p>ログイン画面は、 <code><a href="http://localhost:/8080/login" class="bare">http://localhost:/8080/login</a></code> でアクセスすることが出来ます。
+サンプルアプリケーションではユーザー認証について、三つのシナリオをサポートしています。</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>ユーザー検証機能付き認証デバイスによるパスワードレス認証</p>
+</li>
+<li>
+<p>パスワード＋認証デバイスによる多要素認証</p>
+</li>
+<li>
+<p>パスワードのみによる単一要素認証</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>以下、三つのシナリオについてそれぞれ説明していきます。</p>
+</div>
+<div class="sect3">
+<h4 id="ユーザー検証機能付き認証デバイスによるパスワードレス認証"><a class="anchor" href="#ユーザー検証機能付き認証デバイスによるパスワードレス認証"></a>ユーザー検証機能付き認証デバイスによるパスワードレス認証</h4>
+<div class="paragraph">
+<p>ユーザー検証機能が付いている認証デバイスを登録した場合、単一要素認証が可能です。
+ログイン画面の「パスワードレスログイン」ボタンを押下すると、認証デバイスを用いた認証を求めるダイアログが開きます。
+認証デバイスを操作し、認証を完了してください。認証に成功すると、画面が自動的に遷移します。</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="パスワード-認証デバイスによる多要素認証"><a class="anchor" href="#パスワード-認証デバイスによる多要素認証"></a>パスワード＋認証デバイスによる多要素認証</h4>
+<div class="paragraph">
+<p>ユーザー検証機能が付いていないFIDO-U2Fのトークンのような認証デバイスを登録した場合は、パスワード＋認証デバイスによる
+多要素認証が可能です。ログイン画面でユーザー名（Emailアドレス）とパスワードを入力し、ログインボタンを押下してください。
+パスワードを第一認証要素として認証した後、第二認証要素として認証デバイスを用いた認証を求める、認証デバイスログイン画面が開きます。
+認証を求めるダイアログが開いたら、認証デバイスを操作し、認証を完了してください。認証に成功すると、画面が自動的に遷移します。</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/authenticatorLogin.png" alt="認証デバイスログイン画面">
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="パスワード認証"><a class="anchor" href="#パスワード認証"></a>パスワード認証</h4>
+<div class="paragraph">
+<p>ユーザー登録時に「パスワード認証を許可」にチェックを入れていた場合、
+通常のパスワード認証が利用可能です。
+ログイン画面でユーザー名とパスワードを入力し、「ログイン」ボタンを押下して認証を完了してください。
+認証に成功すると、画面は自動的に遷移します。</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="web-authentication入門"><a class="anchor" href="#web-authentication入門"></a>Web Authentication入門</h2>
 <div class="sectionbody">
 <div class="sect2">
@@ -968,7 +1009,7 @@ spring-security-webauthnは`AttestationStatementSignatureValidator`インタフ�
 
 </div>
 <div class="sect3">
-<h4 id="ユーザー認証-2"><a class="anchor" href="#ユーザー認証-2"></a>ユーザー認証</h4>
+<h4 id="ユーザー認証-3"><a class="anchor" href="#ユーザー認証-3"></a>ユーザー認証</h4>
 
 </div>
 </div>
@@ -982,7 +1023,7 @@ spring-security-webauthnは`AttestationStatementSignatureValidator`インタフ�
 
 </div>
 <div class="sect3">
-<h4 id="ユーザー認証-3"><a class="anchor" href="#ユーザー認証-3"></a>ユーザー認証</h4>
+<h4 id="ユーザー認証-4"><a class="anchor" href="#ユーザー認証-4"></a>ユーザー認証</h4>
 
 </div>
 </div>
@@ -1012,7 +1053,7 @@ spring-security-webauthnは`AttestationStatementSignatureValidator`インタフ�
 <div id="footer">
 <div id="footer-text">
 Version 0.5.0-SNAPSHOT<br>
-Last updated 2018-07-15 00:30:43 UTC
+Last updated 2018-07-15 01:16:21 UTC
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
