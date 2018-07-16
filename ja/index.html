@@ -445,13 +445,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#関連プロジェクト">関連プロジェクト</a></li>
 </ul>
 </li>
-<li><a href="#クイックスタート">クイックスタート</a>
-<ul class="sectlevel2">
-<li><a href="#サンプルアプリケーションの実行">サンプルアプリケーションの実行</a></li>
-<li><a href="#ユーザーおよび認証デバイスの登録">ユーザーおよび認証デバイスの登録</a></li>
-<li><a href="#ユーザー認証">ユーザー認証</a></li>
-</ul>
-</li>
+<li><a href="#クイックスタート">クイックスタート</a></li>
 <li><a href="#設定">設定</a>
 <ul class="sectlevel2">
 <li><a href="#アプリケーションへの組込">アプリケーションへの組込</a></li>
@@ -462,9 +456,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#spring-boot">Spring Boot</a></li>
 <li><a href="#サンプルアプリケーション">サンプルアプリケーション</a>
 <ul class="sectlevel2">
-<li><a href="#サンプルアプリケーションの実行-2">サンプルアプリケーションの実行</a></li>
-<li><a href="#ユーザーおよび認証デバイスの登録-2">ユーザーおよび認証デバイスの登録</a></li>
-<li><a href="#ユーザー認証-2">ユーザー認証</a></li>
+<li><a href="#サンプルアプリケーションの実行">サンプルアプリケーションの実行</a></li>
+<li><a href="#ユーザーおよび認証デバイスの登録">ユーザーおよび認証デバイスの登録</a></li>
+<li><a href="#ユーザー認証">ユーザー認証</a></li>
 </ul>
 </li>
 </ul>
@@ -586,10 +580,8 @@ Windows Helloを認証デバイスとして使用できるため、パスワー�
 <div class="sect1">
 <h2 id="クイックスタート"><a class="anchor" href="#クイックスタート"></a>クイックスタート</h2>
 <div class="sectionbody">
-<div class="sect2">
-<h3 id="サンプルアプリケーションの実行"><a class="anchor" href="#サンプルアプリケーションの実行"></a>サンプルアプリケーションの実行</h3>
 <div class="paragraph">
-<p>spring-security-webauthnは主要機能をデモするサンプルアプリケーションを含みます。</p>
+<p>Spring Security WebAuthnは主要機能をデモするサンプルアプリケーションを含みます。</p>
 </div>
 <div class="paragraph">
 <p>サンプルアプリケーションは以下のコマンドで実行することが出来ます。</p>
@@ -599,39 +591,13 @@ Windows Helloを認証デバイスとして使用できるため、パスワー�
 <pre class="prettyprint highlight"><code>./gradlew spring-security-webauthn-sample:bootRun</code></pre>
 </div>
 </div>
-</div>
-<div class="sect2">
-<h3 id="ユーザーおよび認証デバイスの登録"><a class="anchor" href="#ユーザーおよび認証デバイスの登録"></a>ユーザーおよび認証デバイスの登録</h3>
-<div class="imageblock">
-<div class="content">
-<img src="images/signup.png" alt="サインアップ画面">
-</div>
-</div>
-<div class="paragraph">
-<p>サインアップ画面は、 <code><a href="http://localhost:8080/signup" class="bare">http://localhost:8080/signup</a></code> でアクセスすることが出来ます。
-ユーザー情報を入力し、ユーザーと認証デバイスの登録を行ってください。</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="ユーザー認証"><a class="anchor" href="#ユーザー認証"></a>ユーザー認証</h3>
 <div class="imageblock">
 <div class="content">
 <img src="images/login.png" alt="ログイン画面">
 </div>
 </div>
 <div class="paragraph">
-<p>ログイン画面は、 <code><a href="http://localhost:/8080/login" class="bare">http://localhost:/8080/login</a></code> でアクセスすることが出来ます。
-パスワード認証などのユーザー検証機能付き認証デバイスを登録した場合は、ログイン画面の「パスワードレスログイン」ボタンを
-押下することで、パスワードレス認証を行うことが出来ます。
-ユーザー検証機能が付いていないFIDO-U2Fのトークンのような認証デバイスを登録した場合は、パスワード＋認証デバイスによる
-多要素認証が可能です。ログイン画面でユーザー名（Emailアドレス）とパスワードを入力し、ログインボタンを押下してください。
-サンプルアプリケーションはパスワードを第一認証要素として認証出来た場合、第二認証要素として認証デバイスを用いた認証を
-求める、認証デバイスログイン画面を開きます。認証を求めるダイアログが開いたら、認証デバイスを操作し、認証を完了してください。
-認証に成功すると、画面が自動的に遷移します。</p>
-</div>
-<div class="paragraph">
 <p>サンプルアプリケーションについては、 <a href="./sample-app">サンプルアプリケーション</a> で詳しく説明していますので参照下さい。</p>
-</div>
 </div>
 </div>
 </div>
@@ -881,7 +847,7 @@ Relying Partyは取得した構成証明ステートメントを検証するこ�
 <p>spring-security-webauthnは主要機能をデモするサンプルアプリケーションを含みます。</p>
 </div>
 <div class="sect2">
-<h3 id="サンプルアプリケーションの実行-2"><a class="anchor" href="#サンプルアプリケーションの実行-2"></a>サンプルアプリケーションの実行</h3>
+<h3 id="サンプルアプリケーションの実行"><a class="anchor" href="#サンプルアプリケーションの実行"></a>サンプルアプリケーションの実行</h3>
 <div class="paragraph">
 <p>サンプルアプリケーションは以下のコマンドで実行することが出来ます。</p>
 </div>
@@ -892,7 +858,7 @@ Relying Partyは取得した構成証明ステートメントを検証するこ�
 </div>
 </div>
 <div class="sect2">
-<h3 id="ユーザーおよび認証デバイスの登録-2"><a class="anchor" href="#ユーザーおよび認証デバイスの登録-2"></a>ユーザーおよび認証デバイスの登録</h3>
+<h3 id="ユーザーおよび認証デバイスの登録"><a class="anchor" href="#ユーザーおよび認証デバイスの登録"></a>ユーザーおよび認証デバイスの登録</h3>
 <div class="imageblock">
 <div class="content">
 <img src="images/signup.png" alt="サインアップ画面">
@@ -900,19 +866,20 @@ Relying Partyは取得した構成証明ステートメントを検証するこ�
 </div>
 <div class="paragraph">
 <p>サインアップ画面は、 <code><a href="http://localhost:8080/signup" class="bare">http://localhost:8080/signup</a></code> でアクセスすることが出来ます。
-ユーザー情報を入力し、ユーザーと認証デバイスの登録を行ってください。
-「認証デバイス」欄の「追加」ボタンを押下すると認証デバイスの登録モードになりますので、認証デバイスを操作して登録を済ませてください。
-また、認証デバイスに認証情報を登録する場合は、「パスワードレス認証を有効化」にチェックを入れて下さい。
+ユーザー情報を入力し、ユーザーと認証デバイスの登録を行ってください。</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/signup-with-firefox-popup.png" alt="認証デバイス要求ポップアップ">
+</div>
+</div>
+<div class="paragraph">
+<p>「認証デバイス」欄の「追加」ボタンを押下すると認証デバイスの登録モードになりますので、認証デバイスを操作して登録を済ませてください。
 パスワードのみによる単一要素認証を許可する場合は、「パスワード認証を許可」にチェックを入れてください。</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="ユーザー認証-2"><a class="anchor" href="#ユーザー認証-2"></a>ユーザー認証</h3>
-<div class="imageblock">
-<div class="content">
-<img src="images/login.png" alt="ログイン画面">
-</div>
-</div>
+<h3 id="ユーザー認証"><a class="anchor" href="#ユーザー認証"></a>ユーザー認証</h3>
 <div class="paragraph">
 <p>ログイン画面は、 <code><a href="http://localhost:/8080/login" class="bare">http://localhost:/8080/login</a></code> でアクセスすることが出来ます。
 サンプルアプリケーションではユーザー認証について、三つのシナリオをサポートしています。</p>
@@ -920,7 +887,7 @@ Relying Partyは取得した構成証明ステートメントを検証するこ�
 <div class="ulist">
 <ul>
 <li>
-<p>ユーザー検証機能付き認証デバイスによるパスワードレス認証</p>
+<p>ユーザー検証機能付き認証デバイスによるパスワードレス多要素認証</p>
 </li>
 <li>
 <p>パスワード＋認証デバイスによる多要素認証</p>
@@ -934,10 +901,17 @@ Relying Partyは取得した構成証明ステートメントを検証するこ�
 <p>以下、三つのシナリオについてそれぞれ説明していきます。</p>
 </div>
 <div class="sect3">
-<h4 id="ユーザー検証機能付き認証デバイスによるパスワードレス認証"><a class="anchor" href="#ユーザー検証機能付き認証デバイスによるパスワードレス認証"></a>ユーザー検証機能付き認証デバイスによるパスワードレス認証</h4>
+<h4 id="ユーザー検証機能付き認証デバイスによるパスワードレス多要素認証"><a class="anchor" href="#ユーザー検証機能付き認証デバイスによるパスワードレス多要素認証"></a>ユーザー検証機能付き認証デバイスによるパスワードレス多要素認証</h4>
 <div class="paragraph">
-<p>ユーザー検証機能が付いている認証デバイスを登録した場合、単一要素認証が可能です。
-ログイン画面の「パスワードレスログイン」ボタンを押下すると、認証デバイスを用いた認証を求めるダイアログが開きます。
+<p>ユーザー検証機能が付いている認証デバイスを登録した場合、パスワードレス認証が可能です。</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/login-with-edge.png" alt="ログイン画面">
+</div>
+</div>
+<div class="paragraph">
+<p>ログイン画面の「パスワードレスログイン」ボタンを押下すると、認証デバイスを用いた認証を求めるダイアログが開きます。
 認証デバイスを操作し、認証を完了してください。認証に成功すると、画面が自動的に遷移します。</p>
 </div>
 </div>
@@ -945,22 +919,39 @@ Relying Partyは取得した構成証明ステートメントを検証するこ�
 <h4 id="パスワード-認証デバイスによる多要素認証"><a class="anchor" href="#パスワード-認証デバイスによる多要素認証"></a>パスワード＋認証デバイスによる多要素認証</h4>
 <div class="paragraph">
 <p>ユーザー検証機能が付いていないFIDO-U2Fのトークンのような認証デバイスを登録した場合は、パスワード＋認証デバイスによる
-多要素認証が可能です。ログイン画面でユーザー名（Emailアドレス）とパスワードを入力し、ログインボタンを押下してください。
-パスワードを第一認証要素として認証した後、第二認証要素として認証デバイスを用いた認証を求める、認証デバイスログイン画面が開きます。
-認証を求めるダイアログが開いたら、認証デバイスを操作し、認証を完了してください。認証に成功すると、画面が自動的に遷移します。</p>
+多要素認証が可能です。</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/login.png" alt="ログイン画面">
+</div>
+</div>
+<div class="paragraph">
+<p>ログイン画面でユーザー名（Emailアドレス）とパスワードを入力し、ログインボタンを押下してください。</p>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="images/authenticatorLogin.png" alt="認証デバイスログイン画面">
 </div>
 </div>
+<div class="paragraph">
+<p>パスワードを第一認証要素として認証した後、第二認証要素として認証デバイスを用いた認証を求める、認証デバイスログイン画面が開きます。
+認証を求めるポップアップが開いたら、認証デバイスを操作し、認証を完了してください。認証に成功すると、画面が自動的に遷移します。</p>
+</div>
 </div>
 <div class="sect3">
 <h4 id="パスワード認証"><a class="anchor" href="#パスワード認証"></a>パスワード認証</h4>
 <div class="paragraph">
 <p>ユーザー登録時に「パスワード認証を許可」にチェックを入れていた場合、
-通常のパスワード認証が利用可能です。
-ログイン画面でユーザー名とパスワードを入力し、「ログイン」ボタンを押下して認証を完了してください。
+通常のパスワード認証が利用可能です。</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/login.png" alt="ログイン画面">
+</div>
+</div>
+<div class="paragraph">
+<p>ログイン画面でユーザー名とパスワードを入力し、「ログイン」ボタンを押下して認証を完了してください。
 認証に成功すると、画面は自動的に遷移します。</p>
 </div>
 </div>
@@ -971,7 +962,7 @@ Relying Partyは取得した構成証明ステートメントを検証するこ�
 <div id="footer">
 <div id="footer-text">
 Version 0.5.0-SNAPSHOT<br>
-Last updated 2018-07-16 02:07:12 UTC
+Last updated 2018-07-16 03:01:59 UTC
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
