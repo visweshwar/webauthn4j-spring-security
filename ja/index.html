@@ -794,18 +794,19 @@ Spring Security WebAuthnではコンディションエンドポイントを用�
 </div>
 <div class="sect3">
 <h4 id="ユーザーディレクトリとの統合"><a class="anchor" href="#ユーザーディレクトリとの統合"></a>ユーザーディレクトリとの統合</h4>
-<div class="sect4">
-<h5 id="webauthnuserdetailsservice"><a class="anchor" href="#webauthnuserdetailsservice"></a>WebAuthnUserDetailsService</h5>
-
+<div class="paragraph">
+<p>Spring Security WebAuthnは <code>WebAuthnUserDetailsService</code> インタフェースを通じてユーザーを検索します。
+<code>WebAuthnUserDetailsService</code> を実装したクラスを <code>WebAuthnAuthenticationProvider</code> および
+<code>MultiFactorAuthenticationProvider</code> の委譲先の <code>AuthenticationProvider</code> にセットして下さい。</p>
 </div>
 <div class="sect4">
 <h5 id="公開鍵の有効範囲-rpid-設定"><a class="anchor" href="#公開鍵の有効範囲-rpid-設定"></a>公開鍵の有効範囲（RpId）設定</h5>
 <div class="paragraph">
 <p>Web Authentication仕様では、Credentialの作成時、即ち認証デバイスの登録時、そのCredentialの有効範囲を制限するための
-パラメータとして、RpIdを指定します。RpIdには、～ドメインを指定することが出来ます。例えば、Credentialの作成を行った
+パラメータとして、RpIdを指定します。RpIdには、 <a href="https://html.spec.whatwg.org/multipage/origin.html#concept-origin-effective-domain">effective domain</a> を指定することが出来ます。例えば、Credentialの作成を行った
 ページのドメインが"subdomain.example.com"だった場合に、RpIdを"subdomain.example.com"と指定すれば、そのCredentialは
 "subdomain.example.com"とそのサブドメインの範囲だけで利用できますが、RpIdを"example.com"とすることで、
-公開鍵が利用可能な範囲を"example.com"およびそのサブドメインに広げることが出来ます。</p>
+Credentialが利用可能な範囲を"example.com"およびそのサブドメインに広げることが出来ます。</p>
 </div>
 </div>
 </div>
@@ -846,18 +847,18 @@ Relying Partyは取得した構成証明ステートメントを検証するこ�
 </div>
 <div class="paragraph">
 <p>WebAuthn4Jでは、<code>WebAuthnRegistrationContextValidator</code> が認証デバイスの登録要求の検証を司りますが、
-取得した構成証明ステートメントの署名と信頼性の検証は、それぞれ`AttestationStatementValidator` と
+取得した構成証明ステートメントの署名と信頼性の検証は、それぞれ <code>AttestationStatementValidator</code> と
 <code>CertPathTrustworthinessValidator</code> インタフェースの実装に委譲します。</p>
 </div>
 <div class="paragraph">
 <p>厳密な構成証明ステートメントの検証を必要としないサイト向けに、<code>AttestationStatementValidator</code> と
-<code>CertPathTrustworthinessValidator</code> を構成した`WebAuthnRegistrationContextValidator` のインスタンスは、
+<code>CertPathTrustworthinessValidator</code> を構成した <code>WebAuthnRegistrationContextValidator</code> のインスタンスは、
 <code>WebAuthnRegistrationContextValidator.createNonStrictRegistrationContextValidator</code> ファクトリメソッドで作成出来ます。</p>
 </div>
 <div class="sect4">
 <h5 id="keystoreresourcetrustanchorprovider"><a class="anchor" href="#keystoreresourcetrustanchorprovider"></a>KeyStoreResourceTrustAnchorProvider</h5>
 <div class="paragraph">
-<p>Java Key Storeファイルに保存した公開鍵証明書をトラストアンカーとして利用するための`TrustAnchorProvider`の
+<p>Java Key Storeファイルに保存した公開鍵証明書をトラストアンカーとして利用するための <code>TrustAnchorProvider</code> の
 実装です。Springの <code>Resource</code> として読み込んだJava Key Storeファイルから <code>TrustAnchor</code> を提供します。</p>
 </div>
 </div>
@@ -970,7 +971,7 @@ Relying Partyは取得した構成証明ステートメントを検証するこ�
 <div id="footer">
 <div id="footer-text">
 Version 0.5.0-SNAPSHOT<br>
-Last updated 2018-07-15 15:55:22 UTC
+Last updated 2018-07-16 02:07:12 UTC
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
