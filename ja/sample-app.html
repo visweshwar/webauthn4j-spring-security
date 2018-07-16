@@ -476,7 +476,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="paragraph">
-<p>「認証デバイス」欄の「追加」ボタンを押下すると認証デバイスの登録モードになりますので、認証デバイスを操作して登録を済ませてください。
+<p>「認証デバイス」欄の「追加」ボタンを押下すると認証デバイスでの操作を促すポップアップが表示され、
+認証デバイスの登録モードになりますので、ポップアップに従い登録を済ませてください。
+認証デバイスは紛失・故障に備え、バックアップとして複数登録することが出来ます。
 パスワードのみによる単一要素認証を許可する場合は、「パスワード認証を許可」にチェックを入れてください。</p>
 </div>
 </div>
@@ -484,15 +486,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h3 id="ユーザー認証"><a class="anchor" href="#ユーザー認証"></a>ユーザー認証</h3>
 <div class="paragraph">
 <p>ログイン画面は、 <code><a href="http://localhost:/8080/login" class="bare">http://localhost:/8080/login</a></code> でアクセスすることが出来ます。
-サンプルアプリケーションではユーザー認証について、三つのシナリオをサポートしています。</p>
+サンプルアプリケーションではユーザー認証について、三つの認証フローをサポートしています。</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>ユーザー検証機能付き認証デバイスによるパスワードレス多要素認証</p>
+<p>パスワード＋認証デバイスによる多要素認証</p>
 </li>
 <li>
-<p>パスワード＋認証デバイスによる多要素認証</p>
+<p>ユーザー検証機能付き認証デバイスによるパスワードレス多要素認証</p>
 </li>
 <li>
 <p>パスワードのみによる単一要素認証</p>
@@ -500,22 +502,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </ul>
 </div>
 <div class="paragraph">
-<p>以下、三つのシナリオについてそれぞれ説明していきます。</p>
-</div>
-<div class="sect3">
-<h4 id="ユーザー検証機能付き認証デバイスによるパスワードレス多要素認証"><a class="anchor" href="#ユーザー検証機能付き認証デバイスによるパスワードレス多要素認証"></a>ユーザー検証機能付き認証デバイスによるパスワードレス多要素認証</h4>
-<div class="paragraph">
-<p>ユーザー検証機能が付いている認証デバイスを登録した場合、パスワードレス認証が可能です。</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="images/login-with-edge.png" alt="ログイン画面">
-</div>
-</div>
-<div class="paragraph">
-<p>ログイン画面の「パスワードレスログイン」ボタンを押下すると、認証デバイスを用いた認証を求めるダイアログが開きます。
-認証デバイスを操作し、認証を完了してください。認証に成功すると、画面が自動的に遷移します。</p>
-</div>
+<p>以下、三つの認証フローについてそれぞれ説明していきます。</p>
 </div>
 <div class="sect3">
 <h4 id="パスワード-認証デバイスによる多要素認証"><a class="anchor" href="#パスワード-認証デバイスによる多要素認証"></a>パスワード＋認証デバイスによる多要素認証</h4>
@@ -537,8 +524,23 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="paragraph">
-<p>パスワードを第一認証要素として認証した後、第二認証要素として認証デバイスを用いた認証を求める、認証デバイスログイン画面が開きます。
+<p>パスワード認証に成功した場合、第二認証要素として認証デバイスを用いた認証を求める、認証デバイスログイン画面が開きます。
 認証を求めるポップアップが開いたら、認証デバイスを操作し、認証を完了してください。認証に成功すると、画面が自動的に遷移します。</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="ユーザー検証機能付き認証デバイスによるパスワードレス多要素認証"><a class="anchor" href="#ユーザー検証機能付き認証デバイスによるパスワードレス多要素認証"></a>ユーザー検証機能付き認証デバイスによるパスワードレス多要素認証</h4>
+<div class="paragraph">
+<p>ユーザー検証機能が付いている認証デバイスを登録した場合、パスワードレス認証が可能です。</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/login-with-edge.png" alt="ログイン画面（パスワードレスログイン）">
+</div>
+</div>
+<div class="paragraph">
+<p>ログイン画面の「パスワードレスログイン」ボタンを押下すると、認証デバイスを用いた認証を求めるポップアップが開きます。
+認証デバイスを操作し、認証を完了してください。認証に成功すると、画面が自動的に遷移します。</p>
 </div>
 </div>
 <div class="sect3">
@@ -564,7 +566,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="footer">
 <div id="footer-text">
 Version 0.5.0-SNAPSHOT<br>
-Last updated 2018-07-16 03:01:59 UTC
+Last updated 2018-07-16 09:48:44 UTC
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">

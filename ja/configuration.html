@@ -495,12 +495,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 <h5 id="webauthnauthenticationproviderの組込"><a class="anchor" href="#webauthnauthenticationproviderの組込"></a>WebAuthnAuthenticationProviderの組込</h5>
 <div class="paragraph">
 <p>Web Authentication用の <code>AuthenticationProvider</code> である <code>WebAuthnAuthenticationProvider</code> もJavaConfigで設定可能です。
-<code>WebSecurityConfigurerAdapter</code> で <code>WebAuthnAuthenticationProviderConfigurer</code> を適用して下さい。
+<code>WebSecurityConfigurerAdapter</code> を継承したクラスで <code>WebAuthnAuthenticationProviderConfigurer</code> を適用して下さい。
 また、パスワード＋認証デバイスによる多要素認証をサポートする場合は、 <code>MultiFactorAuthenticationProvider</code> の設定が
 必要ですが、こちらは <code>MultiFactorAuthenticationProviderConfigurer</code> を適用することで可能です。
 <code>MultiFactorAuthenticationProvider</code> を使用する上での注意点として、 委譲先の <code>AuthenticationProvider</code> は
 <code>AuthenticationManager</code> に登録してはならないというものがあります。 例えば、 <code>DaoAuthenticationProvider</code> に対して
-委譲する場合、 <code>DaoAuthenticationProvider</code> を設定する <code>DaoAuthenticationConfigurer</code> や、
+委譲する場合、 <code>DaoAuthenticationProvider</code> を <code>AuthenticationManager</code> に登録する <code>DaoAuthenticationConfigurer</code> や、
 <code>AuthenticationManagerBuilder#userDetailsService</code> は使用しないで下さい。</p>
 </div>
 <div class="listingblock">
@@ -532,8 +532,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 <h4 id="クライアントサイドとのインタフェース仕様"><a class="anchor" href="#クライアントサイドとのインタフェース仕様"></a>クライアントサイドとのインタフェース仕様</h4>
 <div class="paragraph">
 <p>WebAuthentication仕様では、ブラウザのJavaScript APIが規定されており、取得したCredentialをサーバーに対して送信する
-インタフェースについては規定がありません。Spring Security WebAuthnでは、 <code>WebAuthnProcessingFilter</code> がログインURLに
-対して送信されたリクエストからリクエストパラメータとして <code>credentialId</code> 、<code>clientData</code> 、 <code>authenticatorData</code> 、
+インタフェースについては規定がありません。Spring Security WebAuthnでは、ログインURLに対して送信されたリクエストから
+<code>WebAuthnProcessingFilter</code> がリクエストパラメータとして <code>credentialId</code> 、<code>clientData</code> 、 <code>authenticatorData</code> 、
 <code>signature</code> 、<code>clientExtensionsJSON</code> を取得して認証を行います。 <code>credentialId</code> 、<code>clientData</code> 、 <code>authenticatorData</code> 、
 <code>signature</code> はバイナリデータの為、Base64URLエンコードして送信して下さい。</p>
 </div>
@@ -606,16 +606,6 @@ Spring Security WebAuthnではコンディションエンドポイントを用�
 <code>WebAuthnUserDetailsService</code> を実装したクラスを <code>WebAuthnAuthenticationProvider</code> および
 <code>MultiFactorAuthenticationProvider</code> の委譲先の <code>AuthenticationProvider</code> にセットして下さい。</p>
 </div>
-<div class="sect4">
-<h5 id="公開鍵の有効範囲-rpid-設定"><a class="anchor" href="#公開鍵の有効範囲-rpid-設定"></a>公開鍵の有効範囲（RpId）設定</h5>
-<div class="paragraph">
-<p>Web Authentication仕様では、Credentialの作成時、即ち認証デバイスの登録時、そのCredentialの有効範囲を制限するための
-パラメータとして、RpIdを指定します。RpIdには、 <a href="https://html.spec.whatwg.org/multipage/origin.html#concept-origin-effective-domain">effective domain</a> を指定することが出来ます。例えば、Credentialの作成を行った
-ページのドメインが"subdomain.example.com"だった場合に、RpIdを"subdomain.example.com"と指定すれば、そのCredentialは
-"subdomain.example.com"とそのサブドメインの範囲だけで利用できますが、RpIdを"example.com"とすることで、
-Credentialが利用可能な範囲を"example.com"およびそのサブドメインに広げることが出来ます。</p>
-</div>
-</div>
 </div>
 </div>
 <div class="sect2">
@@ -642,6 +632,19 @@ public String login() {
 </div>
 </div>
 <div class="sect3">
+<h4 id="credentialの有効範囲-rpid-設定"><a class="anchor" href="#credentialの有効範囲-rpid-設定"></a>Credentialの有効範囲（RpId）設定</h4>
+<div class="paragraph">
+<p>Web Authentication仕様では、Credentialの作成時、即ち認証デバイスの登録時、そのCredentialの有効範囲を制限するための
+パラメータとして、RpIdを指定します。RpIdには、 <a href="https://html.spec.whatwg.org/multipage/origin.html#concept-origin-effective-domain">effective domain</a> を指定することが出来ます。例えば、Credentialの作成を行った
+ページのドメインが"subdomain.example.com"だった場合に、RpIdを"subdomain.example.com"と指定すれば、そのCredentialは
+"subdomain.example.com"とそのサブドメインの範囲だけで利用できますが、RpIdを"example.com"とすることで、
+Credentialが利用可能な範囲を"example.com"およびそのサブドメインに広げることが出来ます。</p>
+</div>
+<div class="paragraph">
+<p>Spring Security WebAuthnでは、RpIdは <code>ServerPropertyProviderImpl</code> のプロパティとして設定可能です。</p>
+</div>
+</div>
+<div class="sect3">
 <h4 id="構成証明ステートメントの検証"><a class="anchor" href="#構成証明ステートメントの検証"></a>構成証明ステートメントの検証</h4>
 <div class="paragraph">
 <p>Web Authentication仕様では、認証デバイスの登録時に要求すれば認証デバイスの構成証明ステートメントを取得することが出来ます。
@@ -662,12 +665,14 @@ Relying Partyは取得した構成証明ステートメントを検証するこ�
 <code>CertPathTrustworthinessValidator</code> を構成した <code>WebAuthnRegistrationContextValidator</code> のインスタンスは、
 <code>WebAuthnRegistrationContextValidator.createNonStrictRegistrationContextValidator</code> ファクトリメソッドで作成出来ます。</p>
 </div>
-<div class="sect4">
-<h5 id="keystoreresourcetrustanchorprovider"><a class="anchor" href="#keystoreresourcetrustanchorprovider"></a>KeyStoreResourceTrustAnchorProvider</h5>
-<div class="paragraph">
-<p>Java Key Storeファイルに保存した公開鍵証明書をトラストアンカーとして利用するための <code>TrustAnchorProvider</code> の
-実装です。Springの <code>Resource</code> として読み込んだJava Key Storeファイルから <code>TrustAnchor</code> を提供します。</p>
 </div>
+<div class="sect3">
+<h4 id="keystoreresourcetrustanchorprovider"><a class="anchor" href="#keystoreresourcetrustanchorprovider"></a>KeyStoreResourceTrustAnchorProvider</h4>
+<div class="paragraph">
+<p>認証デバイスを登録時に証明書パスから検証する場合、 <code>TrustAnchorCertPathTrustworthinessValidator</code> クラスは
+<code>TrustAnchorProvider</code> インタフェースの実装クラスから取得したトラストアンカーを使用します。Spring Security WebAuthnでは、
+SpringのResourceとして読み込んだJava Key Storeファイルをトラストアンカーとして読み込む <code>TrustAnchorProvider</code> として、
+<code>KeyStoreResourceTrustAnchorProvider</code> クラスを提供します。</p>
 </div>
 </div>
 </div>
@@ -677,7 +682,7 @@ Relying Partyは取得した構成証明ステートメントを検証するこ�
 <div id="footer">
 <div id="footer-text">
 Version 0.5.0-SNAPSHOT<br>
-Last updated 2018-07-16 03:01:59 UTC
+Last updated 2018-07-16 09:48:44 UTC
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">

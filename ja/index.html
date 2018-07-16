@@ -654,12 +654,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 <h5 id="webauthnauthenticationproviderの組込"><a class="anchor" href="#webauthnauthenticationproviderの組込"></a>WebAuthnAuthenticationProviderの組込</h5>
 <div class="paragraph">
 <p>Web Authentication用の <code>AuthenticationProvider</code> である <code>WebAuthnAuthenticationProvider</code> もJavaConfigで設定可能です。
-<code>WebSecurityConfigurerAdapter</code> で <code>WebAuthnAuthenticationProviderConfigurer</code> を適用して下さい。
+<code>WebSecurityConfigurerAdapter</code> を継承したクラスで <code>WebAuthnAuthenticationProviderConfigurer</code> を適用して下さい。
 また、パスワード＋認証デバイスによる多要素認証をサポートする場合は、 <code>MultiFactorAuthenticationProvider</code> の設定が
 必要ですが、こちらは <code>MultiFactorAuthenticationProviderConfigurer</code> を適用することで可能です。
 <code>MultiFactorAuthenticationProvider</code> を使用する上での注意点として、 委譲先の <code>AuthenticationProvider</code> は
 <code>AuthenticationManager</code> に登録してはならないというものがあります。 例えば、 <code>DaoAuthenticationProvider</code> に対して
-委譲する場合、 <code>DaoAuthenticationProvider</code> を設定する <code>DaoAuthenticationConfigurer</code> や、
+委譲する場合、 <code>DaoAuthenticationProvider</code> を <code>AuthenticationManager</code> に登録する <code>DaoAuthenticationConfigurer</code> や、
 <code>AuthenticationManagerBuilder#userDetailsService</code> は使用しないで下さい。</p>
 </div>
 <div class="listingblock">
@@ -691,8 +691,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 <h4 id="クライアントサイドとのインタフェース仕様"><a class="anchor" href="#クライアントサイドとのインタフェース仕様"></a>クライアントサイドとのインタフェース仕様</h4>
 <div class="paragraph">
 <p>WebAuthentication仕様では、ブラウザのJavaScript APIが規定されており、取得したCredentialをサーバーに対して送信する
-インタフェースについては規定がありません。Spring Security WebAuthnでは、 <code>WebAuthnProcessingFilter</code> がログインURLに
-対して送信されたリクエストからリクエストパラメータとして <code>credentialId</code> 、<code>clientData</code> 、 <code>authenticatorData</code> 、
+インタフェースについては規定がありません。Spring Security WebAuthnでは、ログインURLに対して送信されたリクエストから
+<code>WebAuthnProcessingFilter</code> がリクエストパラメータとして <code>credentialId</code> 、<code>clientData</code> 、 <code>authenticatorData</code> 、
 <code>signature</code> 、<code>clientExtensionsJSON</code> を取得して認証を行います。 <code>credentialId</code> 、<code>clientData</code> 、 <code>authenticatorData</code> 、
 <code>signature</code> はバイナリデータの為、Base64URLエンコードして送信して下さい。</p>
 </div>
@@ -765,16 +765,6 @@ Spring Security WebAuthnではコンディションエンドポイントを用�
 <code>WebAuthnUserDetailsService</code> を実装したクラスを <code>WebAuthnAuthenticationProvider</code> および
 <code>MultiFactorAuthenticationProvider</code> の委譲先の <code>AuthenticationProvider</code> にセットして下さい。</p>
 </div>
-<div class="sect4">
-<h5 id="公開鍵の有効範囲-rpid-設定"><a class="anchor" href="#公開鍵の有効範囲-rpid-設定"></a>公開鍵の有効範囲（RpId）設定</h5>
-<div class="paragraph">
-<p>Web Authentication仕様では、Credentialの作成時、即ち認証デバイスの登録時、そのCredentialの有効範囲を制限するための
-パラメータとして、RpIdを指定します。RpIdには、 <a href="https://html.spec.whatwg.org/multipage/origin.html#concept-origin-effective-domain">effective domain</a> を指定することが出来ます。例えば、Credentialの作成を行った
-ページのドメインが"subdomain.example.com"だった場合に、RpIdを"subdomain.example.com"と指定すれば、そのCredentialは
-"subdomain.example.com"とそのサブドメインの範囲だけで利用できますが、RpIdを"example.com"とすることで、
-Credentialが利用可能な範囲を"example.com"およびそのサブドメインに広げることが出来ます。</p>
-</div>
-</div>
 </div>
 </div>
 <div class="sect2">
@@ -801,6 +791,19 @@ public String login() {
 </div>
 </div>
 <div class="sect3">
+<h4 id="credentialの有効範囲-rpid-設定"><a class="anchor" href="#credentialの有効範囲-rpid-設定"></a>Credentialの有効範囲（RpId）設定</h4>
+<div class="paragraph">
+<p>Web Authentication仕様では、Credentialの作成時、即ち認証デバイスの登録時、そのCredentialの有効範囲を制限するための
+パラメータとして、RpIdを指定します。RpIdには、 <a href="https://html.spec.whatwg.org/multipage/origin.html#concept-origin-effective-domain">effective domain</a> を指定することが出来ます。例えば、Credentialの作成を行った
+ページのドメインが"subdomain.example.com"だった場合に、RpIdを"subdomain.example.com"と指定すれば、そのCredentialは
+"subdomain.example.com"とそのサブドメインの範囲だけで利用できますが、RpIdを"example.com"とすることで、
+Credentialが利用可能な範囲を"example.com"およびそのサブドメインに広げることが出来ます。</p>
+</div>
+<div class="paragraph">
+<p>Spring Security WebAuthnでは、RpIdは <code>ServerPropertyProviderImpl</code> のプロパティとして設定可能です。</p>
+</div>
+</div>
+<div class="sect3">
 <h4 id="構成証明ステートメントの検証"><a class="anchor" href="#構成証明ステートメントの検証"></a>構成証明ステートメントの検証</h4>
 <div class="paragraph">
 <p>Web Authentication仕様では、認証デバイスの登録時に要求すれば認証デバイスの構成証明ステートメントを取得することが出来ます。
@@ -821,12 +824,14 @@ Relying Partyは取得した構成証明ステートメントを検証するこ�
 <code>CertPathTrustworthinessValidator</code> を構成した <code>WebAuthnRegistrationContextValidator</code> のインスタンスは、
 <code>WebAuthnRegistrationContextValidator.createNonStrictRegistrationContextValidator</code> ファクトリメソッドで作成出来ます。</p>
 </div>
-<div class="sect4">
-<h5 id="keystoreresourcetrustanchorprovider"><a class="anchor" href="#keystoreresourcetrustanchorprovider"></a>KeyStoreResourceTrustAnchorProvider</h5>
-<div class="paragraph">
-<p>Java Key Storeファイルに保存した公開鍵証明書をトラストアンカーとして利用するための <code>TrustAnchorProvider</code> の
-実装です。Springの <code>Resource</code> として読み込んだJava Key Storeファイルから <code>TrustAnchor</code> を提供します。</p>
 </div>
+<div class="sect3">
+<h4 id="keystoreresourcetrustanchorprovider"><a class="anchor" href="#keystoreresourcetrustanchorprovider"></a>KeyStoreResourceTrustAnchorProvider</h4>
+<div class="paragraph">
+<p>認証デバイスを登録時に証明書パスから検証する場合、 <code>TrustAnchorCertPathTrustworthinessValidator</code> クラスは
+<code>TrustAnchorProvider</code> インタフェースの実装クラスから取得したトラストアンカーを使用します。Spring Security WebAuthnでは、
+SpringのResourceとして読み込んだJava Key Storeファイルをトラストアンカーとして読み込む <code>TrustAnchorProvider</code> として、
+<code>KeyStoreResourceTrustAnchorProvider</code> クラスを提供します。</p>
 </div>
 </div>
 </div>
@@ -836,7 +841,7 @@ Relying Partyは取得した構成証明ステートメントを検証するこ�
 <h2 id="spring-boot"><a class="anchor" href="#spring-boot"></a>Spring Boot</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Spring Security WebAuthnに対するSpring Boot Auto configurationは将来のバージョンで提供される予定です。</p>
+<p>Spring Security WebAuthnに対するSpring Boot Auto-Configurationは将来のバージョンで提供される予定です。</p>
 </div>
 </div>
 </div>
@@ -874,7 +879,9 @@ Relying Partyは取得した構成証明ステートメントを検証するこ�
 </div>
 </div>
 <div class="paragraph">
-<p>「認証デバイス」欄の「追加」ボタンを押下すると認証デバイスの登録モードになりますので、認証デバイスを操作して登録を済ませてください。
+<p>「認証デバイス」欄の「追加」ボタンを押下すると認証デバイスでの操作を促すポップアップが表示され、
+認証デバイスの登録モードになりますので、ポップアップに従い登録を済ませてください。
+認証デバイスは紛失・故障に備え、バックアップとして複数登録することが出来ます。
 パスワードのみによる単一要素認証を許可する場合は、「パスワード認証を許可」にチェックを入れてください。</p>
 </div>
 </div>
@@ -882,15 +889,15 @@ Relying Partyは取得した構成証明ステートメントを検証するこ�
 <h3 id="ユーザー認証"><a class="anchor" href="#ユーザー認証"></a>ユーザー認証</h3>
 <div class="paragraph">
 <p>ログイン画面は、 <code><a href="http://localhost:/8080/login" class="bare">http://localhost:/8080/login</a></code> でアクセスすることが出来ます。
-サンプルアプリケーションではユーザー認証について、三つのシナリオをサポートしています。</p>
+サンプルアプリケーションではユーザー認証について、三つの認証フローをサポートしています。</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>ユーザー検証機能付き認証デバイスによるパスワードレス多要素認証</p>
+<p>パスワード＋認証デバイスによる多要素認証</p>
 </li>
 <li>
-<p>パスワード＋認証デバイスによる多要素認証</p>
+<p>ユーザー検証機能付き認証デバイスによるパスワードレス多要素認証</p>
 </li>
 <li>
 <p>パスワードのみによる単一要素認証</p>
@@ -898,22 +905,7 @@ Relying Partyは取得した構成証明ステートメントを検証するこ�
 </ul>
 </div>
 <div class="paragraph">
-<p>以下、三つのシナリオについてそれぞれ説明していきます。</p>
-</div>
-<div class="sect3">
-<h4 id="ユーザー検証機能付き認証デバイスによるパスワードレス多要素認証"><a class="anchor" href="#ユーザー検証機能付き認証デバイスによるパスワードレス多要素認証"></a>ユーザー検証機能付き認証デバイスによるパスワードレス多要素認証</h4>
-<div class="paragraph">
-<p>ユーザー検証機能が付いている認証デバイスを登録した場合、パスワードレス認証が可能です。</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="images/login-with-edge.png" alt="ログイン画面">
-</div>
-</div>
-<div class="paragraph">
-<p>ログイン画面の「パスワードレスログイン」ボタンを押下すると、認証デバイスを用いた認証を求めるダイアログが開きます。
-認証デバイスを操作し、認証を完了してください。認証に成功すると、画面が自動的に遷移します。</p>
-</div>
+<p>以下、三つの認証フローについてそれぞれ説明していきます。</p>
 </div>
 <div class="sect3">
 <h4 id="パスワード-認証デバイスによる多要素認証"><a class="anchor" href="#パスワード-認証デバイスによる多要素認証"></a>パスワード＋認証デバイスによる多要素認証</h4>
@@ -935,8 +927,23 @@ Relying Partyは取得した構成証明ステートメントを検証するこ�
 </div>
 </div>
 <div class="paragraph">
-<p>パスワードを第一認証要素として認証した後、第二認証要素として認証デバイスを用いた認証を求める、認証デバイスログイン画面が開きます。
+<p>パスワード認証に成功した場合、第二認証要素として認証デバイスを用いた認証を求める、認証デバイスログイン画面が開きます。
 認証を求めるポップアップが開いたら、認証デバイスを操作し、認証を完了してください。認証に成功すると、画面が自動的に遷移します。</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="ユーザー検証機能付き認証デバイスによるパスワードレス多要素認証"><a class="anchor" href="#ユーザー検証機能付き認証デバイスによるパスワードレス多要素認証"></a>ユーザー検証機能付き認証デバイスによるパスワードレス多要素認証</h4>
+<div class="paragraph">
+<p>ユーザー検証機能が付いている認証デバイスを登録した場合、パスワードレス認証が可能です。</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/login-with-edge.png" alt="ログイン画面（パスワードレスログイン）">
+</div>
+</div>
+<div class="paragraph">
+<p>ログイン画面の「パスワードレスログイン」ボタンを押下すると、認証デバイスを用いた認証を求めるポップアップが開きます。
+認証デバイスを操作し、認証を完了してください。認証に成功すると、画面が自動的に遷移します。</p>
 </div>
 </div>
 <div class="sect3">
@@ -962,7 +969,7 @@ Relying Partyは取得した構成証明ステートメントを検証するこ�
 <div id="footer">
 <div id="footer-text">
 Version 0.5.0-SNAPSHOT<br>
-Last updated 2018-07-16 03:01:59 UTC
+Last updated 2018-07-16 09:48:44 UTC
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
