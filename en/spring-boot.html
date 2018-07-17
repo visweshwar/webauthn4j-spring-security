@@ -5,7 +5,7 @@
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.6.1">
-<title>導入</title>
+<title>Spring Boot</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | http://asciidoctor.org */
@@ -431,129 +431,16 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#導入">導入</a>
-<ul class="sectlevel2">
-<li><a href="#web-authenticationとは">Web Authenticationとは</a></li>
-<li><a href="#spring-security-webauthnとは">Spring Security WebAuthnとは</a></li>
-<li><a href="#要件">要件</a></li>
-<li><a href="#ソースコード">ソースコード</a></li>
-<li><a href="#ライセンス">ライセンス</a></li>
-<li><a href="#関連プロジェクト">関連プロジェクト</a></li>
-</ul>
-</li>
+<li><a href="#spring-boot">Spring Boot</a></li>
 </ul>
 </div>
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="導入"><a class="anchor" href="#導入"></a>導入</h2>
+<h2 id="spring-boot"><a class="anchor" href="#spring-boot"></a>Spring Boot</h2>
 <div class="sectionbody">
-<div class="sect2">
-<h3 id="web-authenticationとは"><a class="anchor" href="#web-authenticationとは"></a>Web Authenticationとは</h3>
 <div class="paragraph">
-<p>Web Authenticationは、W3Cで仕様策定が進められている、Webアプリケーションの新しいセキュアな認証方式仕様です。
-ローカル認証や公開鍵認証、Origin別の鍵管理を組み合わせることで、フィッシングなど認証プロセスに対する攻撃に対して堅固な認証を実現しています。
-主要ブラウザでの実装が進みつつあり、セキュリティ、利便性を重視するユーザーに対して優れた選択肢を提供します。
-当初はFIDO AllianceでFIDO 2.0: Web API for accessing FIDO 2.0 credentialsとして仕様策定が進められていましたが、
-現在はW3Cに移管され、仕様策定が行われています。</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="spring-security-webauthnとは"><a class="anchor" href="#spring-security-webauthnとは"></a>Spring Security WebAuthnとは</h3>
-<div class="paragraph">
-<p>Spring Securityで保護されたWebアプリケーションに対して、Web Authentication仕様に基づく認証機能を提供するための
-Spring Security拡張です。</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="要件"><a class="anchor" href="#要件"></a>要件</h3>
-<div class="sect3">
-<h4 id="言語-フレームワーク"><a class="anchor" href="#言語-フレームワーク"></a>言語・フレームワーク</h4>
-<div class="ulist">
-<ul>
-<li>
-<p>Java8以降</p>
-</li>
-<li>
-<p>Spring Framework 5.0以降</p>
-</li>
-<li>
-<p>Spring Security 5.0以降</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect3">
-<h4 id="動作環境"><a class="anchor" href="#動作環境"></a>動作環境</h4>
-<div class="paragraph">
-<p>Spring Security WebAuthnの動作環境は、以下の要件を満たす必要があります。</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>SecureContext</p>
-</li>
-<li>
-<p>ブラウザ</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Google Chrome 67以降</p>
-</li>
-<li>
-<p>Mozilla Firefox 60以降</p>
-</li>
-<li>
-<p>Microsoft Edge Insider Preview Build 17682以降</p>
-</li>
-</ul>
-</div>
-</li>
-</ul>
-</div>
-<div class="sect4">
-<h5 id="securecontext"><a class="anchor" href="#securecontext"></a>SecureContext</h5>
-<div class="paragraph">
-<p>Web Authentication仕様では、動作環境がSecureContextであることを要求しています。
-これは、ユーザーがサイトに接続する際、HTTPS接続でなければならないことを意味します。HTTP接続環境下では、ブラウザはWebAuthnに関連した要求を拒否するため、利用できません。
-但し、 <code>localhost</code> では例外的にHTTP接続が認められています。SecureContextについて詳しくは <a href="https://developer.mozilla.org/ja/docs/Web/Security/Secure_Contexts">MDN</a> を参照ください。</p>
-</div>
-</div>
-<div class="sect4">
-<h5 id="ブラウザ"><a class="anchor" href="#ブラウザ"></a>ブラウザ</h5>
-<div class="paragraph">
-<p>2018年7月現在、デスクトップ版Google Chrome 67以降およびデスクトップ版Mozilla Firefox 60以降でWebAuthnは利用可能です。
-但し、認証デバイスのサポートはFIDO-U2Fの認証トークンに限定されており、指紋認証などによるユーザー検証機能がついた
-認証デバイスはサポートしていないため、パスワードレス認証は利用できません。
-Microsoft Edgeでは、Insider Preview Build 17682以降でWebAuthnが利用可能です。EdgeではFIDO-U2Fの認証トークンだけでなく、
-Windows Helloを認証デバイスとして使用できるため、パスワードレス認証をサポートしています。</p>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="ソースコード"><a class="anchor" href="#ソースコード"></a>ソースコード</h3>
-<div class="paragraph">
-<p>ソースコードは <a href="https://github.com/ynojima/spring-security-webauthn">Github</a> で管理されています。</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>git clone git@github.com:ynojima/spring-security-webauthn.git</pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="ライセンス"><a class="anchor" href="#ライセンス"></a>ライセンス</h3>
-<div class="paragraph">
-<p>Spring Security WebAuthnは <a href="http://www.apache.org/licenses/LICENSE-2.0.html">Apache 2.0 license</a> ライセンスの
-オープンソースソフトウェアです。</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="関連プロジェクト"><a class="anchor" href="#関連プロジェクト"></a>関連プロジェクト</h3>
-<div class="paragraph">
-<p>WebAuthnのアサーションの検証に関わるコアの処理は <a href="https://github.com/webauthn4j/webauthn4j">WebAuthn4J</a> という別のプロジェクトで開発を進めています。</p>
-</div>
+<p>Spring Boot Auto-Configuration for Spring Security WebAuthn is planned to be provided in the future version.</p>
 </div>
 </div>
 </div>

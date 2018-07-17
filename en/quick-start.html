@@ -431,14 +431,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#quick-start">Quick start</a>
-<ul class="sectlevel2">
-<li><a href="#supported-browsers">Supported browsers</a></li>
-<li><a href="#sample-application-execution">Sample application execution</a></li>
-<li><a href="#user-and-authenticator-registration">User and authenticator registration</a></li>
-<li><a href="#user-authentication">User authentication</a></li>
-</ul>
-</li>
+<li><a href="#quick-start">Quick start</a></li>
 </ul>
 </div>
 </div>
@@ -446,64 +439,24 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sect1">
 <h2 id="quick-start"><a class="anchor" href="#quick-start"></a>Quick start</h2>
 <div class="sectionbody">
-<div class="sect2">
-<h3 id="supported-browsers"><a class="anchor" href="#supported-browsers"></a>Supported browsers</h3>
 <div class="paragraph">
-<p>As of March 2018, Firefox Beta is the only supported browser.
-Chrome Canary may also works, but it seems not so stable.</p>
+<p>Spring Security WebAuthn contains a sample application demonstrates its major functionality.</p>
 </div>
-</div>
-<div class="sect2">
-<h3 id="sample-application-execution"><a class="anchor" href="#sample-application-execution"></a>Sample application execution</h3>
 <div class="paragraph">
-<p>Sample application can be executed by following command.</p>
+<p>It can be launched with a following command.</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code>./gradlew spring-security-webauthn-sample:bootRun</code></pre>
 </div>
 </div>
-</div>
-<div class="sect2">
-<h3 id="user-and-authenticator-registration"><a class="anchor" href="#user-and-authenticator-registration"></a>User and authenticator registration</h3>
-<div class="imageblock">
-<div class="content">
-<img src="images/signup.png" alt="signup view">
-</div>
-</div>
-<div class="paragraph">
-<p>Signup page can be accessed with <code><a href="http://localhost:8080/signup" class="bare">http://localhost:8080/signup</a></code>.
-User and authenticator can be registered in the signup page.
-Currently, FIDO-U2F compliant authenticators are supported.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="user-authentication"><a class="anchor" href="#user-authentication"></a>User authentication</h3>
 <div class="imageblock">
 <div class="content">
 <img src="images/login.png" alt="login view">
 </div>
 </div>
 <div class="paragraph">
-<p>Login page can be accessed with <code><a href="http://localhost:/8080/login" class="bare">http://localhost:/8080/login</a></code>.
-If you have authenticator without user verification functionality, fill your username and password, push "login" button,
-then authenticator login page asking authenticator will be shown after verifying the password as a first authentication factor.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="images/authenticatorLogin.png" alt="authenticator login view">
-</div>
-</div>
-<div class="paragraph">
-<p>When a dialog for authentication is opened, acknowledge the authentication with your authenticator.</p>
-</div>
-<div class="paragraph">
-<p>If you use authenticator with user verification feature, push "login with authenticator" button in login page.
-Then the dialog asking authenticator opens, approve the authentication with your authenticator.</p>
-</div>
-<div class="paragraph">
-<p>If password authentication is permitted for your account, you may login by filling username and password and pushing "login" button.</p>
-</div>
+<p>Sample application is documented in a dedicated chapter. Please refer <a href="./sample-app">Sample application</a>.</p>
 </div>
 </div>
 </div>
@@ -511,7 +464,7 @@ Then the dialog asking authenticator opens, approve the authentication with your
 <div id="footer">
 <div id="footer-text">
 Version 0.5.0-SNAPSHOT<br>
-Last updated 2018-07-16 17:06:57 UTC
+Last updated 2018-07-17 15:57:09 UTC
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
