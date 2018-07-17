@@ -602,7 +602,7 @@ For now, it is not published to Maven Central as it requires Spring Security cus
 <div class="sect3">
 <h4 id="java-config"><a class="anchor" href="#java-config"></a>Java Config</h4>
 <div class="sect4">
-<h5 id="webauthnprocessingfilterの組込"><a class="anchor" href="#webauthnprocessingfilterの組込"></a>WebAuthnProcessingFilterの組込</h5>
+<h5 id="integrating-webauthnprocessingfilter"><a class="anchor" href="#integrating-webauthnprocessingfilter"></a>Integrating WebAuthnProcessingFilter</h5>
 <div class="paragraph">
 <p><code>WebAuthnProcessingFilter</code>, which listens WebAuthn authentication requests can be configured with JavaConfig.
 Please define a configuration class, make it inherit <code>WebSecurityConfigurerAdapter</code>, apply <code>WebAuthnLoginConfigurer</code>
@@ -622,6 +622,33 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/login")
                 .usernameParameter("username")
                 .passwordParameter("rawPassword");
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="webauthnauthenticationproviderの組込"><a class="anchor" href="#webauthnauthenticationproviderの組込"></a>WebAuthnAuthenticationProviderの組込</h5>
+<div class="paragraph">
+<p><code>WebAuthnAuthenticationProvider</code>, which is a <code>AuthenticationProvider</code> for Web Authentication, can also be configured with
+JavaConfig. Please apply <code>WebAuthnAuthenticationProviderConfigurer</code> to a configuration class inherits
+<code>WebSecurityConfigurerAdapter</code>.
+To support multi-factor authentication with password and authenticator, <code>MultiFactorAuthenticationProvider</code> is what you
+need, and <code>MultiFactorAuthenticationProviderConfigurer</code> configures it for you.</p>
+</div>
+<div class="paragraph">
+<p>There are some points to be kept in mind when using <code>MultiFactorAuthenticationProvider</code>.
+<code>AuthenticationProvider</code> to be delegated cannot to be registered to <code>AuthenticationManager</code>. If you delegate authentication
+to <code>DaoAuthenticationProvider</code>, it is important not to use <code>DaoAuthenticationConfigurer</code> or
+<code>AuthenticationManagerBuilder#userDetailsService</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    @Override
+    public void configure(AuthenticationManagerBuilder builder) throws Exception {
+        builder.apply(new WebAuthnAuthenticationConfigurer&lt;&gt;(userDetailsService));
+        builder.apply(new MultiFactorAuthenticationProviderConfigurer&lt;&gt;(daoAuthenticationProvider));
     }
 }</code></pre>
 </div>
@@ -700,7 +727,7 @@ Then the dialog asking authenticator opens, approve the authentication with your
 <div id="footer">
 <div id="footer-text">
 Version 0.5.0-SNAPSHOT<br>
-Last updated 2018-07-17 16:20:58 UTC
+Last updated 2018-07-17 16:58:32 UTC
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
