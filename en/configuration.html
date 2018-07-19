@@ -434,6 +434,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#configuration">Configuration</a>
 <ul class="sectlevel2">
 <li><a href="#integration-to-applications">Integration to applications</a></li>
+<li><a href="#customization">Customization</a></li>
 </ul>
 </li>
 </ul>
@@ -546,6 +547,36 @@ Regarding Spring Security WebAuthn, <code>WebAuthnProcessingFilter</code> retrie
 <code>signature</code> is binary data, please send them as Base64 strings.</p>
 </div>
 </div>
+<div class="sect3">
+<h4 id="condition-endpoint-specification"><a class="anchor" href="#condition-endpoint-specification"></a>Condition endpoint specification</h4>
+<div class="paragraph">
+<p>Web Authentication requests to obtain a challenge from the server prior to authentication.
+When using the FIDO-U2F token as an authentication device, the CredentialIds associated with the user identified by
+the first authentication element are also need to be obtained from the server.
+To retrieve these data, Spring Security WebAuthn offers <code>ConditionEndpointFilter</code>.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="customization"><a class="anchor" href="#customization"></a>Customization</h3>
+<div class="sect3">
+<h4 id="selecting-authentication-method"><a class="anchor" href="#selecting-authentication-method"></a>Selecting authentication method</h4>
+<div class="paragraph">
+<p>Spring Security WebAuthn supports "Password-less multi-factor authentication with a user-verifying authenticator",
+"Multi-factor authentication with password and authenticator" and "Single-factor authentication like password".
+If you put value on adoption, you may allow password authentication in your web system, or if you give greater importance
+to security, you may restrict password authentication.</p>
+</div>
+<div class="sect4">
+<h5 id="how-to-restrict-password-authentication"><a class="anchor" href="#how-to-restrict-password-authentication"></a>How to restrict password authentication</h5>
+<div class="paragraph">
+<p>Restriction of single-factor authentication like password can be configured per user basis.
+<code>MFAUserDetails</code> interface, which is a base interface of <code>WebAuthnUserDetails</code> has <code>isSingleFactorAuthenticationAllowed</code>
+method. If an implementing class returns <code>true</code> by the method, the user can pass the authentication with only a single-factor
+like password.</p>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -553,7 +584,7 @@ Regarding Spring Security WebAuthn, <code>WebAuthnProcessingFilter</code> retrie
 <div id="footer">
 <div id="footer-text">
 Version 0.5.0-SNAPSHOT<br>
-Last updated 2018-07-18 16:52:53 UTC
+Last updated 2018-07-19 15:50:32 UTC
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
