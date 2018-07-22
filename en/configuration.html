@@ -435,6 +435,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel2">
 <li><a href="#integration-to-applications">Integration to applications</a></li>
 <li><a href="#customization">Customization</a></li>
+<li><a href="#advanced-topics">Advanced topics</a></li>
 </ul>
 </li>
 </ul>
@@ -576,6 +577,106 @@ method. If an implementing class returns <code>true</code> by the method, the us
 like password.</p>
 </div>
 </div>
+<div class="sect4">
+<h5 id="multifactorauthenticationprovider"><a class="anchor" href="#multifactorauthenticationprovider"></a>MultiFactorAuthenticationProvider</h5>
+<div class="paragraph">
+<p>Spring Security WebAuthn utilizes <code>MultiFactorAuthenticationProvider</code> to realize multi-factor authentication.
+<code>MultiFactorAuthenticationProvider</code> is an <code>AuthenticationProvider</code> interface implementation, which delegates authentication
+decision itself to another <code>AuthenticationProvider</code>. If authentication succeeds in the delegated <code>AuthenticationProvider</code>
+and single-factor authentication is not permitted, <code>MultiFactorAuthenticationProvider</code> returns a <code>MultiFactorAuthenticationToken</code>
+instead of the <code>Authentication</code> returned from <code>AuthenticationProvider</code>.</p>
+</div>
+<div class="paragraph">
+<p><code>MultiFactorAuthenticationToken</code> is an <code>Authentication</code> interface implementation represents partial finish of
+multi-factor authentication. It is treated as a principal that has not authenticated like <code>AnonymousAuthenticationToken</code>.</p>
+</div>
+<div class="paragraph">
+<p>To realize multi-factor authentication with password and authenticator, setup a <code>MultiFactorAuthenticationProvider</code>,
+delegate password authentication to a <code>DaoAuthenticationProvider</code>, and register the <code>MultiFactorAuthenticationProvider</code>
+to the <code>AuthenticationManager</code>. The <code>DaoAuthenticationProvider</code>, which is delegated to, must not to be registered to
+the <code>AuthenticationManager</code> to avoid it processes an <code>Authentication</code> directly, and finishes authentication without
+ second-factor verification.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="webauthnauthenticationprovider"><a class="anchor" href="#webauthnauthenticationprovider"></a>WebAuthnAuthenticationProvider</h5>
+<div class="paragraph">
+<p><code>WebAuthnAuthenticationProvider</code> is an <code>AuthenticationProvider</code> implementation to process a
+<code>WebAuthnAssertionAuthenticationToken</code>. For WebAuthn assertion verification, <code>WebAuthnAuthenticationContextValidator</code> is
+used. See <a href="https://webauthn4j.github.io/webauthn4j/ja/">WebAuthn4J reference</a> for more details of
+<code>WebAuthnAuthenticationContextValidator</code>.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="advanced-topics"><a class="anchor" href="#advanced-topics"></a>Advanced topics</h3>
+<div class="sect3">
+<h4 id="distinction-of-a-user-in-the-middle-of-multi-factor-authentication"><a class="anchor" href="#distinction-of-a-user-in-the-middle-of-multi-factor-authentication"></a>Distinction of a user in the middle of multi-factor authentication</h4>
+<div class="paragraph">
+<p>In the case where it is needed to show a different login view like the one asks an authenticator for the user whose
+first factor is verified but second factor is not provided yet, the distinction can be made by checking the type of
+<code>Authentication</code> instance is a descendant of <code>MultiFactorAuthenticationToken</code> or not.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">@RequestMapping(value = "/login", method = RequestMethod.GET)
+public String login() {
+    Authentication authentication =
+            SecurityContextHolder.getContext().getAuthentication();
+    if (authentication instanceof MultiFactorAuthenticationToken) {
+        return ViewNames.VIEW_LOGIN_AUTHENTICATOR_LOGIN;
+    } else {
+        return ViewNames.VIEW_LOGIN_LOGIN;
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="configuring-a-credential-scope-rpid"><a class="anchor" href="#configuring-a-credential-scope-rpid"></a>Configuring a credential scope (rpId)</h4>
+<div class="paragraph">
+<p>In Web Authentication specification, the scope of a creating credential can be configured through the parameter named
+"rpId" while creating the credential i.e. registering authenticator. "rpId" accepts
+<a href="https://html.spec.whatwg.org/multipage/origin.html#concept-origin-effective-domain">effective domain</a>.
+For example, in the case where the domain of the site is <code>webauthn.example.com</code>, and <code>webauthn.example.com</code> is set to
+<code>rpId</code>, the credential is only available in <code>webauthn.example.com</code> and its sub-domain, but if <code>example.com</code>
+is set to <code>rpId</code>, the scope of the credential is relaxed to <code>example.com</code> and its sub-domain.</p>
+</div>
+<div class="paragraph">
+<p>Spring Security WebAuthn supports <code>rpId</code> configuration through the <code>rpId</code> property of <code>ServerPropertyProviderImpl</code>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="attestation-statement-verification"><a class="anchor" href="#attestation-statement-verification"></a>Attestation statement verification</h4>
+<div class="paragraph">
+<p>Web Authentication specification allows the relying party to retrieve an attestation statement from an authenticator if
+it is requested while authenticator registration. By verifying attestation statement, the relying party can exclude
+authenticators not conforming its security requirements. It&#8217;s to be noted that the attestation statement contains
+information that can be used to track user across web sites, it is discouraged to request an attestation statement
+unnecessarily. It is also to be noted that the browsers shows an additional dialog to confirm the user consent, lowers
+usability. Except for enterprise applications that require strict verification of authenticators, most sites should not
+request attestation statements.</p>
+</div>
+<div class="paragraph">
+<p><code>WebAuthnRegistrationContextValidator</code> from WebAuthn4J validates an authenticator registration request, and it delegates
+attestation statement signature and trustworthiness validation to <code>AttestationStatementValidator</code> and
+<code>CertPathTrustworthinessValidator</code> interface implementation respectively.</p>
+</div>
+<div class="paragraph">
+<p><code>WebAuthnRegistrationContextValidator.createNonStrictRegistrationContextValidator</code> factory method can create the
+<code>WebAuthnRegistrationContextValidator</code> instance that contains <code>AttestationStatementValidator</code> and
+<code>CertPathTrustworthinessValidator</code> configured for web sites not requiring strict attestation verification.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="trustanchorprovider-using-spring-resource"><a class="anchor" href="#trustanchorprovider-using-spring-resource"></a>TrustAnchorProvider using Spring Resource</h4>
+<div class="paragraph">
+<p>While validating an authenticator attestation certificate path on registration,
+<code>TrustAnchorCertPathTrustworthinessValidator</code> class uses <code>TrustAnchor</code> retrieved through <code>TrustAnchorProvider</code> interface
+implementation. Spring Security WebAuthn offers <code>KeyStoreResourceTrustAnchorProvider</code> class, which retrieves a
+<code>TrustAnchor</code> from a Java Key Store file loaded as Spring <code>Resource</code>.</p>
+</div>
 </div>
 </div>
 </div>
@@ -584,7 +685,7 @@ like password.</p>
 <div id="footer">
 <div id="footer-text">
 Version 0.5.0-SNAPSHOT<br>
-Last updated 2018-07-20 21:44:14 UTC
+Last updated 2018-07-22 00:15:40 UTC
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">

@@ -745,15 +745,15 @@ Spring Security WebAuthnでは`ConditionEndpointFilter`を用意しています�
 </div>
 <div class="paragraph">
 <p><code>MultiFactorAuthenticationToken</code> は多要素認証における複数の認証要素の内、一部が完了し、一部が未完了であることを示す
-<code>Authentication</code> インタフェースの実装です。デフォルトでは <code>AnonymousAuthenticationToken</code> と同様に、
+<code>Authentication</code> インタフェースの実装です。<code>AnonymousAuthenticationToken</code> と同様に、
 認証が完了していないPrincipalとして扱われます。</p>
 </div>
 <div class="paragraph">
 <p>Spring Security WebAuthnでパスワード＋認証デバイスによる多要素認証を実現するには、パスワード認証のための
 <code>DaoAuthenticationProvider</code> を委譲先とした <code>MultiFactorAuthenticationProvider</code> を用意し、
-<code>MultiFactorAuthenticationProvider</code> のみ <code>AuthenticationManager</code> にセットする必要があります。
+<code>MultiFactorAuthenticationProvider</code> のみ <code>AuthenticationManager</code> に登録する必要があります。
 委譲先である <code>DaoAuthenticationProvider</code> は <code>AuthenticationManager</code> にセットしてはいけません。
-これは、委譲先の <code>DaoAuthenticationProvider</code> が <code>MultiFactorAuthenticationProvider</code> を経由せずに <code>Authentication</code> を
+これは、委譲先の <code>AuthenticationProvider</code> が <code>MultiFactorAuthenticationProvider</code> を経由せずに <code>Authentication</code> を
 処理してしまうと、 <code>MultiFactorAuthenticationToken</code> が返却されず、パスワードのみによる単一要素認証となってしまうためです。</p>
 </div>
 </div>
@@ -772,8 +772,9 @@ Spring Security WebAuthnでは`ConditionEndpointFilter`を用意しています�
 <div class="sect3">
 <h4 id="多要素認証で第一要素のみ認証完了したユーザーの識別"><a class="anchor" href="#多要素認証で第一要素のみ認証完了したユーザーの識別"></a>多要素認証で第一要素のみ認証完了したユーザーの識別</h4>
 <div class="paragraph">
-<p>多要素認証で第一要素のみ認証完了しているかどうかで、ログインページの表示を変更したい場合、以下のように
-現在の <code>Authentication</code> インスタンスが <code>MultiFactorAuthenticationToken</code> か否かで判断することが出来ます。</p>
+<p>多要素認証で第一要素のみ認証完了しているユーザーに対して、認証デバイスを要求する画面など、異なるログインページを
+表示したい場合、以下のように現在の <code>Authentication</code> インスタンスが <code>MultiFactorAuthenticationToken</code> か否かで
+判断することが出来ます。</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -794,13 +795,13 @@ public String login() {
 <h4 id="credentialの有効範囲-rpid-設定"><a class="anchor" href="#credentialの有効範囲-rpid-設定"></a>Credentialの有効範囲（RpId）設定</h4>
 <div class="paragraph">
 <p>Web Authentication仕様では、Credentialの作成時、即ち認証デバイスの登録時、そのCredentialの有効範囲を制限するための
-パラメータとして、RpIdを指定します。RpIdには、 <a href="https://html.spec.whatwg.org/multipage/origin.html#concept-origin-effective-domain">effective domain</a> を指定することが出来ます。例えば、Credentialの作成を行った
-ページのドメインが"subdomain.example.com"だった場合に、RpIdを"subdomain.example.com"と指定すれば、そのCredentialは
-"subdomain.example.com"とそのサブドメインの範囲だけで利用できますが、RpIdを"example.com"とすることで、
-Credentialが利用可能な範囲を"example.com"およびそのサブドメインに広げることが出来ます。</p>
+パラメータとして、 <code>rpId</code> を指定します。 <code>rpId</code> には、 <a href="https://html.spec.whatwg.org/multipage/origin.html#concept-origin-effective-domain">effective domain</a> を指定することが出来ます。例えば、Credentialの作成を行った
+ページのドメインが <code>dev.example.com</code> だった場合に、RpIdを <code>dev.example.com</code> と指定すれば、そのCredentialは
+<code>dev.example.com</code> とそのサブドメインの範囲だけで利用できますが、 <code>rpId</code> を <code>example.com</code> とすることで、
+Credentialが利用可能な範囲を <code>example.com</code> およびそのサブドメインに広げることが出来ます。</p>
 </div>
 <div class="paragraph">
-<p>Spring Security WebAuthnでは、RpIdは <code>ServerPropertyProviderImpl</code> のプロパティとして設定可能です。</p>
+<p>Spring Security WebAuthnでは、 <code>rpId</code> は <code>ServerPropertyProviderImpl</code> のプロパティとして設定可能です。</p>
 </div>
 </div>
 <div class="sect3">
@@ -826,11 +827,11 @@ Relying Partyは取得した構成証明ステートメントを検証するこ�
 </div>
 </div>
 <div class="sect3">
-<h4 id="keystoreresourcetrustanchorprovider"><a class="anchor" href="#keystoreresourcetrustanchorprovider"></a>KeyStoreResourceTrustAnchorProvider</h4>
+<h4 id="springのresourceを活用したtrustanchorprovider"><a class="anchor" href="#springのresourceを活用したtrustanchorprovider"></a>SpringのResourceを活用したTrustAnchorProvider</h4>
 <div class="paragraph">
 <p>認証デバイスを登録時に証明書パスから検証する場合、 <code>TrustAnchorCertPathTrustworthinessValidator</code> クラスは
-<code>TrustAnchorProvider</code> インタフェースの実装クラスから取得したトラストアンカーを使用します。Spring Security WebAuthnでは、
-SpringのResourceとして読み込んだJava Key Storeファイルをトラストアンカーとして読み込む <code>TrustAnchorProvider</code> として、
+<code>TrustAnchorProvider</code> インタフェースの実装クラスから取得した <code>TrustAnchor</code> を使用します。Spring Security WebAuthnでは、
+SpringのResourceとして読み込んだJava Key Storeファイルを <code>TrustAnchor</code> として使用する <code>TrustAnchorProvider</code> として、
 <code>KeyStoreResourceTrustAnchorProvider</code> クラスを提供します。</p>
 </div>
 </div>
@@ -969,7 +970,7 @@ SpringのResourceとして読み込んだJava Key Storeファイルをトラス�
 <div id="footer">
 <div id="footer-text">
 Version 0.5.0-SNAPSHOT<br>
-Last updated 2018-07-20 21:44:14 UTC
+Last updated 2018-07-22 00:15:40 UTC
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
