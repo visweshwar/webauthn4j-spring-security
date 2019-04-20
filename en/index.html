@@ -641,7 +641,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // WebAuthn Login
         http.apply(webAuthnLogin())
                 .loginPage("/login")
-                .usernameParameter("userVerification")
+                .usernameParameter("username")
                 .passwordParameter("rawPassword");
     }
 }</code></pre>
@@ -919,7 +919,7 @@ with password and authenticator.</p>
 </div>
 </div>
 <div class="paragraph">
-<p>Please fill the userVerification (email address) and password on the login view and click the login button.</p>
+<p>Please fill the username (email address) and password on the login view and click the login button.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -959,7 +959,7 @@ You will be automatically redirected to the dashboard.</p>
 </div>
 </div>
 <div class="paragraph">
-<p>Please fill the userVerification (email address) and password on the login view and click the login button.
+<p>Please fill the username (email address) and password on the login view and click the login button.
 If the authentication succeeds, you will be automatically redirected to the dashboard.</p>
 </div>
 </div>
@@ -970,7 +970,7 @@ If the authentication succeeds, you will be automatically redirected to the dash
 <div id="footer">
 <div id="footer-text">
 Version 0.5.0-SNAPSHOT<br>
-Last updated 2019-04-20 00:52:29 UTC
+Last updated 2019-04-20 07:03:39 UTC
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
