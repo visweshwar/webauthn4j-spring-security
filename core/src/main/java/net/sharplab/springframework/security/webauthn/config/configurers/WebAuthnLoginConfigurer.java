@@ -17,7 +17,15 @@
 package net.sharplab.springframework.security.webauthn.config.configurers;
 
 import com.webauthn4j.converter.util.JsonConverter;
+import com.webauthn4j.data.PublicKeyCredentialParameters;
+import com.webauthn4j.data.PublicKeyCredentialType;
+import com.webauthn4j.data.attestation.statement.COSEAlgorithmIdentifier;
+import com.webauthn4j.data.extension.client.AuthenticationExtensionClientInput;
+import com.webauthn4j.data.extension.client.AuthenticationExtensionsClientInputs;
+import com.webauthn4j.data.extension.client.ExtensionClientInput;
+import com.webauthn4j.data.extension.client.RegistrationExtensionClientInput;
 import net.sharplab.springframework.security.webauthn.WebAuthnProcessingFilter;
+import net.sharplab.springframework.security.webauthn.WebAuthnRegistrationRequestValidator;
 import net.sharplab.springframework.security.webauthn.challenge.ChallengeRepository;
 import net.sharplab.springframework.security.webauthn.endpoint.OptionsEndpointFilter;
 import net.sharplab.springframework.security.webauthn.options.OptionsProvider;
@@ -36,7 +44,10 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.Assert;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Adds WebAuthn authentication. All attributes have reasonable defaults making all
@@ -70,7 +81,6 @@ import java.util.*;
  * <li>{@link MFATokenEvaluator}</li>
  * </ul>
  *
- * @see WebAuthnConfigurer
  * @see WebAuthnAuthenticationProviderConfigurer
  */
 public final class WebAuthnLoginConfigurer<H extends HttpSecurityBuilder<H>> extends
@@ -81,10 +91,25 @@ public final class WebAuthnLoginConfigurer<H extends HttpSecurityBuilder<H>> ext
     private OptionsProvider optionsProvider = null;
     private JsonConverter jsonConverter = null;
     private ServerPropertyProvider serverPropertyProvider = null;
+    private WebAuthnRegistrationRequestValidator webAuthnRegistrationRequestValidator;
 
-    private final WebAuthnLoginConfigurer<H>.OptionsEndpointConfig optionsEndpointConfig = new WebAuthnLoginConfigurer<H>.OptionsEndpointConfig();
-    private final WebAuthnLoginConfigurer<H>.ExpectedAuthenticationExtensionIdsConfig
-            expectedAuthenticationExtensionIdsConfig = new WebAuthnLoginConfigurer<H>.ExpectedAuthenticationExtensionIdsConfig();
+    private final OptionsEndpointConfig optionsEndpointConfig = new OptionsEndpointConfig();
+
+    private String rpId = null;
+    private String rpName = null;
+    private String rpIcon = null;
+    private Long registrationTimeout;
+    private Long authenticationTimeout;
+    private final PublicKeyCredParamsConfig publicKeyCredParamsConfig = new PublicKeyCredParamsConfig();
+    private final ExtensionsClientInputsConfig<RegistrationExtensionClientInput> registrationExtensionsConfig
+            = new ExtensionsClientInputsConfig<>();
+    private final ExtensionsClientInputsConfig<AuthenticationExtensionClientInput> authenticationExtensionsConfig
+            = new ExtensionsClientInputsConfig<>();
+    private final ExpectedRegistrationExtensionIdsConfig
+            expectedRegistrationExtensionIdsConfig = new ExpectedRegistrationExtensionIdsConfig();
+    private final ExpectedAuthenticationExtensionIdsConfig
+            expectedAuthenticationExtensionIdsConfig = new ExpectedAuthenticationExtensionIdsConfig();
+
 
     private String usernameParameter = null;
     private String passwordParameter = null;
@@ -105,6 +130,30 @@ public final class WebAuthnLoginConfigurer<H extends HttpSecurityBuilder<H>> ext
 
     // ~ Methods
     // ========================================================================================================
+    @Override
+    public void init(H http) throws Exception {
+        super.init(http);
+
+        if (jsonConverter == null) {
+            jsonConverter = WebAuthnConfigurerUtil.getJsonConverter(http);
+        }
+        http.setSharedObject(JsonConverter.class, jsonConverter);
+
+        if (optionsProvider == null) {
+            optionsProvider = WebAuthnConfigurerUtil.getOptionsProvider(http);
+        }
+        http.setSharedObject(OptionsProvider.class, optionsProvider);
+
+        if (serverPropertyProvider == null) {
+            serverPropertyProvider = WebAuthnConfigurerUtil.getServerPropertyProvider(http);
+        }
+        http.setSharedObject(ServerPropertyProvider.class, serverPropertyProvider);
+
+        if (webAuthnRegistrationRequestValidator == null) {
+            webAuthnRegistrationRequestValidator = WebAuthnConfigurerUtil.getWebAuthnRegistrationRequestValidator(http);
+        }
+        http.setSharedObject(WebAuthnRegistrationRequestValidator.class, webAuthnRegistrationRequestValidator);
+    }
 
     /**
      * {@inheritDoc}
@@ -112,29 +161,42 @@ public final class WebAuthnLoginConfigurer<H extends HttpSecurityBuilder<H>> ext
     @Override
     public void configure(H http) throws Exception {
         super.configure(http);
-        if (optionsProvider == null) {
-            optionsProvider = WebAuthnConfigurerUtil.getOptionsProvider(http);
-        }
-        http.setSharedObject(OptionsProvider.class, optionsProvider);
-        if (jsonConverter == null) {
-            jsonConverter = WebAuthnConfigurerUtil.getJsonConverter(http);
-        }
-        http.setSharedObject(JsonConverter.class, jsonConverter);
-        if (serverPropertyProvider == null) {
-            serverPropertyProvider = WebAuthnConfigurerUtil.getServerPropertyProvider(http);
-        }
-        http.setSharedObject(ServerPropertyProvider.class, serverPropertyProvider);
+        configureParameters();
 
         this.getAuthenticationFilter().setServerPropertyProvider(serverPropertyProvider);
 
+        if (rpId != null) {
+            optionsProvider.setRpId(rpId);
+        }
+        if (rpName != null) {
+            optionsProvider.setRpName(rpName);
+        }
+        if (rpIcon != null) {
+            optionsProvider.setRpIcon(rpIcon);
+        }
+        optionsProvider.getPubKeyCredParams().addAll(publicKeyCredParamsConfig.publicKeyCredentialParameters);
+        if (registrationTimeout != null) {
+            optionsProvider.setRegistrationTimeout(registrationTimeout);
+        }
+        if (authenticationTimeout != null) {
+            optionsProvider.setAuthenticationTimeout(authenticationTimeout);
+        }
+        optionsProvider.setRegistrationExtensions(new AuthenticationExtensionsClientInputs<>(registrationExtensionsConfig.extensionsClientInputs));
+        optionsProvider.setAuthenticationExtensions(new AuthenticationExtensionsClientInputs<>(authenticationExtensionsConfig.extensionsClientInputs));
+
         this.optionsEndpointConfig.configure(http);
+
         if (expectedAuthenticationExtensionIdsConfig.expectedAuthenticationExtensionIds.isEmpty()) {
-            this.getAuthenticationFilter().setExpectedAuthenticationExtensionIds(new ArrayList<>(optionsProvider.getAuthenticationExtensions().keySet()));
+            this.getAuthenticationFilter().setExpectedAuthenticationExtensionIds(new ArrayList<>(authenticationExtensionsConfig.extensionsClientInputs.keySet()));
         } else {
             this.getAuthenticationFilter().setExpectedAuthenticationExtensionIds(expectedAuthenticationExtensionIdsConfig.expectedAuthenticationExtensionIds);
         }
+        if (expectedRegistrationExtensionIdsConfig.expectedRegistrationExtensionIds.isEmpty()) {
+            webAuthnRegistrationRequestValidator.setExpectedRegistrationExtensionIds(new ArrayList<>(registrationExtensionsConfig.extensionsClientInputs.keySet()));
+        } else {
+            webAuthnRegistrationRequestValidator.setExpectedRegistrationExtensionIds(expectedRegistrationExtensionIdsConfig.expectedRegistrationExtensionIds);
+        }
 
-        configureParameters();
 
     }
 
@@ -211,13 +273,7 @@ public final class WebAuthnLoginConfigurer<H extends HttpSecurityBuilder<H>> ext
         return optionsEndpointConfig;
     }
 
-    /**
-     * Returns the {@link ExpectedAuthenticationExtensionIdsConfig} for configuring the expectedAuthenticationExtensionId(s)
-     * @return the {@link ExpectedAuthenticationExtensionIdsConfig}
-     */
-    public WebAuthnLoginConfigurer<H>.ExpectedAuthenticationExtensionIdsConfig expectedAuthenticationExtensionIds(){
-        return this.expectedAuthenticationExtensionIdsConfig;
-    }
+
 
     /**
      * The HTTP parameter to look for the username when performing authentication. Default
@@ -317,6 +373,99 @@ public final class WebAuthnLoginConfigurer<H extends HttpSecurityBuilder<H>> ext
         return this;
     }
 
+    /**
+     * The relying party id for credential scoping
+     * @param rpId the relying party id
+     * @return the {@link WebAuthnLoginConfigurer} for additional customization
+     */
+    public WebAuthnLoginConfigurer<H> rpId(String rpId) {
+        Assert.hasText(rpId, "rpId parameter must not be null or empty");
+        this.rpId = rpId;
+        return this;
+    }
+
+    /**
+     * The relying party name
+     * @param rpName the relying party name
+     * @return the {@link WebAuthnLoginConfigurer} for additional customization
+     */
+    public WebAuthnLoginConfigurer<H> rpName(String rpName) {
+        Assert.hasText(rpName, "rpName parameter must not be null or empty");
+        this.rpName = rpName;
+        return this;
+    }
+
+    /**
+     * The relying party icon
+     * @param rpIcon the relying party icon
+     * @return the {@link WebAuthnLoginConfigurer} for additional customization
+     */
+    public WebAuthnLoginConfigurer<H> rpIcon(String rpIcon) {
+        Assert.hasText(rpIcon, "rpIcon parameter must not be null or empty");
+        this.rpIcon = rpIcon;
+        return this;
+    }
+
+    /**
+     * Returns the {@link PublicKeyCredParamsConfig} for configuring PublicKeyCredParams
+     * @return the {@link PublicKeyCredParamsConfig}
+     */
+    public WebAuthnLoginConfigurer<H>.PublicKeyCredParamsConfig publicKeyCredParams() {
+        return this.publicKeyCredParamsConfig;
+    }
+
+    /**
+     * The timeout for registration ceremony
+     * @param registrationTimeout the timeout for registration ceremony
+     * @return the {@link WebAuthnLoginConfigurer} for additional customization
+     */
+    public WebAuthnLoginConfigurer<H> registrationTimeout(Long registrationTimeout) {
+        this.registrationTimeout = registrationTimeout;
+        return this;
+    }
+
+    /**
+     * The timeout for authentication ceremony
+     * @param authenticationTimeout the timeout for authentication ceremony
+     * @return the {@link WebAuthnLoginConfigurer} for additional customization
+     */
+    public WebAuthnLoginConfigurer<H> authenticationTimeout(Long authenticationTimeout) {
+        this.authenticationTimeout = authenticationTimeout;
+        return this;
+    }
+
+    /**
+     * Returns the {@link ExtensionsClientInputsConfig} for configuring registration extensions
+     * @return the {@link ExtensionsClientInputsConfig}
+     */
+    public ExtensionsClientInputsConfig<RegistrationExtensionClientInput> registrationExtensions(){
+        return this.registrationExtensionsConfig;
+    }
+
+    /**
+     * Returns the {@link ExtensionsClientInputsConfig} for configuring authentication extensions
+     * @return the {@link ExtensionsClientInputsConfig}
+     */
+    public ExtensionsClientInputsConfig<AuthenticationExtensionClientInput> authenticationExtensions(){
+        return this.authenticationExtensionsConfig;
+    }
+
+    /**
+     * Returns the {@link ExpectedRegistrationExtensionIdsConfig} for configuring the expectedRegistrationExtensionId(s)
+     * @return the {@link ExpectedRegistrationExtensionIdsConfig}
+     */
+    public ExpectedRegistrationExtensionIdsConfig expectedRegistrationExtensionIdsConfig(){
+        return this.expectedRegistrationExtensionIdsConfig;
+    }
+
+    /**
+     * Returns the {@link ExpectedAuthenticationExtensionIdsConfig} for configuring the expectedAuthenticationExtensionId(s)
+     * @return the {@link ExpectedAuthenticationExtensionIdsConfig}
+     */
+    public ExpectedAuthenticationExtensionIdsConfig expectedAuthenticationExtensionIds(){
+        return this.expectedAuthenticationExtensionIdsConfig;
+    }
+
 
     /**
      * Forward Authentication Success Handler
@@ -388,6 +537,7 @@ public final class WebAuthnLoginConfigurer<H extends HttpSecurityBuilder<H>> ext
             }
 
             http.addFilterAfter(optionsEndpointFilter, SessionManagementFilter.class);
+
         }
 
         /**
@@ -411,9 +561,102 @@ public final class WebAuthnLoginConfigurer<H extends HttpSecurityBuilder<H>> ext
 
     }
 
+    /**
+     * Configuration options for PublicKeyCredParams
+     */
+    public class PublicKeyCredParamsConfig {
+
+        private PublicKeyCredParamsConfig(){}
+
+        private List<PublicKeyCredentialParameters> publicKeyCredentialParameters = new ArrayList<>();
+
+        /**
+         * Add PublicKeyCredParam
+         * @param type the {@link PublicKeyCredentialType}
+         * @param alg the {@link COSEAlgorithmIdentifier}
+         * @return the {@link PublicKeyCredParamsConfig}
+         */
+        public PublicKeyCredParamsConfig addPublicKeyCredParams(PublicKeyCredentialType type, COSEAlgorithmIdentifier alg) {
+            Assert.notNull(type, "type must not be null");
+            Assert.notNull(alg, "alg must not be null");
+
+            publicKeyCredentialParameters.add(new PublicKeyCredentialParameters(type, alg));
+            return this;
+        }
+
+        /**
+         * Returns the {@link WebAuthnLoginConfigurer} for further configuration.
+         *
+         * @return the {@link WebAuthnLoginConfigurer}
+         */
+        public WebAuthnLoginConfigurer<H> and() {
+            return WebAuthnLoginConfigurer.this;
+        }
+
+    }
 
     /**
-     * Configuration options for expectedAuthenticationExtensionIds
+     * Configuration options for AuthenticationExtensionsClientInputs
+     */
+    public class ExtensionsClientInputsConfig<T extends ExtensionClientInput> {
+
+        private ExtensionsClientInputsConfig(){}
+
+        private Map<String, T> extensionsClientInputs = new HashMap<>();
+
+        /**
+         * Add AuthenticationExtensionClientInput
+         * @param extensionClientInput the T
+         * @return the {@link ExtensionsClientInputsConfig}
+         */
+        public ExtensionsClientInputsConfig<T> addExtension(T extensionClientInput){
+            Assert.notNull(extensionClientInput, "extensionClientInput must not be null");
+            extensionsClientInputs.put(extensionClientInput.getIdentifier(), extensionClientInput);
+            return this;
+        }
+
+        /**
+         * Returns the {@link WebAuthnLoginConfigurer} for further configuration.
+         *
+         * @return the {@link WebAuthnLoginConfigurer}
+         */
+        public WebAuthnLoginConfigurer<H> and() {
+            return WebAuthnLoginConfigurer.this;
+        }
+    }
+
+    /**
+     * Configuration options for expectedRegistrationExtensionIds
+     */
+    public class ExpectedRegistrationExtensionIdsConfig {
+
+        private ExpectedRegistrationExtensionIdsConfig(){}
+
+        private List<String> expectedRegistrationExtensionIds = new ArrayList<>();
+
+        /**
+         * Add AuthenticationExtensionClientInput
+         * @param expectedRegistrationExtensionId the expected registration extension id
+         * @return the {@link ExpectedRegistrationExtensionIdsConfig}
+         */
+        public ExpectedRegistrationExtensionIdsConfig add(String expectedRegistrationExtensionId){
+            Assert.notNull(expectedRegistrationExtensionId, "expectedRegistrationExtensionId must not be null");
+            expectedRegistrationExtensionIds.add(expectedRegistrationExtensionId);
+            return this;
+        }
+
+        /**
+         * Returns the {@link WebAuthnLoginConfigurer} for further configuration.
+         *
+         * @return the {@link ExpectedRegistrationExtensionIdsConfig}
+         */
+        public WebAuthnLoginConfigurer<H> and() {
+            return WebAuthnLoginConfigurer.this;
+        }
+    }
+
+    /**
+     * Configuration options for expectedRegistrationExtensionIds
      */
     public class ExpectedAuthenticationExtensionIdsConfig {
 
@@ -424,7 +667,7 @@ public final class WebAuthnLoginConfigurer<H extends HttpSecurityBuilder<H>> ext
         /**
          * Add AuthenticationExtensionClientInput
          * @param expectedAuthenticationExtensionId the expected authentication extension id
-         * @return the {@link WebAuthnLoginConfigurer.ExpectedAuthenticationExtensionIdsConfig}
+         * @return the {@link ExpectedAuthenticationExtensionIdsConfig}
          */
         public ExpectedAuthenticationExtensionIdsConfig add(String expectedAuthenticationExtensionId){
             Assert.notNull(expectedAuthenticationExtensionId, "expectedAuthenticationExtensionId must not be null");
@@ -433,12 +676,13 @@ public final class WebAuthnLoginConfigurer<H extends HttpSecurityBuilder<H>> ext
         }
 
         /**
-         * Returns the {@link WebAuthnConfigurer} for further configuration.
+         * Returns the {@link WebAuthnLoginConfigurer} for further configuration.
          *
-         * @return the {@link WebAuthnConfigurer}
+         * @return the {@link WebAuthnLoginConfigurer}
          */
         public WebAuthnLoginConfigurer<H> and() {
             return WebAuthnLoginConfigurer.this;
         }
     }
+
 }

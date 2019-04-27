@@ -52,7 +52,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.Collection;
 import java.util.Collections;
 
-import static net.sharplab.springframework.security.webauthn.config.configurers.WebAuthnConfigurer.webAuthn;
 import static net.sharplab.springframework.security.webauthn.config.configurers.WebAuthnLoginConfigurer.webAuthnLogin;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -167,7 +166,7 @@ public class WebAuthnLoginConfigurerSpringTest {
         protected void configure(HttpSecurity http) throws Exception {
 
             // Authentication
-            http.apply(webAuthn())
+            http.apply(webAuthnLogin())
                     .rpId("example.com")
                     .rpIcon("dummy")
                     .rpName("example")
@@ -178,13 +177,11 @@ public class WebAuthnLoginConfigurerSpringTest {
                     .registrationTimeout(10000L)
                     .authenticationTimeout(20000L)
                     .registrationExtensions()
-                        .addExtension(new SupportedExtensionsExtensionClientInput(true))
-                        .and()
+                    .addExtension(new SupportedExtensionsExtensionClientInput(true))
+                    .and()
                     .authenticationExtensions()
-                        .addExtension(new FIDOAppIDExtensionClientInput(""))
-                        .and();
-
-            http.apply(webAuthnLogin())
+                    .addExtension(new FIDOAppIDExtensionClientInput(""))
+                    .and()
                     .usernameParameter("username")
                     .passwordParameter("password")
                     .credentialIdParameter("credentialId")

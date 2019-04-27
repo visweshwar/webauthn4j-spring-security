@@ -44,10 +44,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
-import java.util.Collections;
-
 import static net.sharplab.springframework.security.fido.server.config.configurer.FidoServerConfigurer.fidoServer;
-import static net.sharplab.springframework.security.webauthn.config.configurers.WebAuthnConfigurer.webAuthn;
 
 
 /**
@@ -114,34 +111,32 @@ WebSecurityConfig extends WebSecurityConfigurerAdapter {
     /**
      * Configure SecurityFilterChain
      */
+    @SuppressWarnings("Duplicates")
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        // WebAuthn Config
-        http.apply(webAuthn())
-                .rpName("Spring Security WebAuthn Sample")
-                .publicKeyCredParams()
-                .addPublicKeyCredParams(PublicKeyCredentialType.PUBLIC_KEY, COSEAlgorithmIdentifier.RS256)  // Windows Hello
-                .addPublicKeyCredParams(PublicKeyCredentialType.PUBLIC_KEY, COSEAlgorithmIdentifier.ES256)  // FIDO U2F Key, etc
-                .and()
-            .registrationExtensions()
-                .addExtension(new ExampleExtensionClientInput("test"))
-                .and()
-            .authenticationExtensions()
-                .addExtension(new ExampleExtensionClientInput("test"))
-                .and();
-
         // FIDO Server Endpoints
         http.apply(fidoServer())
+                .rpName("Spring Security WebAuthn Sample")
+                .publicKeyCredParams()
+                    .addPublicKeyCredParams(PublicKeyCredentialType.PUBLIC_KEY, COSEAlgorithmIdentifier.RS256)  // Windows Hello
+                    .addPublicKeyCredParams(PublicKeyCredentialType.PUBLIC_KEY, COSEAlgorithmIdentifier.ES256)  // FIDO U2F Key, etc
+                    .and()
+                .registrationExtensions()
+                    .addExtension(new ExampleExtensionClientInput("test"))
+                    .and()
+                .authenticationExtensions()
+                    .addExtension(new ExampleExtensionClientInput("test"))
+                    .and()
                 .fidoServerAttestationOptionsEndpoint()
-                .and()
-                .fidoServerAttestationResultEndpointConfig()
-                .webAuthnUserDetailsService(userDetailsService)
-                .webAuthnRegistrationRequestValidator(webAuthnRegistrationRequestValidator)
-                .usernameNotFoundHandler(new SampleUsernameNotFoundHandler(userManager))
-                .and()
-                .fidoServerAssertionOptionsEndpointConfig()
-                .and()
+                    .and()
+                .fidoServerAttestationResultEndpoint()
+                   .webAuthnUserDetailsService(userDetailsService)
+                    .webAuthnRegistrationRequestValidator(webAuthnRegistrationRequestValidator)
+                    .usernameNotFoundHandler(new SampleUsernameNotFoundHandler(userManager))
+                    .and()
+                .fidoServerAssertionOptionsEndpoint()
+                    .and()
                 .fidoServerAssertionResultEndpoint();
 
         // Authorization

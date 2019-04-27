@@ -17,6 +17,13 @@
 package net.sharplab.springframework.security.fido.server.config.configurer;
 
 import com.webauthn4j.converter.util.JsonConverter;
+import com.webauthn4j.data.PublicKeyCredentialParameters;
+import com.webauthn4j.data.PublicKeyCredentialType;
+import com.webauthn4j.data.attestation.statement.COSEAlgorithmIdentifier;
+import com.webauthn4j.data.extension.client.AuthenticationExtensionClientInput;
+import com.webauthn4j.data.extension.client.AuthenticationExtensionsClientInputs;
+import com.webauthn4j.data.extension.client.ExtensionClientInput;
+import com.webauthn4j.data.extension.client.RegistrationExtensionClientInput;
 import net.sharplab.springframework.security.fido.server.endpoint.*;
 import net.sharplab.springframework.security.webauthn.WebAuthnRegistrationRequestValidator;
 import net.sharplab.springframework.security.webauthn.config.configurers.WebAuthnConfigurerUtil;
@@ -33,8 +40,9 @@ import org.springframework.security.web.session.SessionManagementFilter;
 import org.springframework.util.Assert;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class FidoServerConfigurer<H extends HttpSecurityBuilder<H>> extends AbstractHttpConfigurer<FidoServerConfigurer<H>, H> {
 
@@ -48,10 +56,22 @@ public class FidoServerConfigurer<H extends HttpSecurityBuilder<H>> extends Abst
     private OptionsProvider optionsProvider;
     private JsonConverter jsonConverter;
 
+    private String rpId = null;
+    private String rpName = null;
+    private String rpIcon = null;
+    private Long registrationTimeout;
+    private Long authenticationTimeout;
+    private final PublicKeyCredParamsConfig publicKeyCredParamsConfig = new PublicKeyCredParamsConfig();
+    private final ExtensionsClientInputsConfig<RegistrationExtensionClientInput> registrationExtensionsConfig
+            = new ExtensionsClientInputsConfig<>();
+    private final ExtensionsClientInputsConfig<AuthenticationExtensionClientInput> authenticationExtensionsConfig
+            = new ExtensionsClientInputsConfig<>();
+
     public static FidoServerConfigurer<HttpSecurity> fidoServer() {
         return new FidoServerConfigurer<>();
     }
 
+    @SuppressWarnings("Duplicates")
     @Override
     public void configure(H http) throws Exception {
         super.configure(http);
@@ -64,21 +84,118 @@ public class FidoServerConfigurer<H extends HttpSecurityBuilder<H>> extends Abst
         }
         http.setSharedObject(JsonConverter.class, jsonConverter);
 
+
+        if (rpId != null) {
+            optionsProvider.setRpId(rpId);
+        }
+        if (rpName != null) {
+            optionsProvider.setRpName(rpName);
+        }
+        if (rpIcon != null) {
+            optionsProvider.setRpIcon(rpIcon);
+        }
+        optionsProvider.getPubKeyCredParams().addAll(publicKeyCredParamsConfig.publicKeyCredentialParameters);
+        if (registrationTimeout != null) {
+            optionsProvider.setRegistrationTimeout(registrationTimeout);
+        }
+        if (authenticationTimeout != null) {
+            optionsProvider.setAuthenticationTimeout(authenticationTimeout);
+        }
+        optionsProvider.setRegistrationExtensions(new AuthenticationExtensionsClientInputs<>(registrationExtensionsConfig.extensionsClientInputs));
+        optionsProvider.setAuthenticationExtensions(new AuthenticationExtensionsClientInputs<>(authenticationExtensionsConfig.extensionsClientInputs));
+
         fidoServerAttestationOptionsEndpointConfig.configure(http);
         fidoServerAttestationResultEndpointConfig.configure(http);
         fidoServerAssertionOptionsEndpointConfig.configure(http);
         fidoServerAssertionResultEndpointConfig.configure(http);
     }
 
+    /**
+     * The relying party id for credential scoping
+     * @param rpId the relying party id
+     * @return the {@link FidoServerConfigurer} for additional customization
+     */
+    public FidoServerConfigurer<H> rpId(String rpId) {
+        Assert.hasText(rpId, "rpId parameter must not be null or empty");
+        this.rpId = rpId;
+        return this;
+    }
+
+    /**
+     * The relying party name
+     * @param rpName the relying party name
+     * @return the {@link FidoServerConfigurer} for additional customization
+     */
+    public FidoServerConfigurer<H> rpName(String rpName) {
+        Assert.hasText(rpName, "rpName parameter must not be null or empty");
+        this.rpName = rpName;
+        return this;
+    }
+
+    /**
+     * The relying party icon
+     * @param rpIcon the relying party icon
+     * @return the {@link FidoServerConfigurer} for additional customization
+     */
+    public FidoServerConfigurer<H> rpIcon(String rpIcon) {
+        Assert.hasText(rpIcon, "rpIcon parameter must not be null or empty");
+        this.rpIcon = rpIcon;
+        return this;
+    }
+
+    /**
+     * Returns the {@link FidoServerConfigurer.PublicKeyCredParamsConfig} for configuring PublicKeyCredParams
+     * @return the {@link FidoServerConfigurer.PublicKeyCredParamsConfig}
+     */
+    public FidoServerConfigurer<H>.PublicKeyCredParamsConfig publicKeyCredParams() {
+        return this.publicKeyCredParamsConfig;
+    }
+
+    /**
+     * The timeout for registration ceremony
+     * @param registrationTimeout the timeout for registration ceremony
+     * @return the {@link FidoServerConfigurer} for additional customization
+     */
+    public FidoServerConfigurer<H> registrationTimeout(Long registrationTimeout) {
+        this.registrationTimeout = registrationTimeout;
+        return this;
+    }
+
+    /**
+     * The timeout for authentication ceremony
+     * @param authenticationTimeout the timeout for authentication ceremony
+     * @return the {@link FidoServerConfigurer} for additional customization
+     */
+    public FidoServerConfigurer<H> authenticationTimeout(Long authenticationTimeout) {
+        this.authenticationTimeout = authenticationTimeout;
+        return this;
+    }
+
+    /**
+     * Returns the {@link FidoServerConfigurer.ExtensionsClientInputsConfig} for configuring registration extensions
+     * @return the {@link FidoServerConfigurer.ExtensionsClientInputsConfig}
+     */
+    public ExtensionsClientInputsConfig<RegistrationExtensionClientInput> registrationExtensions(){
+        return this.registrationExtensionsConfig;
+    }
+
+    /**
+     * Returns the {@link FidoServerConfigurer.ExtensionsClientInputsConfig} for configuring authentication extensions
+     * @return the {@link FidoServerConfigurer.ExtensionsClientInputsConfig}
+     */
+    public ExtensionsClientInputsConfig<AuthenticationExtensionClientInput> authenticationExtensions(){
+        return this.authenticationExtensionsConfig;
+    }
+
     public FidoServerAttestationOptionsEndpointConfig fidoServerAttestationOptionsEndpoint() {
         return this.fidoServerAttestationOptionsEndpointConfig;
     }
 
-    public FidoServerAttestationResultEndpointConfig fidoServerAttestationResultEndpointConfig() {
+    public FidoServerAttestationResultEndpointConfig fidoServerAttestationResultEndpoint() {
         return this.fidoServerAttestationResultEndpointConfig;
     }
 
-    public FidoServerAssertionOptionsEndpointConfig fidoServerAssertionOptionsEndpointConfig() {
+    public FidoServerAssertionOptionsEndpointConfig fidoServerAssertionOptionsEndpoint() {
         return this.fidoServerAssertionOptionsEndpointConfig;
     }
 
@@ -98,6 +215,70 @@ public class FidoServerConfigurer<H extends HttpSecurityBuilder<H>> extends Abst
         return this;
     }
 
+    /**
+     * Configuration options for PublicKeyCredParams
+     */
+    public class PublicKeyCredParamsConfig {
+
+        private PublicKeyCredParamsConfig(){}
+
+        private List<PublicKeyCredentialParameters> publicKeyCredentialParameters = new ArrayList<>();
+
+        /**
+         * Add PublicKeyCredParam
+         * @param type the {@link PublicKeyCredentialType}
+         * @param alg the {@link COSEAlgorithmIdentifier}
+         * @return the {@link PublicKeyCredParamsConfig}
+         */
+        public PublicKeyCredParamsConfig addPublicKeyCredParams(PublicKeyCredentialType type, COSEAlgorithmIdentifier alg) {
+            Assert.notNull(type, "type must not be null");
+            Assert.notNull(alg, "alg must not be null");
+
+            publicKeyCredentialParameters.add(new PublicKeyCredentialParameters(type, alg));
+            return this;
+        }
+
+        /**
+         * Returns the {@link FidoServerConfigurer} for further configuration.
+         *
+         * @return the {@link FidoServerConfigurer}
+         */
+        public FidoServerConfigurer<H> and() {
+            return FidoServerConfigurer.this;
+        }
+
+    }
+
+    /**
+     * Configuration options for AuthenticationExtensionsClientInputs
+     */
+    public class ExtensionsClientInputsConfig<T extends ExtensionClientInput> {
+
+        private ExtensionsClientInputsConfig(){}
+
+        private Map<String, T> extensionsClientInputs = new HashMap<>();
+
+        /**
+         * Add AuthenticationExtensionClientInput
+         * @param extensionClientInput the T
+         * @return the {@link FidoServerConfigurer.ExtensionsClientInputsConfig}
+         */
+        public ExtensionsClientInputsConfig<T> addExtension(T extensionClientInput){
+            Assert.notNull(extensionClientInput, "extensionClientInput must not be null");
+            extensionsClientInputs.put(extensionClientInput.getIdentifier(), extensionClientInput);
+            return this;
+        }
+
+        /**
+         * Returns the {@link FidoServerConfigurer} for further configuration.
+         *
+         * @return the {@link FidoServerConfigurer}
+         */
+        public FidoServerConfigurer<H> and() {
+            return FidoServerConfigurer.this;
+        }
+    }
+
     public class FidoServerAttestationOptionsEndpointConfig extends AbstractServerEndpointConfig<FidoServerAttestationOptionsEndpointFilter> {
 
         FidoServerAttestationOptionsEndpointConfig() {
@@ -115,7 +296,6 @@ public class FidoServerConfigurer<H extends HttpSecurityBuilder<H>> extends Abst
         private WebAuthnUserDetailsService webAuthnUserDetailsService;
         private WebAuthnRegistrationRequestValidator webAuthnRegistrationRequestValidator;
         private UsernameNotFoundHandler usernameNotFoundHandler;
-        private List<String> expectedRegistrationExtensionIds = Collections.emptyList();
         private final ExpectedRegistrationExtensionIdsConfig
                 expectedRegistrationExtensionIdsConfig = new ExpectedRegistrationExtensionIdsConfig();
 
@@ -133,9 +313,6 @@ public class FidoServerConfigurer<H extends HttpSecurityBuilder<H>> extends Abst
             if (webAuthnRegistrationRequestValidator == null) {
                 webAuthnRegistrationRequestValidator = WebAuthnConfigurerUtil.getWebAuthnRegistrationRequestValidator(http);
             }
-            if(!expectedRegistrationExtensionIds.isEmpty()){
-                webAuthnRegistrationRequestValidator.setExpectedRegistrationExtensionIds(expectedRegistrationExtensionIds);
-            }
 
             if (expectedRegistrationExtensionIdsConfig.expectedAuthenticationExtensionIds.isEmpty()) {
                 webAuthnRegistrationRequestValidator.setExpectedRegistrationExtensionIds(new ArrayList<>(optionsProvider.getAuthenticationExtensions().keySet()));
@@ -144,12 +321,6 @@ public class FidoServerConfigurer<H extends HttpSecurityBuilder<H>> extends Abst
             }
 
             http.setSharedObject(WebAuthnRegistrationRequestValidator.class, webAuthnRegistrationRequestValidator);
-        }
-
-        public FidoServerAttestationResultEndpointConfig expectedRegistrationExtensionIds(List<String> expectedRegistrationExtensionIds) {
-            Assert.notNull(expectedRegistrationExtensionIds, "expectedRegistrationExtensionIds must not be null");
-            this.expectedRegistrationExtensionIds = expectedRegistrationExtensionIds;
-            return this;
         }
 
         public FidoServerAttestationResultEndpointConfig webAuthnUserDetailsService(WebAuthnUserDetailsService webAuthnUserDetailsService) {

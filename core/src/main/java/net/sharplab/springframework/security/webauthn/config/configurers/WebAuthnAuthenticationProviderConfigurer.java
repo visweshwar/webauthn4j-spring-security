@@ -28,7 +28,6 @@ import org.springframework.util.Assert;
 /**
  * Allows configuring a {@link WebAuthnAuthenticationProvider}
  *
- * @see WebAuthnConfigurer
  * @see WebAuthnLoginConfigurer
  */
 public class WebAuthnAuthenticationProviderConfigurer<

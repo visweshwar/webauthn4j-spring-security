@@ -18,8 +18,6 @@ package net.sharplab.springframework.security.webauthn.config.configurers;
 
 
 import com.webauthn4j.converter.util.JsonConverter;
-import com.webauthn4j.data.PublicKeyCredentialType;
-import com.webauthn4j.data.attestation.statement.COSEAlgorithmIdentifier;
 import com.webauthn4j.data.client.challenge.DefaultChallenge;
 import com.webauthn4j.test.TestDataUtil;
 import net.sharplab.springframework.security.webauthn.WebAuthnProcessingFilter;
@@ -48,7 +46,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.Collection;
 import java.util.Collections;
 
-import static net.sharplab.springframework.security.webauthn.config.configurers.WebAuthnConfigurer.webAuthn;
 import static net.sharplab.springframework.security.webauthn.config.configurers.WebAuthnLoginConfigurer.webAuthnLogin;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -94,8 +91,6 @@ public class WebAuthnLoginConfigurerSetterSpringTest {
         protected void configure(HttpSecurity http) throws Exception {
 
             // Authentication
-            http.apply(webAuthn());
-
             http.apply(webAuthnLogin());
 
             // Authorization

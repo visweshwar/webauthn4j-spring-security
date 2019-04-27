@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.cbor.CBORFactory;
 import com.webauthn4j.converter.util.JsonConverter;
 import com.webauthn4j.metadata.converter.jackson.WebAuthnMetadataJSONModule;
+import com.webauthn4j.validator.WebAuthnRegistrationContextValidator;
 import net.sharplab.springframework.security.webauthn.WebAuthnRegistrationRequestValidator;
 import net.sharplab.springframework.security.webauthn.challenge.ChallengeRepository;
 import net.sharplab.springframework.security.webauthn.challenge.HttpSessionChallengeRepository;
@@ -98,6 +99,25 @@ public class WebAuthnConfigurerUtil {
 
     public static <H extends HttpSecurityBuilder<H>> WebAuthnRegistrationRequestValidator getWebAuthnRegistrationRequestValidator(H http) {
         ApplicationContext applicationContext = http.getSharedObject(ApplicationContext.class);
-        return applicationContext.getBean(WebAuthnRegistrationRequestValidator.class);
+        WebAuthnRegistrationRequestValidator webAuthnRegistrationRequestValidator;
+        String[] beanNames = applicationContext.getBeanNamesForType(WebAuthnRegistrationRequestValidator.class);
+        if (beanNames.length == 0) {
+            webAuthnRegistrationRequestValidator = new WebAuthnRegistrationRequestValidator(getWebAuthnRegistrationContextValidator(http), getServerPropertyProvider(http));
+        } else {
+            webAuthnRegistrationRequestValidator = applicationContext.getBean(WebAuthnRegistrationRequestValidator.class);
+        }
+        return webAuthnRegistrationRequestValidator;
+    }
+
+    public static <H extends HttpSecurityBuilder<H>> WebAuthnRegistrationContextValidator getWebAuthnRegistrationContextValidator(H http) {
+        ApplicationContext applicationContext = http.getSharedObject(ApplicationContext.class);
+        WebAuthnRegistrationContextValidator webAuthnRegistrationContextValidator;
+        String[] beanNames = applicationContext.getBeanNamesForType(WebAuthnRegistrationContextValidator.class);
+        if (beanNames.length == 0) {
+            webAuthnRegistrationContextValidator = WebAuthnRegistrationContextValidator.createNonStrictRegistrationContextValidator();
+        } else {
+            webAuthnRegistrationContextValidator = applicationContext.getBean(WebAuthnRegistrationContextValidator.class);
+        }
+        return webAuthnRegistrationContextValidator;
     }
 }
