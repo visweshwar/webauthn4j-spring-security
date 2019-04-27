@@ -8,7 +8,7 @@ jdk:
   - oraclejdk9
   - oraclejdk11
 
-dist: trusty # to use chrome
+dist: xenial # to use chrome
 
 script:
   # unshallow git repository
