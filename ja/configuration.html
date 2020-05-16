@@ -436,11 +436,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#設定">設定</a>
+<li><a href="#設定">1. 設定</a>
 <ul class="sectlevel2">
-<li><a href="#アプリケーションへの組込">アプリケーションへの組込</a></li>
-<li><a href="#カスタマイズ">カスタマイズ</a></li>
-<li><a href="#高度なトピック">高度なトピック</a></li>
+<li><a href="#アプリケーションへの組込">1.1. アプリケーションへの組込</a></li>
+<li><a href="#カスタマイズ">1.2. カスタマイズ</a></li>
+<li><a href="#高度なトピック">1.3. 高度なトピック</a></li>
 </ul>
 </li>
 </ul>
@@ -448,12 +448,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="設定"><a class="anchor" href="#設定"></a>設定</h2>
+<h2 id="設定"><a class="anchor" href="#設定"></a>1. 設定</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="アプリケーションへの組込"><a class="anchor" href="#アプリケーションへの組込"></a>アプリケーションへの組込</h3>
+<h3 id="アプリケーションへの組込"><a class="anchor" href="#アプリケーションへの組込"></a>1.1. アプリケーションへの組込</h3>
 <div class="sect3">
-<h4 id="maven依存関係"><a class="anchor" href="#maven依存関係"></a>Maven依存関係</h4>
+<h4 id="maven依存関係"><a class="anchor" href="#maven依存関係"></a>1.1.1. Maven依存関係</h4>
 <div class="paragraph">
 <p><span class="line-through">ライブラリとその依存関係を導入するために、以下をpom.xmlファイルに追加してください。</span>
 現在、まだカスタムビルドのSpring Securityを必要とする事情から、Maven Centralへの公開は行っていません。</p>
@@ -469,7 +469,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect3">
-<h4 id="java-config"><a class="anchor" href="#java-config"></a>Java Config</h4>
+<h4 id="java-config"><a class="anchor" href="#java-config"></a>1.1.2. Java Config</h4>
 <div class="sect4">
 <h5 id="webauthnprocessingfilterの組込"><a class="anchor" href="#webauthnprocessingfilterの組込"></a>WebAuthnProcessingFilterの組込</h5>
 <div class="paragraph">
@@ -522,7 +522,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 </div>
 </div>
 <div class="sect3">
-<h4 id="ユーザーディレクトリとの統合"><a class="anchor" href="#ユーザーディレクトリとの統合"></a>ユーザーディレクトリとの統合</h4>
+<h4 id="ユーザーディレクトリとの統合"><a class="anchor" href="#ユーザーディレクトリとの統合"></a>1.1.3. ユーザーディレクトリとの統合</h4>
 <div class="paragraph">
 <p>WebAuthn4J Spring Securityは <code>WebAuthnUserDetailsService</code> インタフェースを通じてユーザーを検索します。
 <code>WebAuthnUserDetailsService</code> を実装したクラスを <code>WebAuthnAuthenticationProvider</code> および
@@ -530,7 +530,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 </div>
 </div>
 <div class="sect3">
-<h4 id="認証デバイス登録時の検証"><a class="anchor" href="#認証デバイス登録時の検証"></a>認証デバイス登録時の検証</h4>
+<h4 id="認証デバイス登録時の検証"><a class="anchor" href="#認証デバイス登録時の検証"></a>1.1.4. 認証デバイス登録時の検証</h4>
 <div class="paragraph">
 <p>認証デバイス登録操作のハンドリングは、基本的にはアプリケーション側の責務ですが、登録しようとしているCredentialが
 認証時に使用できるものであるか検証する為に、WebAuthn4J Spring Securityはコンバータおよびバリデータを提供します。
@@ -542,7 +542,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 </div>
 </div>
 <div class="sect3">
-<h4 id="クライアントサイドとのインタフェース仕様"><a class="anchor" href="#クライアントサイドとのインタフェース仕様"></a>クライアントサイドとのインタフェース仕様</h4>
+<h4 id="クライアントサイドとのインタフェース仕様"><a class="anchor" href="#クライアントサイドとのインタフェース仕様"></a>1.1.5. クライアントサイドとのインタフェース仕様</h4>
 <div class="paragraph">
 <p>WebAuthentication仕様では、ブラウザのJavaScript APIが規定されており、取得したCredentialをサーバーに対して送信する
 インタフェースについては規定がありません。WebAuthn4J Spring Securityでは、ログインURLに対して送信されたリクエストから
@@ -562,9 +562,9 @@ WebAuthn4J Spring Securityでは`OptionsEndpointFilter`を用意しています�
 </div>
 </div>
 <div class="sect2">
-<h3 id="カスタマイズ"><a class="anchor" href="#カスタマイズ"></a>カスタマイズ</h3>
+<h3 id="カスタマイズ"><a class="anchor" href="#カスタマイズ"></a>1.2. カスタマイズ</h3>
 <div class="sect3">
-<h4 id="認証方法の選択"><a class="anchor" href="#認証方法の選択"></a>認証方法の選択</h4>
+<h4 id="認証方法の選択"><a class="anchor" href="#認証方法の選択"></a>1.2.1. 認証方法の選択</h4>
 <div class="paragraph">
 <p>WebAuthn4J Spring Securityでは、認証方法として「ユーザー検証機能付き認証デバイスによるパスワードレス多要素認証」、
 「パスワード＋認証デバイスによる多要素認証」、「パスワード等による単一要素認証」をサポートしています。
@@ -614,9 +614,9 @@ WebAuthn4J Spring Securityでは`OptionsEndpointFilter`を用意しています�
 </div>
 </div>
 <div class="sect2">
-<h3 id="高度なトピック"><a class="anchor" href="#高度なトピック"></a>高度なトピック</h3>
+<h3 id="高度なトピック"><a class="anchor" href="#高度なトピック"></a>1.3. 高度なトピック</h3>
 <div class="sect3">
-<h4 id="多要素認証で第一要素のみ認証完了したユーザーの識別"><a class="anchor" href="#多要素認証で第一要素のみ認証完了したユーザーの識別"></a>多要素認証で第一要素のみ認証完了したユーザーの識別</h4>
+<h4 id="多要素認証で第一要素のみ認証完了したユーザーの識別"><a class="anchor" href="#多要素認証で第一要素のみ認証完了したユーザーの識別"></a>1.3.1. 多要素認証で第一要素のみ認証完了したユーザーの識別</h4>
 <div class="paragraph">
 <p>多要素認証で第一要素のみ認証完了しているユーザーに対して、認証デバイスを要求する画面など、異なるログインページを
 表示したい場合、以下のように現在の <code>Authentication</code> インスタンスが <code>MultiFactorAuthenticationToken</code> か否かで
@@ -638,7 +638,7 @@ public String login() {
 </div>
 </div>
 <div class="sect3">
-<h4 id="credentialの有効範囲rpid設定"><a class="anchor" href="#credentialの有効範囲rpid設定"></a>Credentialの有効範囲（RpId）設定</h4>
+<h4 id="credentialの有効範囲rpid設定"><a class="anchor" href="#credentialの有効範囲rpid設定"></a>1.3.2. Credentialの有効範囲（RpId）設定</h4>
 <div class="paragraph">
 <p>Web Authentication仕様では、Credentialの作成時、即ち認証デバイスの登録時、そのCredentialの有効範囲を制限するための
 パラメータとして、 <code>rpId</code> を指定します。 <code>rpId</code> には、 <a href="https://html.spec.whatwg.org/multipage/origin.html#concept-origin-effective-domain">effective domain</a> を指定することが出来ます。例えば、Credentialの作成を行った
@@ -651,7 +651,7 @@ Credentialが利用可能な範囲を <code>example.com</code> およびその�
 </div>
 </div>
 <div class="sect3">
-<h4 id="構成証明ステートメントの検証"><a class="anchor" href="#構成証明ステートメントの検証"></a>構成証明ステートメントの検証</h4>
+<h4 id="構成証明ステートメントの検証"><a class="anchor" href="#構成証明ステートメントの検証"></a>1.3.3. 構成証明ステートメントの検証</h4>
 <div class="paragraph">
 <p>Web Authentication仕様では、認証デバイスの登録時に要求すれば認証デバイスの構成証明ステートメントを取得することが出来ます。
 Relying Partyは取得した構成証明ステートメントを検証することで、セキュリティ要件に合致しない認証デバイスを除外する
@@ -673,7 +673,7 @@ Relying Partyは取得した構成証明ステートメントを検証するこ�
 </div>
 </div>
 <div class="sect3">
-<h4 id="springのresourceを活用したtrustanchorprovider"><a class="anchor" href="#springのresourceを活用したtrustanchorprovider"></a>SpringのResourceを活用したTrustAnchorProvider</h4>
+<h4 id="springのresourceを活用したtrustanchorprovider"><a class="anchor" href="#springのresourceを活用したtrustanchorprovider"></a>1.3.4. SpringのResourceを活用したTrustAnchorProvider</h4>
 <div class="paragraph">
 <p>認証デバイスを登録時に証明書パスから検証する場合、 <code>TrustAnchorCertPathTrustworthinessValidator</code> クラスは
 <code>TrustAnchorProvider</code> インタフェースの実装クラスから取得した <code>TrustAnchor</code> を使用します。WebAuthn4J Spring Securityでは、
@@ -688,7 +688,7 @@ SpringのResourceとして読み込んだJava Key Storeファイルを <code>Tru
 <div id="footer">
 <div id="footer-text">
 Version 0.7.0-SNAPSHOT<br>
-Last updated 2020-05-16 14:45:37 UTC
+Last updated 2020-05-16 16:07:40 UTC
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">

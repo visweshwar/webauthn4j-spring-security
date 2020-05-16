@@ -436,14 +436,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#導入">導入</a>
+<li><a href="#導入">1. 導入</a>
 <ul class="sectlevel2">
-<li><a href="#web-authenticationとは">Web Authenticationとは</a></li>
-<li><a href="#webauthn4j-spring-securityとは">WebAuthn4J Spring Securityとは</a></li>
-<li><a href="#要件">要件</a></li>
-<li><a href="#ソースコード">ソースコード</a></li>
-<li><a href="#ライセンス">ライセンス</a></li>
-<li><a href="#関連プロジェクト">関連プロジェクト</a></li>
+<li><a href="#web-authenticationとは">1.1. Web Authenticationとは</a></li>
+<li><a href="#webauthn4j-spring-securityとは">1.2. WebAuthn4J Spring Securityとは</a></li>
+<li><a href="#要件">1.3. 要件</a></li>
+<li><a href="#ソースコード">1.4. ソースコード</a></li>
+<li><a href="#ライセンス">1.5. ライセンス</a></li>
+<li><a href="#関連プロジェクト">1.6. 関連プロジェクト</a></li>
 </ul>
 </li>
 </ul>
@@ -451,10 +451,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="導入"><a class="anchor" href="#導入"></a>導入</h2>
+<h2 id="導入"><a class="anchor" href="#導入"></a>1. 導入</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="web-authenticationとは"><a class="anchor" href="#web-authenticationとは"></a>Web Authenticationとは</h3>
+<h3 id="web-authenticationとは"><a class="anchor" href="#web-authenticationとは"></a>1.1. Web Authenticationとは</h3>
 <div class="paragraph">
 <p>Web Authenticationは、W3Cで仕様策定が進められている、Webアプリケーションの新しいセキュアな認証方式仕様です。
 ローカル認証や公開鍵認証、Origin別の鍵管理を組み合わせることで、フィッシングなど認証プロセスに対する攻撃に対して堅固な認証を実現しています。
@@ -464,16 +464,16 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect2">
-<h3 id="webauthn4j-spring-securityとは"><a class="anchor" href="#webauthn4j-spring-securityとは"></a>WebAuthn4J Spring Securityとは</h3>
+<h3 id="webauthn4j-spring-securityとは"><a class="anchor" href="#webauthn4j-spring-securityとは"></a>1.2. WebAuthn4J Spring Securityとは</h3>
 <div class="paragraph">
 <p>Spring Securityで保護されたWebアプリケーションに対して、Web Authentication仕様に基づく認証機能を提供するための
 Spring Security拡張です。</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="要件"><a class="anchor" href="#要件"></a>要件</h3>
+<h3 id="要件"><a class="anchor" href="#要件"></a>1.3. 要件</h3>
 <div class="sect3">
-<h4 id="言語フレームワーク"><a class="anchor" href="#言語フレームワーク"></a>言語・フレームワーク</h4>
+<h4 id="言語フレームワーク"><a class="anchor" href="#言語フレームワーク"></a>1.3.1. 言語・フレームワーク</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -489,7 +489,7 @@ Spring Security拡張です。</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="動作環境"><a class="anchor" href="#動作環境"></a>動作環境</h4>
+<h4 id="動作環境"><a class="anchor" href="#動作環境"></a>1.3.2. 動作環境</h4>
 <div class="paragraph">
 <p>WebAuthn4J Spring Securityの動作環境は、以下の要件を満たす必要があります。</p>
 </div>
@@ -537,25 +537,25 @@ Windows Helloを認証デバイスとして使用できるため、パスワー�
 </div>
 </div>
 <div class="sect2">
-<h3 id="ソースコード"><a class="anchor" href="#ソースコード"></a>ソースコード</h3>
+<h3 id="ソースコード"><a class="anchor" href="#ソースコード"></a>1.4. ソースコード</h3>
 <div class="paragraph">
 <p>ソースコードは <a href="https://github.com/webauthn4j/webauthn4j-spring-security">Github</a> で管理されています。</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>git clone https://github.com/webauthn4j/webauthn4j-spring-security</pre>
+<pre class="prettyprint highlight"><code class="language-bash" data-lang="bash">git clone https://github.com/webauthn4j/webauthn4j-spring-security</code></pre>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="ライセンス"><a class="anchor" href="#ライセンス"></a>ライセンス</h3>
+<h3 id="ライセンス"><a class="anchor" href="#ライセンス"></a>1.5. ライセンス</h3>
 <div class="paragraph">
 <p>WebAuthn4J Spring Securityは <a href="http://www.apache.org/licenses/LICENSE-2.0.html">Apache 2.0 license</a> ライセンスの
 オープンソースソフトウェアです。</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="関連プロジェクト"><a class="anchor" href="#関連プロジェクト"></a>関連プロジェクト</h3>
+<h3 id="関連プロジェクト"><a class="anchor" href="#関連プロジェクト"></a>1.6. 関連プロジェクト</h3>
 <div class="paragraph">
 <p>WebAuthnのアサーションの検証に関わるコアの処理は <a href="https://github.com/webauthn4j/webauthn4j">WebAuthn4J</a> という別のプロジェクトで開発を進めています。</p>
 </div>
@@ -566,7 +566,7 @@ Windows Helloを認証デバイスとして使用できるため、パスワー�
 <div id="footer">
 <div id="footer-text">
 Version 0.7.0-SNAPSHOT<br>
-Last updated 2020-05-16 14:45:37 UTC
+Last updated 2020-05-16 16:07:40 UTC
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">

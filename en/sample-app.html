@@ -436,11 +436,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#sample-application">Sample application</a>
+<li><a href="#sample-application">1. Sample application</a>
 <ul class="sectlevel2">
-<li><a href="#sample-application-execution">Sample application execution</a></li>
-<li><a href="#user-and-authenticator-registration">User and authenticator registration</a></li>
-<li><a href="#user-authentication">User authentication</a></li>
+<li><a href="#sample-application-execution">1.1. Sample application execution</a></li>
+<li><a href="#user-and-authenticator-registration">1.2. User and authenticator registration</a></li>
+<li><a href="#user-authentication">1.3. User authentication</a></li>
 </ul>
 </li>
 </ul>
@@ -448,24 +448,24 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="sample-application"><a class="anchor" href="#sample-application"></a>Sample application</h2>
+<h2 id="sample-application"><a class="anchor" href="#sample-application"></a>1. Sample application</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>WebAuthn4J Spring Security contains a sample application demonstrates its major functionality.</p>
 </div>
 <div class="sect2">
-<h3 id="sample-application-execution"><a class="anchor" href="#sample-application-execution"></a>Sample application execution</h3>
+<h3 id="sample-application-execution"><a class="anchor" href="#sample-application-execution"></a>1.1. Sample application execution</h3>
 <div class="paragraph">
 <p>Sample application can be executed by following command.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code>./gradlew samples:spa:bootRun</code></pre>
+<pre class="prettyprint highlight"><code class="language-bash" data-lang="bash">./gradlew samples:spa:bootRun</code></pre>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="user-and-authenticator-registration"><a class="anchor" href="#user-and-authenticator-registration"></a>User and authenticator registration</h3>
+<h3 id="user-and-authenticator-registration"><a class="anchor" href="#user-and-authenticator-registration"></a>1.2. User and authenticator registration</h3>
 <div class="imageblock">
 <div class="content">
 <img src="images/signup.png" alt="signup view">
@@ -487,7 +487,7 @@ for backup. If you would like to allow single-factor authentication, Please chec
 </div>
 </div>
 <div class="sect2">
-<h3 id="user-authentication"><a class="anchor" href="#user-authentication"></a>User authentication</h3>
+<h3 id="user-authentication"><a class="anchor" href="#user-authentication"></a>1.3. User authentication</h3>
 <div class="paragraph">
 <p>Login page can be accessed with <code><a href="http://localhost:/8080/login" class="bare">http://localhost:/8080/login</a></code>.
 Sample application supports three authentication flow.</p>
@@ -509,7 +509,7 @@ Sample application supports three authentication flow.</p>
 <p>Each of three authentication flows are explained below.</p>
 </div>
 <div class="sect3">
-<h4 id="multi-factor-authentication-with-password-and-authenticator"><a class="anchor" href="#multi-factor-authentication-with-password-and-authenticator"></a>Multi-factor authentication with password and authenticator</h4>
+<h4 id="multi-factor-authentication-with-password-and-authenticator"><a class="anchor" href="#multi-factor-authentication-with-password-and-authenticator"></a>1.3.1. Multi-factor authentication with password and authenticator</h4>
 <div class="paragraph">
 <p>If you register a non user-verifying authenticator like FIDO-U2F token, you can login with multi-factor authentication
 with password and authenticator.</p>
@@ -534,7 +534,7 @@ You will be automatically redirected to the dashboard.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="password-less-multi-factor-authentication-with-a-user-verifying-authenticator"><a class="anchor" href="#password-less-multi-factor-authentication-with-a-user-verifying-authenticator"></a>Password-less multi-factor authentication with a user-verifying authenticator</h4>
+<h4 id="password-less-multi-factor-authentication-with-a-user-verifying-authenticator"><a class="anchor" href="#password-less-multi-factor-authentication-with-a-user-verifying-authenticator"></a>1.3.2. Password-less multi-factor authentication with a user-verifying authenticator</h4>
 <div class="paragraph">
 <p>If you register a user-verifying authenticator like that supports FIDO-CTAP2, you can login without password.</p>
 </div>
@@ -550,7 +550,7 @@ You will be automatically redirected to the dashboard.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="password-authentication"><a class="anchor" href="#password-authentication"></a>Password authentication</h4>
+<h4 id="password-authentication"><a class="anchor" href="#password-authentication"></a>1.3.3. Password authentication</h4>
 <div class="paragraph">
 <p>If you checked "Allow password authentication" at user registration, standard password authentication is available.</p>
 </div>
@@ -571,7 +571,7 @@ If the authentication succeeds, you will be automatically redirected to the dash
 <div id="footer">
 <div id="footer-text">
 Version 0.7.0-SNAPSHOT<br>
-Last updated 2020-05-16 14:45:37 UTC
+Last updated 2020-05-16 16:07:40 UTC
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
