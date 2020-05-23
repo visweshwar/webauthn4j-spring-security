@@ -471,18 +471,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sect2">
 <h3 id="web-authenticationとは"><a class="anchor" href="#web-authenticationとは"></a>1.1. Web Authenticationとは</h3>
 <div class="paragraph">
-<p>Web Authenticationは、W3Cで仕様策定が進められている、Webアプリケーションの新しいセキュアな認証方式仕様です。
-ローカル認証や公開鍵認証、Origin別の鍵管理を組み合わせることで、フィッシングなど認証プロセスに対する攻撃に対して堅固な認証を実現しています。
-主要ブラウザでの実装が進みつつあり、セキュリティ、利便性を重視するユーザーに対して優れた選択肢を提供します。
-当初はFIDO AllianceでFIDO 2.0: Web API for accessing FIDO 2.0 credentialsとして仕様策定が進められていましたが、
-現在はW3Cに移管され、仕様策定が行われています。</p>
+<p>Web Authenticationは、W3Cで仕様策定が進められている、Webアプリケーションの新しいセキュアな認証方式仕様です。 ローカル認証や公開鍵認証、Origin別の鍵管理を組み合わせることで、フィッシングなど認証プロセスに対する攻撃に対して堅固な認証を実現しています。 主要ブラウザでの実装が進みつつあり、セキュリティ、利便性を重視するユーザーに対して優れた選択肢を提供します。 当初はFIDO AllianceでFIDO 2.0: Web API for accessing FIDO 2.0 credentialsとして仕様策定が進められていましたが、 現在はW3Cに移管され、仕様策定が行われています。</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="webauthn4j-spring-securityとは"><a class="anchor" href="#webauthn4j-spring-securityとは"></a>1.2. WebAuthn4J Spring Securityとは</h3>
 <div class="paragraph">
-<p>Spring Securityで保護されたWebアプリケーションに対して、Web Authentication仕様に基づく認証機能を提供するための
-Spring Security拡張です。</p>
+<p>Spring Securityで保護されたWebアプリケーションに対して、Web Authentication仕様に基づく認証機能を提供するための Spring Security拡張です。</p>
 </div>
 </div>
 <div class="sect2">
@@ -534,19 +529,13 @@ Spring Security拡張です。</p>
 <div class="sect4">
 <h5 id="securecontext"><a class="anchor" href="#securecontext"></a>SecureContext</h5>
 <div class="paragraph">
-<p>Web Authentication仕様では、動作環境がSecureContextであることを要求しています。
-これは、ユーザーがサイトに接続する際、HTTPS接続でなければならないことを意味します。HTTP接続環境下では、ブラウザはWebAuthnに関連した要求を拒否するため、利用できません。
-但し、 <code>localhost</code> では例外的にHTTP接続が認められています。SecureContextについて詳しくは <a href="https://developer.mozilla.org/ja/docs/Web/Security/Secure_Contexts">MDN</a> を参照ください。</p>
+<p>Web Authentication仕様では、動作環境がSecureContextであることを要求しています。 これは、ユーザーがサイトに接続する際、HTTPS接続でなければならないことを意味します。HTTP接続環境下では、ブラウザはWebAuthnに関連した要求を拒否するため、利用できません。 但し、 <code>localhost</code> では例外的にHTTP接続が認められています。SecureContextについて詳しくは <a href="https://developer.mozilla.org/ja/docs/Web/Security/Secure_Contexts">MDN</a> を参照ください。</p>
 </div>
 </div>
 <div class="sect4">
 <h5 id="ブラウザ"><a class="anchor" href="#ブラウザ"></a>ブラウザ</h5>
 <div class="paragraph">
-<p>2018年12月現在、デスクトップ版Google Chrome 70以降およびデスクトップ版Mozilla Firefox 60以降でWebAuthnは利用可能です。
-但し、認証デバイスのサポートはFIDO-U2Fの認証トークンに限定されており、指紋認証などによるユーザー検証機能がついた
-認証デバイスはサポートしていないため、パスワードレス認証は利用できません。
-Microsoft Edgeでは、Windows 10 October 2018 Update以降でWebAuthnが利用可能です。EdgeではFIDO-U2Fの認証トークンだけでなく、
-Windows Helloを認証デバイスとして使用できるため、パスワードレス認証をサポートしています。</p>
+<p>2018年12月現在、デスクトップ版Google Chrome 70以降およびデスクトップ版Mozilla Firefox 60以降でWebAuthnは利用可能です。 但し、認証デバイスのサポートはFIDO-U2Fの認証トークンに限定されており、指紋認証などによるユーザー検証機能がついた 認証デバイスはサポートしていないため、パスワードレス認証は利用できません。 Microsoft Edgeでは、Windows 10 October 2018 Update以降でWebAuthnが利用可能です。EdgeではFIDO-U2Fの認証トークンだけでなく、 Windows Helloを認証デバイスとして使用できるため、パスワードレス認証をサポートしています。</p>
 </div>
 </div>
 </div>
@@ -565,8 +554,7 @@ Windows Helloを認証デバイスとして使用できるため、パスワー�
 <div class="sect2">
 <h3 id="ライセンス"><a class="anchor" href="#ライセンス"></a>1.5. ライセンス</h3>
 <div class="paragraph">
-<p>WebAuthn4J Spring Securityは <a href="http://www.apache.org/licenses/LICENSE-2.0.html">Apache 2.0 license</a> ライセンスの
-オープンソースソフトウェアです。</p>
+<p>WebAuthn4J Spring Securityは <a href="http://www.apache.org/licenses/LICENSE-2.0.html">Apache 2.0 license</a> ライセンスの オープンソースソフトウェアです。</p>
 </div>
 </div>
 <div class="sect2">
@@ -601,8 +589,7 @@ Windows Helloを認証デバイスとして使用できるため、パスワー�
 <div class="sect3">
 <h4 id="maven依存関係"><a class="anchor" href="#maven依存関係"></a>1.7.1. Maven依存関係</h4>
 <div class="paragraph">
-<p><span class="line-through">ライブラリとその依存関係を導入するために、以下をpom.xmlファイルに追加してください。</span>
-現在、まだカスタムビルドのSpring Securityを必要とする事情から、Maven Centralへの公開は行っていません。</p>
+<p><span class="line-through">ライブラリとその依存関係を導入するために、以下をpom.xmlファイルに追加してください。</span> 現在、まだカスタムビルドのSpring Securityを必要とする事情から、Maven Centralへの公開は行っていません。</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -621,8 +608,7 @@ Windows Helloを認証デバイスとして使用できるため、パスワー�
 <div class="paragraph">
 <p>WebAuthnの認証要求を受け付ける <code>WebAuthnProcessingFilter</code> はJavaConfigで設定することが可能です。
 <code>WebSecurityConfigurerAdapter</code> を継承したクラスで <code>configure(HttpSecurity http)</code> メソッドをオーバーライドし、
-<code>WebAuthnLoginConfigurer</code> を適用して下さい。 <code>WebAuthnLoginConfigurer</code> はインスタンスを返却する <code>webAuthnLogin()</code> という
-staticメソッドを持っていますので、そちらを活用すると良いでしょう。</p>
+<code>WebAuthnLoginConfigurer</code> を適用して下さい。 <code>WebAuthnLoginConfigurer</code> はインスタンスを返却する <code>webAuthnLogin()</code> という staticメソッドを持っていますので、そちらを活用すると良いでしょう。</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -646,12 +632,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 <h5 id="webauthnauthenticationproviderの組込"><a class="anchor" href="#webauthnauthenticationproviderの組込"></a>WebAuthnAuthenticationProviderの組込</h5>
 <div class="paragraph">
 <p>Web Authentication用の <code>AuthenticationProvider</code> である <code>WebAuthnAuthenticationProvider</code> もJavaConfigで設定可能です。
-<code>WebSecurityConfigurerAdapter</code> を継承したクラスで <code>WebAuthnAuthenticationProviderConfigurer</code> を適用して下さい。
-また、パスワード＋認証デバイスによる多要素認証をサポートする場合は、 <code>MultiFactorAuthenticationProvider</code> の設定が
-必要ですが、こちらは <code>MultiFactorAuthenticationProviderConfigurer</code> を適用することで可能です。
+<code>WebSecurityConfigurerAdapter</code> を継承したクラスで <code>WebAuthnAuthenticationProviderConfigurer</code> を適用して下さい。 また、パスワード＋認証デバイスによる多要素認証をサポートする場合は、 <code>MultiFactorAuthenticationProvider</code> の設定が 必要ですが、こちらは <code>MultiFactorAuthenticationProviderConfigurer</code> を適用することで可能です。
 <code>MultiFactorAuthenticationProvider</code> を使用する上での注意点として、 委譲先の <code>AuthenticationProvider</code> は
-<code>AuthenticationManager</code> に登録してはならないというものがあります。 例えば、 <code>DaoAuthenticationProvider</code> に対して
-委譲する場合、 <code>DaoAuthenticationProvider</code> を <code>AuthenticationManager</code> に登録する <code>DaoAuthenticationConfigurer</code> や、
+<code>AuthenticationManager</code> に登録してはならないというものがあります。 例えば、 <code>DaoAuthenticationProvider</code> に対して 委譲する場合、 <code>DaoAuthenticationProvider</code> を <code>AuthenticationManager</code> に登録する <code>DaoAuthenticationConfigurer</code> や、
 <code>AuthenticationManagerBuilder#userDetailsService</code> は使用しないで下さい。</p>
 </div>
 <div class="listingblock">
@@ -678,8 +661,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 <div class="sect3">
 <h4 id="認証デバイス登録時の検証"><a class="anchor" href="#認証デバイス登録時の検証"></a>1.7.4. 認証デバイス登録時の検証</h4>
 <div class="paragraph">
-<p>認証デバイス登録操作のハンドリングは、基本的にはアプリケーション側の責務ですが、登録しようとしているCredentialが
-認証時に使用できるものであるか検証する為に、WebAuthn4J Spring Securityはコンバータおよびバリデータを提供します。
+<p>認証デバイス登録操作のハンドリングは、基本的にはアプリケーション側の責務ですが、登録しようとしているCredentialが 認証時に使用できるものであるか検証する為に、WebAuthn4J Spring Securityはコンバータおよびバリデータを提供します。
 <code>Base64StringToCollectedClientDataConverter</code> はBase64URL文字列を <code>CollectedClientData</code> に変換します。
 <code>Base64StringToAttestationObjectConverter</code> はBase64URL文字列を <code>AttestationObject</code> に変換します。</p>
 </div>
@@ -690,8 +672,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 <div class="sect3">
 <h4 id="クライアントサイドとのインタフェース仕様"><a class="anchor" href="#クライアントサイドとのインタフェース仕様"></a>1.7.5. クライアントサイドとのインタフェース仕様</h4>
 <div class="paragraph">
-<p>WebAuthentication仕様では、ブラウザのJavaScript APIが規定されており、取得したCredentialをサーバーに対して送信する
-インタフェースについては規定がありません。WebAuthn4J Spring Securityでは、ログインURLに対して送信されたリクエストから
+<p>WebAuthentication仕様では、ブラウザのJavaScript APIが規定されており、取得したCredentialをサーバーに対して送信する インタフェースについては規定がありません。WebAuthn4J Spring Securityでは、ログインURLに対して送信されたリクエストから
 <code>WebAuthnProcessingFilter</code> がリクエストパラメータとして <code>credentialId</code> 、<code>clientData</code> 、 <code>authenticatorData</code> 、
 <code>signature</code> 、<code>clientExtensionsJSON</code> を取得して認証を行います。 <code>credentialId</code> 、<code>clientData</code> 、 <code>authenticatorData</code> 、
 <code>signature</code> はバイナリデータの為、Base64URLエンコードして送信して下さい。</p>
@@ -699,10 +680,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 <div class="sect4">
 <h5 id="オプションエンドポイント仕様"><a class="anchor" href="#オプションエンドポイント仕様"></a>オプションエンドポイント仕様</h5>
 <div class="paragraph">
-<p>WebAuthentication仕様では、認証に先立ってサーバーからチャレンジを取得する必要があります。
-また、FIDO-U2Fトークンを認証デバイスとして使用する場合は、第一認証要素によって特定されたユーザーに紐づけられた
-CredentialIdをサーバーから取得する必要があります。これらのデータを取得するためのエンドポイントとして、
-WebAuthn4J Spring Securityでは`OptionsEndpointFilter`を用意しています。</p>
+<p>WebAuthentication仕様では、認証に先立ってサーバーからチャレンジを取得する必要があります。 また、FIDO-U2Fトークンを認証デバイスとして使用する場合は、第一認証要素によって特定されたユーザーに紐づけられた CredentialIdをサーバーから取得する必要があります。これらのデータを取得するためのエンドポイントとして、 WebAuthn4J Spring Securityでは`OptionsEndpointFilter`を用意しています。</p>
 </div>
 </div>
 </div>
@@ -712,17 +690,12 @@ WebAuthn4J Spring Securityでは`OptionsEndpointFilter`を用意しています�
 <div class="sect3">
 <h4 id="認証方法の選択"><a class="anchor" href="#認証方法の選択"></a>1.8.1. 認証方法の選択</h4>
 <div class="paragraph">
-<p>WebAuthn4J Spring Securityでは、認証方法として「ユーザー検証機能付き認証デバイスによるパスワードレス多要素認証」、
-「パスワード＋認証デバイスによる多要素認証」、「パスワード等による単一要素認証」をサポートしています。
-パスワード認証をサポートし、ユーザーへの間口を広げることも出来ますし、パスワード認証を制限することで、
-セキュリティを高めることも出来ます。</p>
+<p>WebAuthn4J Spring Securityでは、認証方法として「ユーザー検証機能付き認証デバイスによるパスワードレス多要素認証」、 「パスワード＋認証デバイスによる多要素認証」、「パスワード等による単一要素認証」をサポートしています。 パスワード認証をサポートし、ユーザーへの間口を広げることも出来ますし、パスワード認証を制限することで、 セキュリティを高めることも出来ます。</p>
 </div>
 <div class="sect4">
 <h5 id="パスワード認証を制限する方法"><a class="anchor" href="#パスワード認証を制限する方法"></a>パスワード認証を制限する方法</h5>
 <div class="paragraph">
-<p>パスワード等による単一要素認証の許可・制限は、ユーザー単位で行うことが可能です。<code>WebAuthnUserDetails</code> の
-基底インタフェースである <code>MFAUserDetails</code> インタフェースには、<code>isSingleFactorAuthenticationAllowed</code> メソッドが存在し、
-実装クラスで <code>true</code> を返却すれば、そのユーザーはパスワードなどの第一認証要素だけで認証をパスすることが出来ます。</p>
+<p>パスワード等による単一要素認証の許可・制限は、ユーザー単位で行うことが可能です。<code>WebAuthnUserDetails</code> の 基底インタフェースである <code>MFAUserDetails</code> インタフェースには、<code>isSingleFactorAuthenticationAllowed</code> メソッドが存在し、 実装クラスで <code>true</code> を返却すれば、そのユーザーはパスワードなどの第一認証要素だけで認証をパスすることが出来ます。</p>
 </div>
 </div>
 <div class="sect4">
@@ -730,23 +703,18 @@ WebAuthn4J Spring Securityでは`OptionsEndpointFilter`を用意しています�
 <div class="paragraph">
 <p>WebAuthn4J Spring Securityは、多要素認証の実現に <code>MultiFactorAuthenticationProvider</code> を使用します。
 <code>MultiFactorAuthenticationProvider</code> はSpring Securityで多要素認証を実現するための <code>AuthenticationProvider</code>
-インタフェースの実装で、認証処理自体は別の <code>AuthenticationProvider</code> に委譲します。
-委譲先の <code>AuthenticationProvider</code> での認証処理が成功し、単一要素認証が許可されていない場合、
+インタフェースの実装で、認証処理自体は別の <code>AuthenticationProvider</code> に委譲します。 委譲先の <code>AuthenticationProvider</code> での認証処理が成功し、単一要素認証が許可されていない場合、
 <code>MultiFactorAuthenticationProvider</code> は委譲先の <code>AuthenticationProvider</code> の返却した <code>Authentication</code> の代わりに
 <code>MultiFactorAuthenticationToken</code> を返却します。</p>
 </div>
 <div class="paragraph">
 <p><code>MultiFactorAuthenticationToken</code> は多要素認証における複数の認証要素の内、一部が完了し、一部が未完了であることを示す
-<code>Authentication</code> インタフェースの実装です。<code>AnonymousAuthenticationToken</code> と同様に、
-認証が完了していないPrincipalとして扱われます。</p>
+<code>Authentication</code> インタフェースの実装です。<code>AnonymousAuthenticationToken</code> と同様に、 認証が完了していないPrincipalとして扱われます。</p>
 </div>
 <div class="paragraph">
 <p>WebAuthn4J Spring Securityでパスワード＋認証デバイスによる多要素認証を実現するには、パスワード認証のための
 <code>DaoAuthenticationProvider</code> を委譲先とした <code>MultiFactorAuthenticationProvider</code> を用意し、
-<code>MultiFactorAuthenticationProvider</code> のみ <code>AuthenticationManager</code> に登録する必要があります。
-委譲先である <code>DaoAuthenticationProvider</code> は <code>AuthenticationManager</code> にセットしてはいけません。
-これは、委譲先の <code>AuthenticationProvider</code> が <code>MultiFactorAuthenticationProvider</code> を経由せずに <code>Authentication</code> を
-処理してしまうと、 <code>MultiFactorAuthenticationToken</code> が返却されず、パスワードのみによる単一要素認証となってしまうためです。</p>
+<code>MultiFactorAuthenticationProvider</code> のみ <code>AuthenticationManager</code> に登録する必要があります。 委譲先である <code>DaoAuthenticationProvider</code> は <code>AuthenticationManager</code> にセットしてはいけません。 これは、委譲先の <code>AuthenticationProvider</code> が <code>MultiFactorAuthenticationProvider</code> を経由せずに <code>Authentication</code> を 処理してしまうと、 <code>MultiFactorAuthenticationToken</code> が返却されず、パスワードのみによる単一要素認証となってしまうためです。</p>
 </div>
 </div>
 <div class="sect4">
@@ -764,9 +732,7 @@ WebAuthn4J Spring Securityでは`OptionsEndpointFilter`を用意しています�
 <div class="sect3">
 <h4 id="多要素認証で第一要素のみ認証完了したユーザーの識別"><a class="anchor" href="#多要素認証で第一要素のみ認証完了したユーザーの識別"></a>1.9.1. 多要素認証で第一要素のみ認証完了したユーザーの識別</h4>
 <div class="paragraph">
-<p>多要素認証で第一要素のみ認証完了しているユーザーに対して、認証デバイスを要求する画面など、異なるログインページを
-表示したい場合、以下のように現在の <code>Authentication</code> インスタンスが <code>MultiFactorAuthenticationToken</code> か否かで
-判断することが出来ます。</p>
+<p>多要素認証で第一要素のみ認証完了しているユーザーに対して、認証デバイスを要求する画面など、異なるログインページを 表示したい場合、以下のように現在の <code>Authentication</code> インスタンスが <code>MultiFactorAuthenticationToken</code> か否かで 判断することが出来ます。</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -786,11 +752,8 @@ public String login() {
 <div class="sect3">
 <h4 id="credentialの有効範囲rpid設定"><a class="anchor" href="#credentialの有効範囲rpid設定"></a>1.9.2. Credentialの有効範囲（RpId）設定</h4>
 <div class="paragraph">
-<p>Web Authentication仕様では、Credentialの作成時、即ち認証デバイスの登録時、そのCredentialの有効範囲を制限するための
-パラメータとして、 <code>rpId</code> を指定します。 <code>rpId</code> には、 <a href="https://html.spec.whatwg.org/multipage/origin.html#concept-origin-effective-domain">effective domain</a> を指定することが出来ます。例えば、Credentialの作成を行った
-ページのドメインが <code>dev.example.com</code> だった場合に、RpIdを <code>dev.example.com</code> と指定すれば、そのCredentialは
-<code>dev.example.com</code> とそのサブドメインの範囲だけで利用できますが、 <code>rpId</code> を <code>example.com</code> とすることで、
-Credentialが利用可能な範囲を <code>example.com</code> およびそのサブドメインに広げることが出来ます。</p>
+<p>Web Authentication仕様では、Credentialの作成時、即ち認証デバイスの登録時、そのCredentialの有効範囲を制限するための パラメータとして、 <code>rpId</code> を指定します。 <code>rpId</code> には、 <a href="https://html.spec.whatwg.org/multipage/origin.html#concept-origin-effective-domain">effective domain</a> を指定することが出来ます。例えば、Credentialの作成を行った ページのドメインが <code>dev.example.com</code> だった場合に、RpIdを <code>dev.example.com</code> と指定すれば、そのCredentialは
+<code>dev.example.com</code> とそのサブドメインの範囲だけで利用できますが、 <code>rpId</code> を <code>example.com</code> とすることで、 Credentialが利用可能な範囲を <code>example.com</code> およびそのサブドメインに広げることが出来ます。</p>
 </div>
 <div class="paragraph">
 <p>WebAuthn4J Spring Securityでは、 <code>rpId</code> は <code>ServerPropertyProviderImpl</code> のプロパティとして設定可能です。</p>
@@ -799,17 +762,10 @@ Credentialが利用可能な範囲を <code>example.com</code> およびその�
 <div class="sect3">
 <h4 id="構成証明ステートメントの検証"><a class="anchor" href="#構成証明ステートメントの検証"></a>1.9.3. 構成証明ステートメントの検証</h4>
 <div class="paragraph">
-<p>Web Authentication仕様では、認証デバイスの登録時に要求すれば認証デバイスの構成証明ステートメントを取得することが出来ます。
-Relying Partyは取得した構成証明ステートメントを検証することで、セキュリティ要件に合致しない認証デバイスを除外する
-ことが可能です。
-但し、構成証明ステートメントにはユーザーのサイトを跨いだトラッキングに利用できる情報が含まれていることから、無闇に
-要求するべきではありません。また、構成証明ステートメントを要求した場合、ブラウザはユーザーに対して追加のダイアログを
-表示するため、ユーザビリティが低下することも注意が必要です。認証デバイスの厳密な検証が必要なエンタープライズ用途以外、
-通常のB2Cサイトでは、構成証明ステートメントの要求を行うべきではないでしょう。</p>
+<p>Web Authentication仕様では、認証デバイスの登録時に要求すれば認証デバイスの構成証明ステートメントを取得することが出来ます。 Relying Partyは取得した構成証明ステートメントを検証することで、セキュリティ要件に合致しない認証デバイスを除外する ことが可能です。 但し、構成証明ステートメントにはユーザーのサイトを跨いだトラッキングに利用できる情報が含まれていることから、無闇に 要求するべきではありません。また、構成証明ステートメントを要求した場合、ブラウザはユーザーに対して追加のダイアログを 表示するため、ユーザビリティが低下することも注意が必要です。認証デバイスの厳密な検証が必要なエンタープライズ用途以外、 通常のB2Cサイトでは、構成証明ステートメントの要求を行うべきではないでしょう。</p>
 </div>
 <div class="paragraph">
-<p>WebAuthn4Jでは、<code>WebAuthnRegistrationContextValidator</code> が認証デバイスの登録要求の検証を行いますが、
-取得した構成証明ステートメントの署名と信頼性の検証は、それぞれ <code>AttestationStatementValidator</code> と
+<p>WebAuthn4Jでは、<code>WebAuthnRegistrationContextValidator</code> が認証デバイスの登録要求の検証を行いますが、 取得した構成証明ステートメントの署名と信頼性の検証は、それぞれ <code>AttestationStatementValidator</code> と
 <code>CertPathTrustworthinessValidator</code> インタフェースの実装に委譲します。</p>
 </div>
 <div class="paragraph">
@@ -822,8 +778,7 @@ Relying Partyは取得した構成証明ステートメントを検証するこ�
 <h4 id="springのresourceを活用したtrustanchorprovider"><a class="anchor" href="#springのresourceを活用したtrustanchorprovider"></a>1.9.4. SpringのResourceを活用したTrustAnchorProvider</h4>
 <div class="paragraph">
 <p>認証デバイスを登録時に証明書パスから検証する場合、 <code>TrustAnchorCertPathTrustworthinessValidator</code> クラスは
-<code>TrustAnchorProvider</code> インタフェースの実装クラスから取得した <code>TrustAnchor</code> を使用します。WebAuthn4J Spring Securityでは、
-SpringのResourceとして読み込んだJava Key Storeファイルを <code>TrustAnchor</code> として使用する <code>TrustAnchorProvider</code> として、
+<code>TrustAnchorProvider</code> インタフェースの実装クラスから取得した <code>TrustAnchor</code> を使用します。WebAuthn4J Spring Securityでは、 SpringのResourceとして読み込んだJava Key Storeファイルを <code>TrustAnchor</code> として使用する <code>TrustAnchorProvider</code> として、
 <code>KeyStoreResourceTrustAnchorProvider</code> クラスを提供します。</p>
 </div>
 </div>
@@ -863,8 +818,7 @@ SpringのResourceとして読み込んだJava Key Storeファイルを <code>Tru
 </div>
 </div>
 <div class="paragraph">
-<p>サインアップ画面は、 <code><a href="http://localhost:8080/angular/signup" class="bare">http://localhost:8080/angular/signup</a></code> でアクセスすることが出来ます。
-ユーザー情報を入力し、ユーザーと認証デバイスの登録を行ってください。</p>
+<p>サインアップ画面は、 <code><a href="http://localhost:8080/angular/signup" class="bare">http://localhost:8080/angular/signup</a></code> でアクセスすることが出来ます。 ユーザー情報を入力し、ユーザーと認証デバイスの登録を行ってください。</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -872,17 +826,13 @@ SpringのResourceとして読み込んだJava Key Storeファイルを <code>Tru
 </div>
 </div>
 <div class="paragraph">
-<p>「認証デバイス」欄の「追加」ボタンを押下すると認証デバイスでの操作を促すポップアップが表示され、
-認証デバイスの登録モードになりますので、ポップアップに従い登録を済ませてください。
-認証デバイスは紛失・故障に備え、バックアップとして複数登録することが出来ます。
-パスワードのみによる単一要素認証を許可する場合は、「パスワード認証を許可」にチェックを入れてください。</p>
+<p>「認証デバイス」欄の「追加」ボタンを押下すると認証デバイスでの操作を促すポップアップが表示され、 認証デバイスの登録モードになりますので、ポップアップに従い登録を済ませてください。 認証デバイスは紛失・故障に備え、バックアップとして複数登録することが出来ます。 パスワードのみによる単一要素認証を許可する場合は、「パスワード認証を許可」にチェックを入れてください。</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="ユーザー認証"><a class="anchor" href="#ユーザー認証"></a>3.3. ユーザー認証</h3>
 <div class="paragraph">
-<p>ログイン画面は、 <code><a href="http://localhost:/8080/angular/login" class="bare">http://localhost:/8080/angular/login</a></code> でアクセスすることが出来ます。
-サンプルアプリケーションではユーザー認証について、三つの認証フローをサポートしています。</p>
+<p>ログイン画面は、 <code><a href="http://localhost:/8080/angular/login" class="bare">http://localhost:/8080/angular/login</a></code> でアクセスすることが出来ます。 サンプルアプリケーションではユーザー認証について、三つの認証フローをサポートしています。</p>
 </div>
 <div class="ulist">
 <ul>
@@ -903,8 +853,7 @@ SpringのResourceとして読み込んだJava Key Storeファイルを <code>Tru
 <div class="sect3">
 <h4 id="パスワード認証デバイスによる多要素認証"><a class="anchor" href="#パスワード認証デバイスによる多要素認証"></a>3.3.1. パスワード＋認証デバイスによる多要素認証</h4>
 <div class="paragraph">
-<p>ユーザー検証機能が付いていないFIDO-U2Fのトークンのような認証デバイスを登録した場合は、パスワード＋認証デバイスによる
-多要素認証が可能です。</p>
+<p>ユーザー検証機能が付いていないFIDO-U2Fのトークンのような認証デバイスを登録した場合は、パスワード＋認証デバイスによる 多要素認証が可能です。</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -920,8 +869,7 @@ SpringのResourceとして読み込んだJava Key Storeファイルを <code>Tru
 </div>
 </div>
 <div class="paragraph">
-<p>パスワード認証に成功した場合、第二認証要素として認証デバイスを用いた認証を求める、認証デバイスログイン画面が開きます。
-認証を求めるポップアップが開いたら、認証デバイスを操作し、認証を完了してください。認証に成功すると、画面が自動的に遷移します。</p>
+<p>パスワード認証に成功した場合、第二認証要素として認証デバイスを用いた認証を求める、認証デバイスログイン画面が開きます。 認証を求めるポップアップが開いたら、認証デバイスを操作し、認証を完了してください。認証に成功すると、画面が自動的に遷移します。</p>
 </div>
 </div>
 <div class="sect3">
@@ -935,15 +883,13 @@ SpringのResourceとして読み込んだJava Key Storeファイルを <code>Tru
 </div>
 </div>
 <div class="paragraph">
-<p>ログイン画面の「パスワードレスログイン」ボタンを押下すると、認証デバイスを用いた認証を求めるポップアップが開きます。
-認証デバイスを操作し、認証を完了してください。認証に成功すると、画面が自動的に遷移します。</p>
+<p>ログイン画面の「パスワードレスログイン」ボタンを押下すると、認証デバイスを用いた認証を求めるポップアップが開きます。 認証デバイスを操作し、認証を完了してください。認証に成功すると、画面が自動的に遷移します。</p>
 </div>
 </div>
 <div class="sect3">
 <h4 id="パスワード認証"><a class="anchor" href="#パスワード認証"></a>3.3.3. パスワード認証</h4>
 <div class="paragraph">
-<p>ユーザー登録時に「パスワード認証を許可」にチェックを入れていた場合、
-通常のパスワード認証が利用可能です。</p>
+<p>ユーザー登録時に「パスワード認証を許可」にチェックを入れていた場合、 通常のパスワード認証が利用可能です。</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -951,8 +897,7 @@ SpringのResourceとして読み込んだJava Key Storeファイルを <code>Tru
 </div>
 </div>
 <div class="paragraph">
-<p>ログイン画面でユーザー名とパスワードを入力し、「ログイン」ボタンを押下して認証を完了してください。
-認証に成功すると、画面は自動的に遷移します。</p>
+<p>ログイン画面でユーザー名とパスワードを入力し、「ログイン」ボタンを押下して認証を完了してください。 認証に成功すると、画面は自動的に遷移します。</p>
 </div>
 </div>
 </div>
@@ -962,7 +907,7 @@ SpringのResourceとして読み込んだJava Key Storeファイルを <code>Tru
 <div id="footer">
 <div id="footer-text">
 Version 0.7.0-SNAPSHOT<br>
-Last updated 2020-05-23 06:13:05 UTC
+Last updated 2020-05-23 08:15:31 UTC
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">

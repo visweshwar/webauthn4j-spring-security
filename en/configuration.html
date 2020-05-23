@@ -455,8 +455,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sect3">
 <h4 id="maven-dependency"><a class="anchor" href="#maven-dependency"></a>1.1.1. Maven dependency</h4>
 <div class="paragraph">
-<p><span class="line-through">Please add following to pom.xml to introduce WebAuthn4J Spring Security and its dependencies.</span>
-For now, it is not published to Maven Central.</p>
+<p><span class="line-through">Please add following to pom.xml to introduce WebAuthn4J Spring Security and its dependencies.</span> For now, it is not published to Maven Central.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -499,16 +498,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 <div class="sect4">
 <h5 id="integrating-webauthnauthenticationprovider"><a class="anchor" href="#integrating-webauthnauthenticationprovider"></a>Integrating WebAuthnAuthenticationProvider</h5>
 <div class="paragraph">
-<p><code>WebAuthnAuthenticationProvider</code>, which is a <code>AuthenticationProvider</code> for Web Authentication, can also be configured with
-JavaConfig. Please apply <code>WebAuthnAuthenticationProviderConfigurer</code> to a configuration class inherits
+<p><code>WebAuthnAuthenticationProvider</code>, which is a <code>AuthenticationProvider</code> for Web Authentication, can also be configured with JavaConfig.
+Please apply <code>WebAuthnAuthenticationProviderConfigurer</code> to a configuration class inherits
 <code>WebSecurityConfigurerAdapter</code>.
-To support multi-factor authentication with password and authenticator, <code>MultiFactorAuthenticationProvider</code> is what you
-need, and <code>MultiFactorAuthenticationProviderConfigurer</code> configures it for you.</p>
+To support multi-factor authentication with password and authenticator, <code>MultiFactorAuthenticationProvider</code> is what you need, and <code>MultiFactorAuthenticationProviderConfigurer</code> configures it for you.</p>
 </div>
 <div class="paragraph">
 <p>There are some points to be kept in mind when using <code>MultiFactorAuthenticationProvider</code>.
-<code>AuthenticationProvider</code> to be delegated cannot to be registered to <code>AuthenticationManager</code>. If you delegate authentication
-to <code>DaoAuthenticationProvider</code>, it is important not to use <code>DaoAuthenticationConfigurer</code> or
+<code>AuthenticationProvider</code> to be delegated cannot to be registered to <code>AuthenticationManager</code>.
+If you delegate authentication to <code>DaoAuthenticationProvider</code>, it is important not to use <code>DaoAuthenticationConfigurer</code> or
 <code>AuthenticationManagerBuilder#userDetailsService</code>.</p>
 </div>
 <div class="listingblock">
@@ -529,14 +527,13 @@ to <code>DaoAuthenticationProvider</code>, it is important not to use <code>DaoA
 <div class="paragraph">
 <p>WebAuthn4J Spring Security looks up a user through the <code>WebAuthnUserDetailsService</code> interface.
 Please set a class implementing <code>WebAuthnUserDetailsService</code> to the <code>WebAuthnAuthenticationProvider</code> and the delegated
- <code>AuthenticationProvider</code>.</p>
+<code>AuthenticationProvider</code>.</p>
 </div>
 </div>
 <div class="sect3">
 <h4 id="validation-on-an-authenticator-registration"><a class="anchor" href="#validation-on-an-authenticator-registration"></a>1.1.4. Validation on an authenticator registration</h4>
 <div class="paragraph">
-<p>While it is basically application&#8217;s responsibility to handle an authenticator registration process, WebAuthn4J Spring Security
-provides converters and validators to examine the credential in question.
+<p>While it is basically application&#8217;s responsibility to handle an authenticator registration process, WebAuthn4J Spring Security provides converters and validators to examine the credential in question.
 <code>Base64StringToCollectedClientDataConverter</code> converts Base64 string to a <code>CollectedClientData</code>.
 <code>Base64StringToAttestationObjectConverter</code> converts Base64 string to a <code>AttestationObject</code>.</p>
 </div>
@@ -547,7 +544,8 @@ provides converters and validators to examine the credential in question.
 <div class="sect3">
 <h4 id="client-interface-specification"><a class="anchor" href="#client-interface-specification"></a>1.1.5. Client interface specification</h4>
 <div class="paragraph">
-<p>Web Authentication defines browser JavaScript APIs only. It is up to implementation the way to send corrected credential.
+<p>Web Authentication defines browser JavaScript APIs only.
+It is up to implementation the way to send corrected credential.
 Regarding WebAuthn4J Spring Security, <code>WebAuthnProcessingFilter</code> retrieves <code>credentialId</code>, <code>clientData</code>, <code>authenticatorData</code>,
 <code>signature</code>, <code>clientExtensionsJSON</code> for authentication, and <code>credentialId</code>, <code>clientData</code>, <code>authenticatorData</code> and
 <code>signature</code> is binary data, please send them as Base64 strings.</p>
@@ -557,8 +555,7 @@ Regarding WebAuthn4J Spring Security, <code>WebAuthnProcessingFilter</code> retr
 <h4 id="options-endpoint-specification"><a class="anchor" href="#options-endpoint-specification"></a>1.1.6. Options endpoint specification</h4>
 <div class="paragraph">
 <p>Web Authentication requests to obtain a challenge from the server prior to authentication.
-When using the FIDO-U2F token as an authentication device, the CredentialIds associated with the user identified by
-the first authentication factor are also need to be obtained from the server.
+When using the FIDO-U2F token as an authentication device, the CredentialIds associated with the user identified by the first authentication factor are also need to be obtained from the server.
 To retrieve these data, WebAuthn4J Spring Security offers <code>OptionsEndpointFilter</code>.</p>
 </div>
 </div>
@@ -568,47 +565,44 @@ To retrieve these data, WebAuthn4J Spring Security offers <code>OptionsEndpointF
 <div class="sect3">
 <h4 id="selecting-authentication-method"><a class="anchor" href="#selecting-authentication-method"></a>1.2.1. Selecting authentication method</h4>
 <div class="paragraph">
-<p>WebAuthn4J Spring Security supports "Password-less multi-factor authentication with a user-verifying authenticator",
-"Multi-factor authentication with password and authenticator" and "Single-factor authentication like password".
-If you put value on adoption, you may allow password authentication in your web system, or if you give greater importance
-to security, you may restrict password authentication.</p>
+<p>WebAuthn4J Spring Security supports "Password-less multi-factor authentication with a user-verifying authenticator", "Multi-factor authentication with password and authenticator" and "Single-factor authentication like password".
+If you put value on adoption, you may allow password authentication in your web system, or if you give greater importance to security, you may restrict password authentication.</p>
 </div>
 <div class="sect4">
 <h5 id="how-to-restrict-password-authentication"><a class="anchor" href="#how-to-restrict-password-authentication"></a>How to restrict password authentication</h5>
 <div class="paragraph">
 <p>Restriction of single-factor authentication like password can be configured per user basis.
 <code>MFAUserDetails</code> interface, which is a base interface of <code>WebAuthnUserDetails</code> has <code>isSingleFactorAuthenticationAllowed</code>
-method. If an implementing class returns <code>true</code> by the method, the user can pass the authentication with only a single-factor
-like password.</p>
+method.
+If an implementing class returns <code>true</code> by the method, the user can pass the authentication with only a single-factor like password.</p>
 </div>
 </div>
 <div class="sect4">
 <h5 id="multifactorauthenticationprovider"><a class="anchor" href="#multifactorauthenticationprovider"></a>MultiFactorAuthenticationProvider</h5>
 <div class="paragraph">
 <p>WebAuthn4J Spring Security utilizes <code>MultiFactorAuthenticationProvider</code> to realize multi-factor authentication.
-<code>MultiFactorAuthenticationProvider</code> is an <code>AuthenticationProvider</code> interface implementation, which delegates authentication
-decision itself to another <code>AuthenticationProvider</code>. If authentication succeeds in the delegated <code>AuthenticationProvider</code>
+<code>MultiFactorAuthenticationProvider</code> is an <code>AuthenticationProvider</code> interface implementation, which delegates authentication decision itself to another <code>AuthenticationProvider</code>.
+If authentication succeeds in the delegated <code>AuthenticationProvider</code>
 and single-factor authentication is not permitted, <code>MultiFactorAuthenticationProvider</code> returns a <code>MultiFactorAuthenticationToken</code>
 instead of the <code>Authentication</code> returned from <code>AuthenticationProvider</code>.</p>
 </div>
 <div class="paragraph">
-<p><code>MultiFactorAuthenticationToken</code> is an <code>Authentication</code> interface implementation represents partial finish of
-multi-factor authentication. It is treated as a principal that has not authenticated like <code>AnonymousAuthenticationToken</code>.</p>
+<p><code>MultiFactorAuthenticationToken</code> is an <code>Authentication</code> interface implementation represents partial finish of multi-factor authentication.
+It is treated as a principal that has not authenticated like <code>AnonymousAuthenticationToken</code>.</p>
 </div>
 <div class="paragraph">
-<p>To realize multi-factor authentication with password and authenticator, setup a <code>MultiFactorAuthenticationProvider</code>,
-delegate password authentication to a <code>DaoAuthenticationProvider</code>, and register the <code>MultiFactorAuthenticationProvider</code>
-to the <code>AuthenticationManager</code>. The <code>DaoAuthenticationProvider</code>, which is delegated to, must not to be registered to
-the <code>AuthenticationManager</code> to avoid it processes an <code>Authentication</code> directly, and finishes authentication without
- second-factor verification.</p>
+<p>To realize multi-factor authentication with password and authenticator, setup a <code>MultiFactorAuthenticationProvider</code>, delegate password authentication to a <code>DaoAuthenticationProvider</code>, and register the <code>MultiFactorAuthenticationProvider</code>
+to the <code>AuthenticationManager</code>.
+The <code>DaoAuthenticationProvider</code>, which is delegated to, must not to be registered to the <code>AuthenticationManager</code> to avoid it processes an <code>Authentication</code> directly, and finishes authentication without second-factor verification.</p>
 </div>
 </div>
 <div class="sect4">
 <h5 id="webauthnauthenticationprovider"><a class="anchor" href="#webauthnauthenticationprovider"></a>WebAuthnAuthenticationProvider</h5>
 <div class="paragraph">
 <p><code>WebAuthnAuthenticationProvider</code> is an <code>AuthenticationProvider</code> implementation to process a
-<code>WebAuthnAssertionAuthenticationToken</code>. For WebAuthn assertion verification, <code>WebAuthnAuthenticationContextValidator</code> is
-used. See <a href="https://webauthn4j.github.io/webauthn4j/ja/">WebAuthn4J reference</a> for more details of
+<code>WebAuthnAssertionAuthenticationToken</code>.
+For WebAuthn assertion verification, <code>WebAuthnAuthenticationContextValidator</code> is used.
+See <a href="https://webauthn4j.github.io/webauthn4j/ja/">WebAuthn4J reference</a> for more details of
 <code>WebAuthnAuthenticationContextValidator</code>.</p>
 </div>
 </div>
@@ -619,8 +613,7 @@ used. See <a href="https://webauthn4j.github.io/webauthn4j/ja/">WebAuthn4J refer
 <div class="sect3">
 <h4 id="distinction-of-a-user-in-the-middle-of-multi-factor-authentication"><a class="anchor" href="#distinction-of-a-user-in-the-middle-of-multi-factor-authentication"></a>1.3.1. Distinction of a user in the middle of multi-factor authentication</h4>
 <div class="paragraph">
-<p>In the case where it is needed to show a different login view like the one asks an authenticator for the user whose
-first factor is verified but second factor is not provided yet, the distinction can be made by checking the type of
+<p>In the case where it is needed to show a different login view like the one asks an authenticator for the user whose first factor is verified but second factor is not provided yet, the distinction can be made by checking the type of
 <code>Authentication</code> instance is a descendant of <code>MultiFactorAuthenticationToken</code> or not.</p>
 </div>
 <div class="listingblock">
@@ -641,8 +634,7 @@ public String login() {
 <div class="sect3">
 <h4 id="configuring-a-credential-scope-rpid"><a class="anchor" href="#configuring-a-credential-scope-rpid"></a>1.3.2. Configuring a credential scope (rpId)</h4>
 <div class="paragraph">
-<p>In Web Authentication specification, the scope of a creating credential can be configured through the parameter named
-"rpId" while creating the credential i.e. registering authenticator. "rpId" accepts
+<p>In Web Authentication specification, the scope of a creating credential can be configured through the parameter named "rpId" while creating the credential i.e. registering authenticator. "rpId" accepts
 <a href="https://html.spec.whatwg.org/multipage/origin.html#concept-origin-effective-domain">effective domain</a>.
 For example, in the case where the domain of the site is <code>webauthn.example.com</code>, and <code>webauthn.example.com</code> is set to
 <code>rpId</code>, the credential is only available in <code>webauthn.example.com</code> and its sub-domain, but if <code>example.com</code>
@@ -655,17 +647,14 @@ is set to <code>rpId</code>, the scope of the credential is relaxed to <code>exa
 <div class="sect3">
 <h4 id="attestation-statement-verification"><a class="anchor" href="#attestation-statement-verification"></a>1.3.3. Attestation statement verification</h4>
 <div class="paragraph">
-<p>Web Authentication specification allows the relying party to retrieve an attestation statement from an authenticator if
-it is requested while authenticator registration. By verifying attestation statement, the relying party can exclude
-authenticators not conforming its security requirements. It&#8217;s to be noted that the attestation statement contains
-information that can be used to track user across web sites, it is discouraged to request an attestation statement
-unnecessarily. It is also to be noted that the browsers shows an additional dialog to confirm the user consent, lowers
-usability. Except for enterprise applications that require strict verification of authenticators, most sites should not
-request attestation statements.</p>
+<p>Web Authentication specification allows the relying party to retrieve an attestation statement from an authenticator if it is requested while authenticator registration.
+By verifying attestation statement, the relying party can exclude authenticators not conforming its security requirements.
+It&#8217;s to be noted that the attestation statement contains information that can be used to track user across web sites, it is discouraged to request an attestation statement unnecessarily.
+It is also to be noted that the browsers shows an additional dialog to confirm the user consent, lowers usability.
+Except for enterprise applications that require strict verification of authenticators, most sites should not request attestation statements.</p>
 </div>
 <div class="paragraph">
-<p><code>WebAuthnRegistrationContextValidator</code> from WebAuthn4J validates an authenticator registration request, and it delegates
-attestation statement signature and trustworthiness validation to <code>AttestationStatementValidator</code> and
+<p><code>WebAuthnRegistrationContextValidator</code> from WebAuthn4J validates an authenticator registration request, and it delegates attestation statement signature and trustworthiness validation to <code>AttestationStatementValidator</code> and
 <code>CertPathTrustworthinessValidator</code> interface implementation respectively.</p>
 </div>
 <div class="paragraph">
@@ -678,8 +667,8 @@ attestation statement signature and trustworthiness validation to <code>Attestat
 <h4 id="trustanchorprovider-using-spring-resource"><a class="anchor" href="#trustanchorprovider-using-spring-resource"></a>1.3.4. TrustAnchorProvider using Spring Resource</h4>
 <div class="paragraph">
 <p>While validating an authenticator attestation certificate path on registration,
-<code>TrustAnchorCertPathTrustworthinessValidator</code> class uses <code>TrustAnchor</code> retrieved through <code>TrustAnchorProvider</code> interface
-implementation. WebAuthn4J Spring Security offers <code>KeyStoreResourceTrustAnchorProvider</code> class, which retrieves a
+<code>TrustAnchorCertPathTrustworthinessValidator</code> class uses <code>TrustAnchor</code> retrieved through <code>TrustAnchorProvider</code> interface implementation.
+WebAuthn4J Spring Security offers <code>KeyStoreResourceTrustAnchorProvider</code> class, which retrieves a
 <code>TrustAnchor</code> from a Java Key Store file loaded as Spring <code>Resource</code>.</p>
 </div>
 </div>
@@ -690,7 +679,7 @@ implementation. WebAuthn4J Spring Security offers <code>KeyStoreResourceTrustAnc
 <div id="footer">
 <div id="footer-text">
 Version 0.7.0-SNAPSHOT<br>
-Last updated 2020-05-23 06:13:05 UTC
+Last updated 2020-05-23 08:15:31 UTC
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
