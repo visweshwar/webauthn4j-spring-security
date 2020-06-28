@@ -1,0 +1,16 @@
+apiVersion : apps/v1beta1
+kind: Deployment
+metadata:
+  name: webauthnspring 
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: webauthnspring 
+    spec:
+      containers:
+        - name: webauthnspring 
+          image: payxdemo.azurecr.io/webauthnspring
+          ports:
+          - containerPort: 8080
