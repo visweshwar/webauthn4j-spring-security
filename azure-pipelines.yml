@@ -69,7 +69,7 @@ stages:
             displayName: Deploy to Kubernetes cluster
             inputs:
               action: deploy
-              kubernetesServiceConnection: 'payx-demo-us-east-webauthn'
+              kubernetesServiceConnection: 'payx-demo-east-webauthn'
               namespace: 'webauthn'
               manifests: |
                 $(Pipeline.Workspace)/manifests/deployment.yml
